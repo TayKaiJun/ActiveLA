@@ -1,11 +1,11 @@
-// Example model
+// Example model for a Todo object
 
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 // Create new mongoose schema object
 const Schema = mongoose.Schema;
 let Todo = new Schema({
-    // List attributes model will contain
+    // List attributes model will contain. They will correspond to attribute name in MongoDB
     todo_description: {
         type: String
     },
@@ -20,4 +20,4 @@ let Todo = new Schema({
     }
 });
 
-module.exports = mongoose.model('Todo', Todo);
+export default mongoose.model('Todo', Todo);
