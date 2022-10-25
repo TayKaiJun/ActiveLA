@@ -18,8 +18,8 @@ apiRoutes.post('/addTodo', addTodo);
 // ---------
 
 // Routes for user model
-apiRoutes.get('/userByID', findUserByID);
-apiRoutes.get('/userByUsername', findUserByUsername);
+apiRoutes.get('/userByID', findUserByID); // Query param is _id
+apiRoutes.get('/userByUsername', findUserByUsername); // Query param is username
 apiRoutes.post('/user', addNewUser);
 
 export default apiRoutes;
