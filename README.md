@@ -5,7 +5,10 @@
 
 ## Development setup
 It's probably easier to do these on Github desktop.
-But on command line:
+
+Before starting, create a new branch.
+
+On command line:
 Clone the repository and install required packages:
 ```
 git clone https://github.com/TayKaiJun/Swee.git
