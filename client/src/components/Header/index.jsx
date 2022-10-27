@@ -26,7 +26,7 @@ function Header() {
             }}
           >
             {Object.keys(PATHS).map((pageName) => (
-              <Nav.Link eventKey={PATHS[pageName]}>
+              <Nav.Link key={PATHS[pageName]} eventKey={PATHS[pageName]}>
                 <Link
                   style={{
                     color: "inherit",
