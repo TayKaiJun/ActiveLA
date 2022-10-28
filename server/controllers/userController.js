@@ -18,6 +18,24 @@ export const findUserByUsername = (req, res) => {
     })
 }
 
+export const findUserByEmail = (req, res) => {
+
+    // Need to use query parameters in endpoint
+    User.find({email: req.query.email}).then((user) => {
+        return res.status(200).json({
+            success: true,
+            message: "Returned user by email",
+            User: user
+        })
+    }).catch((e) => {
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: e.message
+        })
+    })
+}
+
 export const findUserByID = (req, res) => {
 
     // Need to use query parameters in endpoint
