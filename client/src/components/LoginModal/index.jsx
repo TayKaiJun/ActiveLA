@@ -3,7 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import AuthContext from '../../services/authContext';
-import {getUserByEmail} from '../../services/user-service'
+import {
+  getUserByEmail
+} from '../../services/user-service'
 
 function LoginModal(props) {
 
@@ -20,13 +22,16 @@ function LoginModal(props) {
     }));
   }
   const onFormSubmit = e => {
-    e.preventDefault()
     getUserByEmail(data.email).then((res) => {
-      if (res.data.password === data.password) {
+      // Password is found in res.data.User[0] object
+      if (res.data.User[0].password === data.password) {
+        e.preventDefault()
         toggleAuthState(true)
+        setData({})
       }
-      setData({})
     }).catch((err) => {
+      
+      // TODO: Display some error message.
       console.log(err.message)
     })
   }

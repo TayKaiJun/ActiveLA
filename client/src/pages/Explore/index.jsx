@@ -25,9 +25,14 @@ function Explore() {
       <Container>
         <Row>
           <Col sm={10}><h2>Welcome, {name} 👋</h2></Col>
-          <Col sm={2}><Button variant="primary" onClick={() => setModalShow(true)}>
-            Login
-          </Button>
+          <Col sm={2}>
+          {
+            loginState ? 
+            <Button > TODO sign out</Button> :
+            <Button variant="primary" onClick={() => setModalShow(true)}>
+              Login
+            </Button>
+          }
           </Col>
         </Row>
       </Container>
@@ -37,7 +42,6 @@ function Explore() {
         onHide={() => setModalShow(false)}
         onSubmit={handleLoginSubmit}
       />
-      <h1>{loginState ? "hi" : "bye"}</h1>
       <ExploreFilter
         onChange={(filtersState) => {
           // TODO: Make api call to update filters for explore page
