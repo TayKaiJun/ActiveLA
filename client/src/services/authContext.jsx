@@ -9,6 +9,7 @@ export function AuthProvider ({ children }){
 
   const toggleAuthState = (state) => {
    setAuthState(state)
+   sessionStorage.setItem("loginState", state)
   };
 
   const auth = useMemo(() => ({authState, toggleAuthState}), [authState])

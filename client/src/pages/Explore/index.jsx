@@ -14,7 +14,7 @@ function Explore() {
 
   const [modalShow, setModalShow] = useState(false);
 
-  const {authState, setAuthState} = useContext(AuthContext)
+  const loginState = sessionStorage.getItem('loginState')
 
   const handleLoginSubmit = () => {
     console.log("Login button clicked")
@@ -37,7 +37,7 @@ function Explore() {
         onHide={() => setModalShow(false)}
         onSubmit={handleLoginSubmit}
       />
-      <h1>{authState ? "hi" : "bye"}</h1>
+      <h1>{loginState ? "hi" : "bye"}</h1>
       <ExploreFilter
         onChange={(filtersState) => {
           // TODO: Make api call to update filters for explore page
