@@ -9,7 +9,7 @@ const User = new Schema({
         type: String,
         required: true
     },
-    password: {
+    email: {
         type: String,
         required: true
     },
@@ -28,7 +28,11 @@ const User = new Schema({
             sport: String,
             level: Number, // Proficiency at the sport, 1 being lowest 5 being highest
         }
-    ]
+    ],
+    password: {
+        type: String,
+        required: true
+    },
 });
 
 export default mongoose.model('User', User);
