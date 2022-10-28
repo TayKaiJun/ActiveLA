@@ -1,19 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import { createNewUser } from "../../services/user-service"
 
 function SignupButton(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
 
+  const [data, setData] = useState({});
+  const onInput = (e) => {
+    const { id, value } = e.target;
+    setData((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
   const onFormSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const formDataObj = Object.fromEntries(formData.entries());
-    console.log(formDataObj);
+    console.log(data);
+    createNewUser(data).then((res) => {
+      if (res.success) {
+        console.log(res.message)
+      }
+      setData({})
+      handleClose()
+    }).catch((err) => {
+      console.log(err.message)
+    })
   };
+
+  // TODO: Change default value to placeholders instead
 
   return (
     <>
@@ -29,17 +47,17 @@ function SignupButton(props) {
           <Form onSubmit={onFormSubmit}>
             <Form.Group className="mb-2" controlId="username">
               <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Username" autoFocus />
+              <Form.Control type="text" defaultValue="Username" autoFocus onChange={onInput} />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="joebruin@g.ucla.edu" />
+              <Form.Control type="email" defaultValue="joebruin@g.ucla.edu" onChange={onInput} />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="name">
               <Form.Label>Name</Form.Label>
-              <Form.Control type="text" placeholder="Joe Bruin" autoFocus />
+              <Form.Control type="text" defaultValue="Joe Bruin" onChange={onInput} />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="pronouns">
@@ -50,15 +68,20 @@ function SignupButton(props) {
 
               <Form.Check type="radio" name="group1" id="signup_pronouns-3" label="they/them" />
 
-              <Form.Check type="radio" name="group1" id="signup_pronouns-3" label="No preference" />
+              <Form.Check type="radio" name="group1" id="signup_pronouns-4" label="No preference" />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="about">
               <Form.Label>About</Form.Label>
-              <Form.Control type="textarea" placeholder="Give a short description about yourself" rows={3} />
+              <Form.Control
+                type="textarea"
+                placeholder="Give a short description about yourself"
+                rows={3}
+                onChange={onInput}
+              />
             </Form.Group>
 
-            <Form.Group className="mb-2" controlId="interest">
+            <Form.Group className="mb-2" controlId="interests">
               <Form.Label>Interest</Form.Label>
               {/* 
                 TODO: 
@@ -66,26 +89,28 @@ function SignupButton(props) {
                   - have a slider or a row of radio buttons to select proficiency level
                   - Have a button that creates a new row of entry to add more interests
                */}
-              <Form.Control type="text" placeholder="Indicate interests" disabled />
+              <Form.Control type="text" defaultValue="Indicate interests" disabled />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="password">
               <Form.Label>Create Password</Form.Label>
-              <Form.Control type="password"/>
+              {/* TODO: remmove default value */}
+              <Form.Control type="password" defaultValue="helloworld" onChange={onInput}/>
             </Form.Group>
-
+              {/* TODO: Include validation for both passwords & check reentered password */}
             <Form.Group className="mb-2" controlId="password-repeat">
               <Form.Label>Re-enter Password</Form.Label>
               <Form.Control type="password"/>
             </Form.Group>
+
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Submit
           </Button>
         </Modal.Footer>
       </Modal>

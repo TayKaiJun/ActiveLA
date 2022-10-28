@@ -18,7 +18,9 @@ const app = express();
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = 8080;
 
-app.use(cors()); 
+app.use(cors({
+    origin: '*'
+  }));
 app.use(bodyParser.json()); // Parses request bodies
 
 // This sets up all the API routes in routes.js.
