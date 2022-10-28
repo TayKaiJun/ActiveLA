@@ -1,6 +1,6 @@
 /*
     ExpressJS server for ActiveLA. 
-    Most things here should be set up (except maybe CORS). 
+    Most things here should be set up. 
     Most development should be done under routes.js and the controllers folder.
 
     https://medium.com/fbdevclagos/setting-up-your-development-environment-96a6858ed5bb
@@ -18,7 +18,9 @@ const app = express();
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = 8080;
 
-app.use(cors()); 
+app.use(cors({
+    origin: 'http://localhost:3000'
+  }));
 app.use(bodyParser.json()); // Parses request bodies
 
 // This sets up all the API routes in routes.js.
