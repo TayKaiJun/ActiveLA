@@ -2,6 +2,7 @@ import express from "express";
 import { 
     findUserByID,
     findUserByUsername,
+    findUserByEmail,
     addNewUser
 } from "./controllers/userController.js";
 import {
@@ -18,8 +19,9 @@ apiRoutes.post('/addTodo', addTodo);
 // ---------
 
 // Routes for user model
-apiRoutes.get('/userByID', findUserByID);
-apiRoutes.get('/userByUsername', findUserByUsername);
+apiRoutes.get('/userByID', findUserByID); // Query param is _id
+apiRoutes.get('/userByUsername', findUserByUsername); // Query param is username
+apiRoutes.get('/userByEmail', findUserByEmail); // Query param is email
 apiRoutes.post('/user', addNewUser);
 
 export default apiRoutes;
