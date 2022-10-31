@@ -22,12 +22,13 @@ function LoginModal(props) {
     }));
   }
   const onFormSubmit = e => {
+    e.preventDefault()
     getUserByEmail(data.email).then((res) => {
       // Password is found in res.data.User[0] object
       if (res.data.User[0].password === data.password) {
-        e.preventDefault()
         toggleAuthState(true)
         setData({})
+        onHide()
       }
     }).catch((err) => {
       

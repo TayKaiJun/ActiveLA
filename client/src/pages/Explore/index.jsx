@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import LoginModal from "../../components/LoginModal";
 import PageLayout from "../../components/PageLayout";
 import ExploreFilter from "./components/ExploreFilter/ExploreFilter";
-import AuthContext from '../../services/authContext';
 
 function Explore() {
 
@@ -15,10 +14,6 @@ function Explore() {
   const [modalShow, setModalShow] = useState(false);
 
   const loginState = sessionStorage.getItem('loginState')
-
-  const handleLoginSubmit = () => {
-    console.log("Login button clicked")
-  }
 
   return (
     <PageLayout>
@@ -40,7 +35,6 @@ function Explore() {
       <LoginModal 
         show={modalShow}
         onHide={() => setModalShow(false)}
-        onSubmit={handleLoginSubmit}
       />
       <ExploreFilter
         onChange={(filtersState) => {
