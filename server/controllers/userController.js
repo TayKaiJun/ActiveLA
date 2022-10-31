@@ -59,6 +59,7 @@ export const addNewUser = (req, res) => {
     const user = new User({
         username: req.body.username,
         password: req.body.password,
+        email: req.body.email,
         name: req.body.name,
         pronouns: req.body.pronouns,
         about: req.body.about,
