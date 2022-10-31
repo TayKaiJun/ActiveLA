@@ -36,7 +36,7 @@ The following are the libraries we will use for this project. There might be mor
 
 Frontend (React). Built with create-react-app:
 1. Bootstrap
-2. 
+2. Axios
 3. React-router
 
 Backend (Node):
