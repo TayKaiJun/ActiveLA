@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { createNewUser } from "../../services/user-service"
+import { createNewUser } from "../../services/user-service";
 
 function SignupButton(props) {
   const [modalShow, setModalShow] = React.useState(false);
@@ -20,15 +20,17 @@ function SignupButton(props) {
   const onFormSubmit = (e) => {
     e.preventDefault();
     console.log(data);
-    createNewUser(data).then((res) => {
-      if (res.success) {
-        console.log(res.message)
-      }
-      setData({})
-      handleClose()
-    }).catch((err) => {
-      console.log(err.message)
-    })
+    createNewUser(data)
+      .then((res) => {
+        if (res.success) {
+          console.log(res.message);
+        }
+        setData({});
+        handleClose();
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   // TODO: Change default value to placeholders instead
@@ -95,12 +97,12 @@ function SignupButton(props) {
             <Form.Group className="mb-2" controlId="password">
               <Form.Label>Create Password</Form.Label>
               {/* TODO: remmove default value */}
-              <Form.Control type="password" defaultValue="helloworld" onChange={onInput}/>
+              <Form.Control type="password" defaultValue="helloworld" onChange={onInput} />
             </Form.Group>
-              {/* TODO: Include validation for both passwords & check reentered password */}
+            {/* TODO: Include validation for both passwords & check reentered password */}
             <Form.Group className="mb-2" controlId="password-repeat">
               <Form.Label>Re-enter Password</Form.Label>
-              <Form.Control type="password"/>
+              <Form.Control type="password" />
             </Form.Group>
 
             <Button variant="primary" type="submit">
