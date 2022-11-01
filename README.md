@@ -35,7 +35,7 @@ Connecting to the MongoDB cloud database requires the .env file containing the M
 The following are the libraries we will use for this project. There might be more that will be added.
 
 Frontend (React). Built with create-react-app:
-1. Bootstrap
+1. React-Bootstrap
 2. Axios
 3. React-router
 
