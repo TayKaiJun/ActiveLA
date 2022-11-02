@@ -5,7 +5,8 @@ import Form from "react-bootstrap/Form";
 import { createNewUser } from "../../services/user-service";
 
 function SignupButton(props) {
-  const [modalShow, setModalShow] = React.useState(false);
+
+  const [modalShow, setModalShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
 
@@ -23,7 +24,7 @@ function SignupButton(props) {
     createNewUser(data)
       .then((res) => {
         if (res.success) {
-          console.log(res.message);
+          // TODO: Toast that indicates 
         }
         setData({});
         handleClose();
@@ -37,10 +38,9 @@ function SignupButton(props) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button className="ms-2 btn btn-primary" variant="primary" onClick={handleShow}>
         Sign Up
       </Button>
-
       <Modal show={modalShow} onHide={handleClose} size="m" centered scrollable>
         <Modal.Header closeButton>
           <Modal.Title>Sign Up</Modal.Title>
@@ -49,27 +49,24 @@ function SignupButton(props) {
           <Form onSubmit={onFormSubmit}>
             <Form.Group className="mb-2" controlId="username">
               <Form.Label>Username</Form.Label>
-              <Form.Control type="text" defaultValue="Username" autoFocus onChange={onInput} />
+              <Form.Control type="text" autoFocus onChange={onInput} />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" defaultValue="joebruin@g.ucla.edu" onChange={onInput} />
+              <Form.Control type="email" onChange={onInput} />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="name">
               <Form.Label>Name</Form.Label>
-              <Form.Control type="text" defaultValue="Joe Bruin" onChange={onInput} />
+              <Form.Control type="text" onChange={onInput} />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="pronouns">
               <Form.Label>Pronouns</Form.Label>
               <Form.Check type="radio" name="group1" id="signup_pronouns-1" label="he/him" />
-
               <Form.Check type="radio" name="group1" id="signup_pronouns-2" label="she/her" />
-
               <Form.Check type="radio" name="group1" id="signup_pronouns-3" label="they/them" />
-
               <Form.Check type="radio" name="group1" id="signup_pronouns-4" label="No preference" />
             </Form.Group>
 
@@ -97,7 +94,7 @@ function SignupButton(props) {
             <Form.Group className="mb-2" controlId="password">
               <Form.Label>Create Password</Form.Label>
               {/* TODO: remmove default value */}
-              <Form.Control type="password" defaultValue="helloworld" onChange={onInput} />
+              <Form.Control type="password" onChange={onInput} />
             </Form.Group>
             {/* TODO: Include validation for both passwords & check reentered password */}
             <Form.Group className="mb-2" controlId="password-repeat">

@@ -1,12 +1,10 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 
 function EventCard() {
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card style={{ width: '18rem', marginTop: '2rem' }}>
       <Card.Body>
         <Card.Title>Sport Type</Card.Title>
         <Card.Text>
