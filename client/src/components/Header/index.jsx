@@ -3,6 +3,8 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation } from "react-router-dom";
+// import Button from "react-bootstrap/Button"
+import SignupButton from "../SignupButton";
 
 const PATHS = {
   Explore: "/",
@@ -12,6 +14,7 @@ const PATHS = {
 
 function Header() {
   const location = useLocation();
+  
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -39,6 +42,7 @@ function Header() {
               </Nav.Link>
             ))}
           </Nav>
+          <SignupButton />
         </Navbar.Collapse>
       </Container>
     </Navbar>

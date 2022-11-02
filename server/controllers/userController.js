@@ -63,7 +63,8 @@ export const addNewUser = (req, res) => {
         name: req.body.name,
         pronouns: req.body.pronouns,
         about: req.body.about,
-        interests: req.body.interests
+        interests: req.body.interests,
+
     })
 
     user.save().then((newUser) => {

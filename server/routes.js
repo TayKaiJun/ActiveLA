@@ -29,7 +29,6 @@ apiRoutes.get('/userByUsername', findUserByUsername); // Query param is username
 apiRoutes.get('/userByEmail', findUserByEmail); // Query param is email
 apiRoutes.post('/user', addNewUser);
 
-
 apiRoutes.get('/allEvents', getAllEvents);
 apiRoutes.post('/addEvent', addEvent);
 
