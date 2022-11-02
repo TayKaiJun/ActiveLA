@@ -10,6 +10,7 @@ const PATHS = {
   Explore: "/",
   Activities: "/activities",
   Profile: "/profile",
+  PostEvent: "/postevent",
 };
 
 function Header() {
