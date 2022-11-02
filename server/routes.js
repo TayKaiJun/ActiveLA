@@ -22,6 +22,8 @@ const apiRoutes = express.Router();
 apiRoutes.get('/allTodo', getAllTodos);
 apiRoutes.post('/addTodo', addTodo);
 // ---------
+
+// Routes for user model
 apiRoutes.get('/userByID', findUserByID); // Query param is _id
 apiRoutes.get('/userByUsername', findUserByUsername); // Query param is username
 apiRoutes.get('/userByEmail', findUserByEmail); // Query param is email
