@@ -21,7 +21,8 @@ const PORT = 8080;
 app.use(cors({
     origin: 'http://localhost:3000'
   }));
-app.use(bodyParser.json()); // Parses request bodies
+app.use(express.json()); // Parses request bodies
+app.use(bodyParser.urlencoded({extended: false}))
 
 // This sets up all the API routes in routes.js.
 // All routes will be prefixed with /api.
