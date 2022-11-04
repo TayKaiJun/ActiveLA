@@ -9,14 +9,43 @@ function SignupButton(props) {
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
 
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    username: "",
+    email: "",
+    name: "",
+    pronouns: "",
+    about: "",
+    interests: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [formErrors, setError] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+
   const onInput = (e) => {
     const { id, value } = e.target;
     setData((prevState) => ({
       ...prevState,
       [id]: value,
     }));
+
+    if (data.password && data.confirmPassword && (data.password !== data.confirmPassword)) {
+      if (id === "password") {
+        setError(() => ({
+          [id]: "Passwords do not match!",
+        }));
+      }
+      else{
+        setError(() => ({
+          [id]: "",
+        }));
+      }
+    }
   };
+
   const onFormSubmit = (e) => {
     e.preventDefault();
     console.log(data);
@@ -97,12 +126,14 @@ function SignupButton(props) {
             <Form.Group className="mb-2" controlId="password">
               <Form.Label>Create Password</Form.Label>
               {/* TODO: remmove default value */}
-              <Form.Control type="password" defaultValue="helloworld" onChange={onInput} />
+              <Form.Control type="password" defaultValue="helloworld" onChange={onInput} required />
+              {formErrors.password && <p className="text-danger">{formErrors.password}</p>}
             </Form.Group>
-            {/* TODO: Include validation for both passwords & check reentered password */}
-            <Form.Group className="mb-2" controlId="password-repeat">
+
+            <Form.Group className="mb-2" controlId="confirmPassword">
               <Form.Label>Re-enter Password</Form.Label>
-              <Form.Control type="password" />
+              <Form.Control type="password" onChange={onInput} required />
+              {formErrors.confirmPassword && <p className="text-danger">{formErrors.confirmPassword}</p>}
             </Form.Group>
 
             <Button variant="primary" type="submit">
