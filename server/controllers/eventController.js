@@ -1,8 +1,3 @@
-/* 
-    Example code to showcase a general structure of CRUD operations with express and Mongoose.
-    We do not actually use events.
-*/ 
-
 import Event from "../models/event.model.js"
 
 /*
