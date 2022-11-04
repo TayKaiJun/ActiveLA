@@ -18,7 +18,7 @@ apiRoutes.post('/addTodo', addTodo);
 // ---------
 
 
-apiRoutes.get('/allEvents', getAllEvents);
+apiRoutes.get('/getallEvents', getAllEvents);
 apiRoutes.post('/addEvent', addEvent);
 
 export default apiRoutes;

@@ -5,11 +5,13 @@
 
 import Event from "../models/event.model.js"
 
+
 /*
     Gets all events from the DB
     req -> The HTTP POST request sent to the server, in JSON format
     res -> HTTP response returned. Contains a lot of info can print out to see.
 */
+
 export const getAllEvents = (req, res) => {
     Event.find({}).then((allEvents) => {
         return res.status(200).json({
@@ -17,7 +19,7 @@ export const getAllEvents = (req, res) => {
             message: "List of all events",
             Event: allEvents
         })
-    }).catch((e) => {
+    }).catch((error) => {
         return res.status(500).json({
             success: false,
             message: "Server error",
@@ -25,6 +27,22 @@ export const getAllEvents = (req, res) => {
         })
     })
 }
+
+// export const getAllEvents = (req, res) => {
+//     Event.find({}).then((allEvents) => {
+//         return res.status(200).json({
+//             success: true,
+//             message: "List of all events",
+//             Event: allEvents
+//         })
+//     }).catch((error) => {
+//         return res.status(500).json({
+//             success: false,
+//             message: "Server error",
+//             error: err.message
+//         })
+//     })
+// }
 
 
 // Function to add a new event that will be tied to the /add route under routes.js
