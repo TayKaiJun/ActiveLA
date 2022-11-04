@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import Container from 'react-bootstrap/esm/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import Modal from 'react-bootstrap/Modal';
 import badmintonImage from "./badminton.jpg"
+import getAllEvents from '../../../../services/event-service';
 
-function MoreDetails() {
+
+function MoreDetails(event) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -54,24 +57,47 @@ function MoreDetails() {
 }
 
 function EventCard() {
+  const [events, getEvents] = useState('');
+  
+  useEffect(() => {
+    getAllEvents().then((response) => {
+      const allEvents = response.data.Event;
+      getEvents(allEvents);
+    }
+    )
+    .catch((err) => {
+      console.log(err.message);
+    })
+  },[])
+
+  console.log(events)
+
   return (
     <Row xs={1} md={4} className="g-4">
-      {Array.from({ length: 8 }).map((_, idx) => (
+      {
+      
+      events ? 
+
+      events.map((event, idx) => (
         <Col>
           <Card>
             <Card.Img variant="top" src={badmintonImage} />
             <Card.Body>
-              <Card.Title>Badminton</Card.Title>
+              <Card.Title>{event.name}</Card.Title>
               <ListGroup className="list-group-flush">
-                <ListGroup.Item>Date:</ListGroup.Item>
-                <ListGroup.Item>Time:</ListGroup.Item>
-                <ListGroup.Item>Location:</ListGroup.Item>
+                <ListGroup.Item>Date: {event.date}</ListGroup.Item>
+                <ListGroup.Item>Time: {event.time}</ListGroup.Item>
+                <ListGroup.Item>Location: {event.location}</ListGroup.Item>
               </ListGroup>
               <MoreDetails />
             </Card.Body>
           </Card>
         </Col>
-      ))}
+      )
+      )
+      : <Container/>
+
+    }
     </Row>
   );
 }
