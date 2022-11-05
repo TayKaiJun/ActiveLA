@@ -11,7 +11,12 @@ import badmintonImage from "./badminton.jpg"
 import getAllEvents from '../../../../services/event-service';
 
 
-function MoreDetails(event) {
+function ModalMoreDetails({props}) {
+
+  console.log(props);
+
+  const {id, name, date, time, location, skilllevel, agegroup, numberofplayers, costs} = props;
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -34,13 +39,13 @@ function MoreDetails(event) {
         <img className="img-responsive" src={badmintonImage} alt=""/>
         <Modal.Body>
           <ListGroup className="list-group-flush">
-            <ListGroup.Item>Date:</ListGroup.Item>
-            <ListGroup.Item>Time:</ListGroup.Item>
-            <ListGroup.Item>Location:</ListGroup.Item>
-            <ListGroup.Item>Skill Level:</ListGroup.Item>
-            <ListGroup.Item>Age Group:</ListGroup.Item>
-            <ListGroup.Item>Number of Players Looking For:</ListGroup.Item>
-            <ListGroup.Item>Costs:</ListGroup.Item>
+            <ListGroup.Item>Date: {date}</ListGroup.Item>
+            <ListGroup.Item>Time: {time}</ListGroup.Item>
+            <ListGroup.Item>Location: {location}</ListGroup.Item>
+            <ListGroup.Item>Skill Level: {skilllevel}</ListGroup.Item>
+            <ListGroup.Item>Age Group: {agegroup}</ListGroup.Item>
+            <ListGroup.Item>Number of Players Looking For: {numberofplayers}</ListGroup.Item>
+            <ListGroup.Item>Costs: {costs}</ListGroup.Item>
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
@@ -89,7 +94,7 @@ function EventCard() {
                 <ListGroup.Item>Time: {event.time}</ListGroup.Item>
                 <ListGroup.Item>Location: {event.location}</ListGroup.Item>
               </ListGroup>
-              <MoreDetails />
+              <ModalMoreDetails props={event}/>
             </Card.Body>
           </Card>
         </Col>
