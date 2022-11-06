@@ -19,7 +19,7 @@ Filters can be dynamically generated using a list of filter configs:
 */
 
 function FiltersGroup(props) {
-  const { filters, onChange } = props;
+  const { filters, onChange, onReset } = props;
   const [filtersState, setFiltersState] = useState(null);
   const [changeCounter, setChangeCounter] = useState(0);
 
@@ -73,7 +73,7 @@ function FiltersGroup(props) {
           <Button
             onClick={() => {
               setFiltersState(null);
-              setChangeCounter((prevState) => prevState + 1);
+              onReset();
             }}
             as="input"
             type="reset"
