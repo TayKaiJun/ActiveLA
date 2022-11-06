@@ -1,19 +1,27 @@
-import React from "react";
+import React, {useContext} from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation } from "react-router-dom";
-// import Button from "react-bootstrap/Button"
+import Button from "react-bootstrap/Button";
 import SignupButton from "../SignupButton";
+import LoginModal from "../LoginModal";
+import AuthContext from "../../services/authContext";
 
 const PATHS = {
   Explore: "/",
   Activities: "/activities",
   Profile: "/profile",
+  PostEvent: "/postevent",
 };
 
 function Header() {
   const location = useLocation();
+  const {authState, toggleAuthState} = useContext(AuthContext)
+
+  const signOut = () => {
+    toggleAuthState(false)
+  }
   
   return (
     <Navbar bg="light" expand="lg">
@@ -42,7 +50,14 @@ function Header() {
               </Nav.Link>
             ))}
           </Nav>
-          <SignupButton />
+          {
+            authState ? 
+            <Button onClick={signOut}> Sign out </Button> :
+            <>
+              <LoginModal />
+              <SignupButton />
+            </>
+          }
         </Navbar.Collapse>
       </Container>
     </Navbar>

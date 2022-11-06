@@ -1,5 +1,8 @@
 import User from "../models/user.model.js";
 
+
+// TODO: Make login and signup methods that are secure 
+
 export const findUserByUsername = (req, res) => {
 
     // Need to use query parameters in endpoint
@@ -34,6 +37,22 @@ export const findUserByEmail = (req, res) => {
             error: e.message
         })
     })
+}
+
+export const login = (req, res) => {
+    User.find({email: req.query.email}).then((user) => {
+        return res.status(200).json({
+            success: true,
+            message: "Login successful",
+        })
+    }).catch((e) => {
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: e.message
+        })
+    })
+
 }
 
 export const findUserByID = (req, res) => {

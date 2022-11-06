@@ -1,47 +1,28 @@
-import React, { useState, useContext } from "react";
-import Button from 'react-bootstrap/Button';
+import React from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import LoginModal from "../../components/LoginModal";
 import PageLayout from "../../components/PageLayout";
-import ExploreFilter from "./components/ExploreFilter/ExploreFilter";
+import ExploreFilter from "./components/ExploreFilter";
+import EventCard from "./components/EventCard";
 
 function Explore() {
-
-  const name = "Beryl"; // Replace with useEffect to get username if logged in else show login button
-
-  const [modalShow, setModalShow] = useState(false);
-
-  const loginState = sessionStorage.getItem('loginState')
-
+  const name = "Beryl";
+  const handleSubmitFilter = (filters) => {
+    console.log(filters);
+  };
   return (
     <PageLayout>
-      <Container>
-        <Row>
-          <Col sm={10}><h2>Welcome, {name} 👋</h2></Col>
-          <Col sm={2}>
-          {
-            loginState ? 
-            <Button > TODO sign out</Button> :
-            <Button variant="primary" onClick={() => setModalShow(true)}>
-              Login
-            </Button>
-          }
-          </Col>
-        </Row>
-      </Container>
-      <p className="mt-4">Events near you</p>
-      <LoginModal 
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
-      <ExploreFilter
-        onChange={(filtersState) => {
-          // TODO: Make api call to update filters for explore page
-          console.log(filtersState);
+      <h2>Welcome, {name} 👋</h2>
+      <p className="mt-4">Discover Events</p>
+      <p
+        style={{
+          display: "flex",
         }}
-      />
+      >
+        <ExploreFilter onChange={handleSubmitFilter} />
+      </p>
+      <EventCard />
     </PageLayout>
   );
 }
