@@ -12,7 +12,7 @@ function Explore() {
   const [filterChangeObserver, setFilterChangeObserver] = useState(0);
 
   const updateEventsOnFilterChange = async () => {
-    const fetchedEvents = await getAllEvents();
+    const fetchedEvents = await getAllEvents(filters);
     setEvents(fetchedEvents);
   };
 
