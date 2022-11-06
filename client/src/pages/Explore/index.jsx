@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PageLayout from "../../components/PageLayout";
 import ExploreFilter from "./components/ExploreFilter";
-import EventCard from "./components/EventCard";
+import Events from "./components/Events";
+import getAllEvents from "../../services";
+import useIsFirstRender from "../../hooks/useIsFirstRender";
 
 function Explore() {
   const name = "Beryl";
-  const handleSubmitFilter = (filters) => {
-    console.log(filters);
+  const [filters, setFilters] = useState({});
+  const [events, setEvents] = useState([]);
+  const [filterChangeObserver, setFilterChangeObserver] = useState(0);
+
+  const updateEventsOnFilterChange = async () => {
+    const fetchedEvents = await getAllEvents();
+    setEvents(fetchedEvents);
   };
+
+  const firstRender = useIsFirstRender();
+
+  useEffect(() => {
+    if (!firstRender) {
+      updateEventsOnFilterChange();
+    }
+  }, [filterChangeObserver]);
+
   return (
     <PageLayout>
       <h2>Welcome, {name} 👋</h2>
@@ -17,9 +33,14 @@ function Explore() {
           display: "flex",
         }}
       >
-        <ExploreFilter onChange={handleSubmitFilter} />
+        <ExploreFilter
+          onChange={(exploreFilter) => {
+            setFilters(exploreFilter);
+            setFilterChangeObserver((prevObserver) => prevObserver + 1);
+          }}
+        />
       </p>
-      <EventCard />
+      <Events events={events} />
     </PageLayout>
   );
 }
