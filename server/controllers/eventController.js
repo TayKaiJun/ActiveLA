@@ -51,10 +51,10 @@ export const addEvent = (req, res) => {
     date: req.body.date,
     time: req.body.time,
     location: req.body.location,
-    skilllevel: req.body.skilllevel,
-    agegroup: req.body.agegroup,
-    numberofplayerslookingfor: req.body.numberofplayerslookingfor,
+    ageGroup: req.body.ageGroup,
+    playerNumber: req.body.playerNumber,
     costs: req.body.costs,
+    skillLevel: req.body.skillLevel,
   });
 
   return event
