@@ -26,6 +26,10 @@ npm run dev
 ```
 Invoking the dev script should run both the server and client.
 Connecting to the MongoDB cloud database requires the .env file containing the MongoDB URI which you can find in the Google drive. Put it in the server folder.
+>If you're downloading the file from Gdrive, the downloaded file might be saved as 
+"env" instead of ".env". 
+>Make sure to rename it correctly so that .gitignore will catch the file to be ignored.
+
 
 ## Technologies used
 The following are the libraries we will use for this project. There might be more that will be added.
@@ -45,6 +49,8 @@ Development (Just for running the app on local machine):
 
 ## File structure
 We'll use this file structure to make development among us neater.
+>Note: components that would be used in more than 1 page should go into the `client/src/components` folder while each page shall be an individual folder in `client/src/pages`.
+>You should then import the component you need in your page from the components folder.
 
 ```
 swee

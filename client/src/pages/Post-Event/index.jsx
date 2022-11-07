@@ -21,17 +21,17 @@ function postEvent() {
       });
   };
 
-  const validateForm = () => {
-    const { name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = form;
-    const newErrors = {};
-    if (!name || name === "") newErrors.name = "Please enter your name";
-    if (!date || date === "") newErrors.date = "Please enter date";
-    if (!time || time === "") newErrors.time = "Please enter time";
-    if (!location || location === "") newErrors.location = "Please enter location";
-    if (!ageGroup || ageGroup === "") newErrors.ageGroup = "Please enter an age group";
-    if (!playerNumber || playerNumber === "") newErrors.playerNumber = "Please enter player number";
-    if (!costs || costs === "") newErrors.costs = "Please enter costs";
-    if (!skillLevel || skillLevel === "") newErrors.skillLevel = "Please enter skill level";
+const validateForm = () => {
+  const {name, date,time,location,ageGroup,playerNumber,costs,skillLevel} = form
+  const newErrors = {}
+  if (!name || name ==='') newErrors.name = 'Please enter your name'
+  if (!date || date ==='') newErrors.date = 'Please enter date'
+  if (!time || time ==='') newErrors.time = 'Please enter time'
+  if (!location || location ==='') newErrors.location = 'Please enter location'
+  if (!ageGroup || ageGroup ==='') newErrors.ageGroup = 'Please enter an age group'
+  if (!playerNumber || playerNumber ==='') newErrors.playerNumber = 'Please enter player number'
+  if (!costs || costs ==='') newErrors.costs = 'Please enter costs'
+  if (!skillLevel || skillLevel ==='') newErrors.skillLevel = 'Please enter skill level'
 
     return newErrors;
   };
