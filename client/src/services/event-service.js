@@ -8,3 +8,4 @@ export function addEventService(form) {
 
     return http.post(`/addEvent`, form);
 }
+
