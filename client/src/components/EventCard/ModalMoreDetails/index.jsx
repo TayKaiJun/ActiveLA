@@ -7,7 +7,7 @@ import badmintonImage from "../badminton.jpg";
 
 function ModalMoreDetails(props) {
   const { event } = props;
-  const { id, name, date, time, location, skilllevel, agegroup, numberofplayers, costs } = event;
+  const { id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
 
   const [show, setShow] = useState(false);
 
@@ -31,9 +31,9 @@ function ModalMoreDetails(props) {
             <ListGroup.Item>Date: {date}</ListGroup.Item>
             <ListGroup.Item>Time: {time}</ListGroup.Item>
             <ListGroup.Item>Location: {location}</ListGroup.Item>
-            <ListGroup.Item>Skill Level: {skilllevel}</ListGroup.Item>
-            <ListGroup.Item>Age Group: {agegroup}</ListGroup.Item>
-            <ListGroup.Item>Number of Players Looking For: {numberofplayers}</ListGroup.Item>
+            <ListGroup.Item>Skill Level: {skillLevel}</ListGroup.Item>
+            <ListGroup.Item>Age Group: {ageGroup}</ListGroup.Item>
+            <ListGroup.Item>Number of Players Looking For: {playerNumber}</ListGroup.Item>
             <ListGroup.Item>Costs: {costs}</ListGroup.Item>
           </ListGroup>
         </Modal.Body>

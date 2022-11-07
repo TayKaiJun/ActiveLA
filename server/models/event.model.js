@@ -18,16 +18,16 @@ let Event = new Schema({
     location: {
         type: String
     },
-    skilllevel: {
+    ageGroup: {
         type: String
     },
-    agegroup: {
-        type: String
-    },
-    numberofplayerslookingfor: { 
+    playerNumber: { 
         type: String
     },
     costs: {
+        type: String
+    },
+    skillLevel: {
         type: String
     }
 });
