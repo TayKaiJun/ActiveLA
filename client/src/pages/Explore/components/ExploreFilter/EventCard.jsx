@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import Modal from 'react-bootstrap/Modal';
 import badmintonImage from "./badminton.jpg"
-import getAllEvents from '../../../../services/event-service';
+import {getAllEvents} from '../../../../services/event-service';
 
 
 function MoreDetails(event) {
