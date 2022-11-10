@@ -21,7 +21,7 @@ let Event = new Schema({
     ageGroup: {
         type: String
     },
-    playerNumber: { 
+    playerNumber: { // TODO: What is this exactly and can we possibly use len of one of its refs
         type: String
     },
     costs: {
@@ -29,7 +29,21 @@ let Event = new Schema({
     },
     skillLevel: {
         type: String
-    }
+    },
+    host: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
+    pendingAccept: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    attending: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }]
+
+
 });
 
 export default mongoose.model('Event', Event);

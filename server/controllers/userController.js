@@ -3,101 +3,102 @@ import User from "../models/user.model.js";
 
 // TODO: Make login and signup methods that are secure 
 
-export const findUserByUsername = (req, res) => {
-
-    // Need to use query parameters in endpoint
-    User.find({username: req.query.username}).then((user) => {
+export const findUserByUsername = async (req, res) => {
+    try {
+        const user = User.find({username: req.query.username})
         return res.status(200).json({
             success: true,
             message: "Returned user by username",
             User: user
         })
-    }).catch((e) => {
+    } catch (err) {
         return res.status(500).json({
             success: false,
             message: "Server error",
-            error: e.message
+            error: err.message
         })
-    })
+    }
 }
 
-export const findUserByEmail = (req, res) => {
-
-    // Need to use query parameters in endpoint
-    User.find({email: req.query.email}).then((user) => {
+export const findUserByEmail = async (req, res) => {
+    try {
+        const user = await User.find({email: req.query.email})
         return res.status(200).json({
             success: true,
             message: "Returned user by email",
             User: user
         })
-    }).catch((e) => {
+    } catch (err) {
         return res.status(500).json({
             success: false,
             message: "Server error",
-            error: e.message
+            error: err.message
         })
-    })
+    }
 }
 
-export const login = (req, res) => {
-    User.find({email: req.query.email}).then((user) => {
+export const login = async (req, res) => {
+    try {
+        const data = await User.find({email: req.query.email})
         return res.status(200).json({
             success: true,
             message: "Login successful",
+            User: data
         })
-    }).catch((e) => {
+    } catch (err) {
         return res.status(500).json({
             success: false,
             message: "Server error",
-            error: e.message
+            error: err.message
         })
-    })
-
+    }
 }
 
-export const findUserByID = (req, res) => {
-
-    // Need to use query parameters in endpoint
-    User.find({_id: req.query.id}).then((user) => {
+export const findUserByID = async (req, res) => {
+    try {
+        const user = await User.find({_id: req.query.id})
         return res.status(200).json({
             success: true,
             message: "Returned user by ID",
             User: user
         })
-    }).catch((e) => {
+    } catch (err) {
         return res.status(500).json({
             success: false,
             message: "Server error",
-            error: e.message
+            error: err.message
         })
-    })
+    }
 }
 
-export const addNewUser = (req, res) => {
+export const addNewUser = async (req, res) => {
+    try {
+        const user = new User({
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email,
+            name: req.body.name,
+            pronouns: req.body.pronouns,
+            about: req.body.about,
+            interests: req.body.interests,
+            eventsHosting: [],
+            eventsGoing: [],
+            eventsPending: []
+        })
 
-    const user = new User({
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-        name: req.body.name,
-        pronouns: req.body.pronouns,
-        about: req.body.about,
-        interests: req.body.interests,
+        await user.save();
 
-    })
-
-    user.save().then((newUser) => {
         return res.status(201).json({
             success: true,
             message: "New user added to database",
-            User: newUser
+            User: user
         })
-    }).catch((e) => {
+    } catch (err) {
         return res.status(500).json({
             success: false,
             message: "Failed to add new user to database",
-            error: e.message
+            error: err.message
         })
-    })
+    }
 }
 
