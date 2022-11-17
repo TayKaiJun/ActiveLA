@@ -6,9 +6,8 @@ import Modal from "react-bootstrap/Modal";
 import badmintonImage from "../badminton.jpg";
 
 function ModalMoreDetails(props) {
-  const { event } = props;
-  const { id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
-
+  const { event, requestJoinHandler} = props;
+  const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -41,7 +40,7 @@ function ModalMoreDetails(props) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={() => requestJoinHandler(_id)}>
             Request to Join
           </Button>
         </Modal.Footer>

@@ -1,11 +1,11 @@
 import User from "../models/user.model.js";
-
+import Event from "../models/event.model.js"
 
 // TODO: Make login and signup methods that are secure 
 
 export const findUserByUsername = async (req, res) => {
     try {
-        const user = User.find({username: req.query.username})
+        const user = User.find({ username: req.query.username })
         return res.status(200).json({
             success: true,
             message: "Returned user by username",
@@ -22,7 +22,7 @@ export const findUserByUsername = async (req, res) => {
 
 export const findUserByEmail = async (req, res) => {
     try {
-        const user = await User.find({email: req.query.email})
+        const user = await User.find({ email: req.query.email })
         return res.status(200).json({
             success: true,
             message: "Returned user by email",
@@ -39,7 +39,7 @@ export const findUserByEmail = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const data = await User.find({email: req.query.email})
+        const data = await User.find({ email: req.query.email })
         return res.status(200).json({
             success: true,
             message: "Login successful",
@@ -56,7 +56,7 @@ export const login = async (req, res) => {
 
 export const findUserByID = async (req, res) => {
     try {
-        const user = await User.find({_id: req.query.id})
+        const user = await User.find({ _id: req.query.id })
         return res.status(200).json({
             success: true,
             message: "Returned user by ID",
@@ -102,3 +102,36 @@ export const addNewUser = async (req, res) => {
     }
 }
 
+/* Request body = {
+    uid,
+    eventID
+}
+*/
+export const requestToJoinEvent = async (req, res) => {
+    try {
+        const eid = req.body.event;
+        const uid = req.body.uid
+        // findOneAndUpdate overcomes race conditions
+        const event = await Event.findOneAndUpdate(
+            { _id: eid },
+            { $push: { "pendingAccept": uid}}
+        )
+        const user = await User.findOneAndUpdate(
+            { _id: uid },
+            { $push: { "eventsPending": eid } }
+        )
+        return res.status(201).json({
+            success: true,
+            message: "Successfully requested to join event",
+            user: user,
+            event: event
+        })
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to join event",
+            error: err.message
+        })
+    }
+}

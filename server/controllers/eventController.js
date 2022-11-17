@@ -1,3 +1,4 @@
+import User from "../models/user.model.js";
 import Event from "../models/event.model.js"
 
 /*
@@ -40,7 +41,7 @@ export const addEvent = async (req, res) => {
       playerNumber: req.body.playerNumber,
       costs: req.body.costs,
       skillLevel: req.body.skillLevel,
-      host: "current user",
+      host: req.body.currentUser,
       pendingAccept: [],
       attending: []
     }); 
@@ -49,7 +50,7 @@ export const addEvent = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "New event created",
-      Event: newEvent,
+      Event: event,
     });
 
   } catch (err) {

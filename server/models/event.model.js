@@ -42,8 +42,6 @@ let Event = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     }]
-
-
 });
 
 export default mongoose.model('Event', Event);
