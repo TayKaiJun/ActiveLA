@@ -6,6 +6,7 @@ import Toast from "react-bootstrap/Toast";
 import InputGroup from "react-bootstrap/InputGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Chip } from "primereact/chip";
+import bcrypt from "bcryptjs";
 import { createNewUser } from "../../services/user-service";
 
 function SignupButton(props) {
@@ -57,26 +58,53 @@ function SignupButton(props) {
 
   const onInput = (e) => {
     const { id, value } = e.target;
+
+    // if (data.confirmPassword && id === "password") {
+    //   if (data.confirmPassword !== value) setError(() => ({ [id]: "Passwords do not match!" }));
+    //   else setError(() => ({ [id]: "" }));
+    // } else if(data.password && id === "confirmPassword"){
+    //   if (data.password !== value) setError(() => ({ [id]: "Passwords do not match!" }));
+    //   else setError(() => ({ [id]: "" }));
+    // }
+
+    let pass = false;
+    if (data.password && data.confirmPassword && (id === "password" || id === "confirmPassword")) {
+      if (data.password !== data.confirmPassword) {
+        setError(() => ({ [id]: "Passwords do not match!" }));
+        pass = false;
+      } else {
+        setError(() => ({ [id]: "" }));
+        pass = true;
+      }
+    }
+
+    if(id === "password"){
+      bcrypt
+        .hash(value, 10)
+        .then((hashedPassword) => {
+          console.log(hashedPassword);
+          setData({
+            ...data,
+            password: hashedPassword,
+          });
+        })
+        .catch(() => {
+          console.log("Password was not hashed successfully");
+        });
+      return;
+    }
     setData((prevState) => ({
       ...prevState,
       [id]: value,
     }));
-
-    if (data.password && data.confirmPassword && (id === "password" || id === "confirmPassword")) {
-      if (data.password !== data.confirmPassword) {
-        setError(() => ({ [id]: "Passwords do not match!" }));
-      } else {
-        setError(() => ({ [id]: "" }));
-      }
-    }
   };
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
 
     createNewUser(data)
       .then((res) => {
+        console.log(data);
         if (res.success) {
           // TODO: Make the Toast Popup showup
           <Toast onClose={() => setToastShow(false)} show={toastShow} delay={3000} autohide>
@@ -109,33 +137,34 @@ function SignupButton(props) {
     // TODO: change value of a sport if it already exists
     setData({
       ...data,
-      interests: [...data.interests,
-                  {sport: sportValue, level: levelValue}],
+      interests: [...data.interests, { sport: sportValue, level: levelValue }],
     });
   };
 
-  const renderInterests = data.interests.map((interest) => {
-    const { sport, level } = interest;
-    const labelText = `${sport} (${level})`;
-    return (
-      <div style={{ marginLeft: "8px", marginTop: "10px", display: "inline-block" }}>
-        <Chip
-          label={labelText}
-          removable // TODO: Fix remove button not showing
-          onRemove={() => {
-            const newInterestArray = data.interests.filter((remainingInterest) => {
-              return remainingInterest.sport !== sport;
-            });
-            setData({
-              ...data,
-              interests: newInterestArray,
-            });
-            console.log(newInterestArray);
-          }}
-        />
-      </div>
-    );
-  });
+  const renderInterests = data.interests
+    ? data.interests.map((interest) => {
+        const { sport, level } = interest;
+        const labelText = `${sport} (${level})`;
+        return (
+          <div style={{ marginLeft: "8px", marginTop: "10px", display: "inline-block" }}>
+            <Chip
+              label={labelText}
+              removable // TODO: Fix remove button not showing
+              onRemove={() => {
+                const newInterestArray = data.interests.filter((remainingInterest) => {
+                  return remainingInterest.sport !== sport;
+                });
+                setData({
+                  ...data,
+                  interests: newInterestArray,
+                });
+                console.log(newInterestArray);
+              }}
+            />
+          </div>
+        );
+      })
+    : null;
 
   return (
     <>
