@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import PageLayout from "../../components/PageLayout";
 import ExploreFilter from "./components/ExploreFilter";
 import Events from "./components/Events";
-import getAllEvents from "../../services";
 import useIsFirstRender from "../../hooks/useIsFirstRender";
+import AuthContext from "../../services/authContext";
+import {
+  getAllEvents,
+  requestToJoinEvent
+} from "../../services";
 
 function Explore() {
   const name = "Beryl";
@@ -11,6 +15,7 @@ function Explore() {
   const [events, setEvents] = useState([]);
   const [filterChangeObserver, setFilterChangeObserver] = useState(0);
 
+  const loggedIn = sessionStorage.getItem("loginState")
   const updateEventsOnFilterChange = async () => {
     const fetchedEvents = await getAllEvents(filters);
     setEvents(fetchedEvents);
@@ -23,6 +28,17 @@ function Explore() {
       updateEventsOnFilterChange();
     }
   }, [filterChangeObserver]);
+
+  const requestJoinHandler = async (eid) => {
+    if (!loggedIn) {
+      // TODO: Auto redirect to login
+      console.log("Please login first")
+    } else {
+      const uid = sessionStorage.getItem("currentUser");
+      const res = await requestToJoinEvent(uid, eid);
+      console.log("Request to join event", res);
+    }
+  }
 
   return (
     <PageLayout>
@@ -40,7 +56,7 @@ function Explore() {
           }}
         />
       </p>
-      <Events events={events} />
+      <Events events={events} requestJoinHandler={requestJoinHandler} />
     </PageLayout>
   );
 }

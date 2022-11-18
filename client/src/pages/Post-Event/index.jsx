@@ -6,7 +6,8 @@ import PageLayout from "../../components/PageLayout";
 import { addEventService } from "../../services/event-service";
 
 function postEvent() {
-  const [form, setForm] = useState({});
+  const uid = sessionStorage.getItem("currentUser")
+  const [form, setForm] = useState({host: uid});
   const [errors, setErrors] = useState({});
   const setField = (field, value) => {
     setForm({
@@ -46,10 +47,11 @@ const validateForm = () => {
       setErrors(formErrors);
     } else {
       addEventService(form)
-        .then((res) => console.log(res.message))
+        .then(
+          // TODO: Redirect
+          (res) => console.log(res.message)
+        )
         .catch((err) => console.log(err.message));
-      // console.log('submitted form! Displaying form object')
-      // console.log(form)
     }
   };
 

@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: 0 */
+
 import React, { useState, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -28,7 +30,7 @@ function LoginModal(props) {
     e.preventDefault()
     getUserByEmail(data.email).then((res) => {
       if (res.data.User[0].password === data.password) {
-        toggleAuthState(true)
+        toggleAuthState(res.data.User[0]._id)
         setData({})
         handleClose()
       }
