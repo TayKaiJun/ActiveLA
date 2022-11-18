@@ -1,3 +1,4 @@
+import User from "../models/user.model.js";
 import Event from "../models/event.model.js"
 
 /*
@@ -6,71 +7,57 @@ import Event from "../models/event.model.js"
     res -> HTTP response returned. Contains a lot of info can print out to see.
 */
 
-export const getAllEvents = (req, res) => {
+export const getAllEvents = async (req, res) => {
   const filter = req.body;
-  console.log(filter);
+  console.log(filter)
 
-  Event.find({})
-    .then((allEvents) => {
-      return res.status(200).json({
-        success: true,
-        message: "List of all events",
-        Event: allEvents,
-      });
-    })
-    .catch((error) => {
-      return res.status(500).json({
-        success: false,
-        message: "Server error",
-        error: err.message,
-      });
+  try {
+    const data = await Event.find({});
+    return res.status(200).json({
+      success: true,
+      message: "List of all events",
+      Event: data,
+    }); 
+    
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: err.message,
     });
+  }
 };
 
-// export const getAllEvents = (req, res) => {
-//     Event.find({}).then((allEvents) => {
-//         return res.status(200).json({
-//             success: true,
-//             message: "List of all events",
-//             Event: allEvents
-//         })
-//     }).catch((error) => {
-//         return res.status(500).json({
-//             success: false,
-//             message: "Server error",
-//             error: err.message
-//         })
-//     })
-// }
-
 // Function to add a new event that will be tied to the /add route under routes.js
-export const addEvent = (req, res) => {
+export const addEvent = async (req, res) => {
   // Create a new event object using the passed in req. Follow the
-  const event = new Event({
-    name: req.body.name,
-    date: req.body.date,
-    time: req.body.time,
-    location: req.body.location,
-    skilllevel: req.body.skilllevel,
-    agegroup: req.body.agegroup,
-    numberofplayerslookingfor: req.body.numberofplayerslookingfor,
-    costs: req.body.costs,
-  });
+  try {
+    const event = new Event({
+      name: req.body.name,
+      date: req.body.date,
+      time: req.body.time,
+      location: req.body.location,
+      ageGroup: req.body.ageGroup,
+      playerNumber: req.body.playerNumber,
+      costs: req.body.costs,
+      skillLevel: req.body.skillLevel,
+      host: req.body.currentUser,
+      pendingAccept: [],
+      attending: []
+    }); 
 
-  return event
-    .save()
-    .then((newEvent) => {
-      return res.status(201).json({
-        success: true,
-        message: "New event created",
-        Event: newEvent,
-      });
-    })
-    .catch((error) => {
-      return res.status(500).json({
-        success: false,
-        message: "Server error",
-        error: error.message,
-      });
+    await event.save();
+    return res.status(201).json({
+      success: true,
+      message: "New event created",
+      Event: event,
     });
+
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      err: err.message,
+    });
+  }
 };

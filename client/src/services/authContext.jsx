@@ -7,9 +7,17 @@ const AuthContext = createContext();
 export function AuthProvider ({ children }){
   const [authState, setAuthState] = useState(false);
 
-  const toggleAuthState = (state) => {
-   setAuthState(state)
-   sessionStorage.setItem("loginState", state)
+  // TODO: broken, does not actually log the user out though the sessionStorage updates
+  const toggleAuthState = (uid) => {
+    if (uid.length > 0){
+      setAuthState(true)
+      sessionStorage.setItem("loginState", true)
+      sessionStorage.setItem("currentUser", uid)
+    } else {
+      setAuthState(false)
+      sessionStorage.setItem("loginState", false)
+      sessionStorage.setItem("currentUser", null)
+    }
   };
 
   const auth = useMemo(() => ({authState, toggleAuthState}), [authState])

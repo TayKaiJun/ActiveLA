@@ -32,7 +32,19 @@ const User = new Schema({
             sport: String,
             level: Number, // Proficiency at the sport, 1 being lowest 5 being highest
         }
-    ]
+    ],
+    eventsHosting: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Event'
+    }],
+    eventsGoing: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Event'
+    }],
+    eventsPending: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Event'
+    }]
 });
 
 export default mongoose.model('User', User);

@@ -17,12 +17,14 @@ const PATHS = {
 
 function Header() {
   const location = useLocation();
+
   const {authState, toggleAuthState} = useContext(AuthContext)
 
+  const loggedIn = sessionStorage.getItem("loginState")
   const signOut = () => {
-    toggleAuthState(false)
+    // TODO: Auto-redirect to some page
+    toggleAuthState("")
   }
-  
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -36,28 +38,31 @@ function Header() {
               flexGrow: 1,
             }}
           >
-            {Object.keys(PATHS).map((pageName) => (
-              <Nav.Link key={PATHS[pageName]} eventKey={PATHS[pageName]}>
-                <Link
-                  style={{
-                    color: "inherit",
-                    textDecoration: "inherit",
-                  }}
-                  to={PATHS[pageName]}
-                >
-                  {pageName}
-                </Link>
-              </Nav.Link>
-            ))}
-          </Nav>
           {
-            authState ? 
-            <Button onClick={signOut}> Sign out </Button> :
+            !loggedIn ? 
             <>
               <LoginModal />
               <SignupButton />
+            </> :
+            <> {
+              Object.keys(PATHS).map((pageName) => (
+                <Nav.Link key={PATHS[pageName]} eventKey={PATHS[pageName]}>
+                  <Link
+                    style={{
+                      color: "inherit",
+                      textDecoration: "inherit",
+                    }}
+                    to={PATHS[pageName]}
+                  >
+                    {pageName}
+                  </Link>
+                </Nav.Link>
+                ))
+              }
+              <Button onClick={signOut}> Sign out </Button>
             </>
           }
+          </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
