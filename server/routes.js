@@ -10,7 +10,8 @@ import {
 
 import {
     addEvent, 
-    getAllEvents
+    getAllEvents,
+    getInterestedUsers
 } from "./controllers/eventController.js"
 
 const apiRoutes = express.Router();
@@ -24,6 +25,8 @@ apiRoutes.post('/requestToJoin', requestToJoinEvent) // Body includes uid and ev
 
 apiRoutes.post('/getallEvents', getAllEvents);
 apiRoutes.get('/getRelatedEvents', getRelatedEvents);
+apiRoutes.get('/getInterestedUsers', getInterestedUsers);
+
 apiRoutes.post('/addEvent', addEvent);
 
 export default apiRoutes;

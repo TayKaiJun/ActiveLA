@@ -35,3 +35,13 @@ export async function getRelatedEvents(uid) {
     return err;
   }
 }
+
+export async function getInterestedUsers(eventID) {
+  try {
+    const resp = await http.get(`/getInterestedUsers?eid=${eventID}`);
+    return resp;
+  } catch (err) {
+    console.log(err.message);
+    return err;
+  }
+}

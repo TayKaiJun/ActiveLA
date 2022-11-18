@@ -6,7 +6,6 @@ import Event from "../models/event.model.js"
     req -> The HTTP POST request sent to the server, in JSON format
     res -> HTTP response returned. Contains a lot of info can print out to see.
 */
-
 export const getAllEvents = async (req, res) => {
   const filter = req.body;
   console.log(filter)
@@ -61,3 +60,46 @@ export const addEvent = async (req, res) => {
     });
   }
 };
+
+/*
+  For a given EventID of an event the current user is hosting, 
+  find all the users that request to join that event.
+*/
+export const getInterestedUsers = async (req, res) => {
+  try {
+    const event = (await Event.find({_id: req.query.eid}))[0];
+    const pendingAccept = event.pendingAccept;
+    const attendees = event.attending;
+
+    const pending = {}
+    for (let i = 0; i < pendingAccept.length; i++){
+      const user = await User.find({_id: pendingAccept[i]});
+      pending[i] = user;
+    }
+    const attending = {}
+    for (let i = 0; i < attendees.length; i++){
+      const user = await User.find({_id: attendees[i]});
+      attending[i] = user;
+    }
+    
+    return res.status(201).json({
+      success: true,
+      message: "Successfully returned pending and attending users",
+      pending: pending,
+      attending: attending
+    })
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      err: err.message,
+    });
+  }
+}
+
+
+/*
+  For a given EventID of a hosted event and a UID of a requesting user, 
+  update Event model with ID of new attendee,
+  update User model with ID of new going event
+*/

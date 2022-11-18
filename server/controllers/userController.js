@@ -136,11 +136,11 @@ export const requestToJoinEvent = async (req, res) => {
     }
 }
 
+
+
 /*
     For a given UID, find all the events within that User object
     eventsHosting, eventsGoing, eventsPending
-
-
 */
 export const getRelatedEvents = async (req, res) => {
     try {
@@ -148,7 +148,7 @@ export const getRelatedEvents = async (req, res) => {
         const eventsHosting = user.eventsHosting;
         const eventsPending = user.eventsPending;
         const eventsGoing = user.eventsGoing;
-        console.log(eventsGoing)
+
         // A bit slow but it works
         const hosting = {}
         for (let i = 0; i < eventsHosting.length; i++){
