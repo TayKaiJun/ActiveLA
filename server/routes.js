@@ -4,7 +4,8 @@ import {
     findUserByUsername,
     findUserByEmail,
     addNewUser,
-    requestToJoinEvent
+    requestToJoinEvent,
+    getRelatedEvents
 } from "./controllers/userController.js";
 
 import {
@@ -22,6 +23,7 @@ apiRoutes.post('/user', addNewUser);
 apiRoutes.post('/requestToJoin', requestToJoinEvent) // Body includes uid and eventID
 
 apiRoutes.post('/getallEvents', getAllEvents);
+apiRoutes.get('/getRelatedEvents', getRelatedEvents);
 apiRoutes.post('/addEvent', addEvent);
 
 export default apiRoutes;

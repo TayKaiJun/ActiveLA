@@ -5,7 +5,7 @@ import Event from "../models/event.model.js"
 
 export const findUserByUsername = async (req, res) => {
     try {
-        const user = User.find({ username: req.query.username })
+        const user = await User.find({ username: req.query.username })
         return res.status(200).json({
             success: true,
             message: "Returned user by username",
@@ -131,6 +131,52 @@ export const requestToJoinEvent = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Failed to join event",
+            error: err.message
+        })
+    }
+}
+
+/*
+    For a given UID, find all the events within that User object
+    eventsHosting, eventsGoing, eventsPending
+
+
+*/
+export const getRelatedEvents = async (req, res) => {
+    try {
+        const user = (await User.find({ _id: req.query.uid }))[0];
+        const eventsHosting = user.eventsHosting;
+        const eventsPending = user.eventsPending;
+        const eventsGoing = user.eventsGoing;
+        console.log(eventsGoing)
+        // A bit slow but it works
+        const hosting = {}
+        for (let i = 0; i < eventsHosting.length; i++){
+            const e = await Event.find({_id: eventsHosting[i]});
+            hosting[i] = e;
+        }
+        const pending = {}
+        for (let i = 0; i < eventsPending.length; i++){
+            const e = await Event.find({_id: eventsPending[i]});
+            pending[i] = e;
+        }
+        const going = {}
+        for (let i = 0; i < eventsGoing.length; i++){
+            const e = await Event.find({_id: eventsGoing[i]});
+            going[i] = e;
+        }
+        
+        return res.status(200).json({
+            success: true,
+            message: "Successfully fetched all events.",
+            hosting: hosting,
+            pending: pending,
+            going: going 
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch some event",
             error: err.message
         })
     }

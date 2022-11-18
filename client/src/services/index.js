@@ -18,11 +18,20 @@ export async function requestToJoinEvent(uid, eventID) {
       "uid": uid,
       "event": eventID
     }
-    console.log(body.event)
     const resp = await http.post(`/requestToJoin`, body);
     return resp;
   } catch (error) {
     console.log(error.message);
     return error;
+  }
+}
+
+export async function getRelatedEvents(uid) {
+  try {
+    const resp = await http.get(`/getRelatedEvents?uid=${uid}`);
+    return resp;
+  } catch (err) {
+    console.log(err.message);
+    return err;
   }
 }
