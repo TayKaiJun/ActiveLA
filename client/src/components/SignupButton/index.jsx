@@ -13,7 +13,7 @@ function SignupButton(props) {
   const [toastShow, setToastShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
-  const interestsList = [{ sport: "Baseball", level: 1 }];
+  const interestsList = [];
   let sportValue = "";
   let levelValue = 0;
 
@@ -45,11 +45,7 @@ function SignupButton(props) {
     name: "",
     pronouns: "",
     about: "",
-    interests: [
-      // TODO: Remove placeholder
-      { sport: "Soccer", level: 3 },
-      { sport: "Baseball", level: 2 },
-    ],
+    interests: [],
     password: "",
     confirmPassword: "",
   });
@@ -79,16 +75,10 @@ function SignupButton(props) {
     e.preventDefault();
     console.log(data);
 
-    setData({
-      ...data,
-      interests: interestsList,
-    });
-
     createNewUser(data)
       .then((res) => {
         if (res.success) {
           // TODO: Make the Toast Popup showup
-
           <Toast onClose={() => setToastShow(false)} show={toastShow} delay={3000} autohide>
             <Toast.Header>
               <strong className="me-auto">Sign-up Status</strong>
@@ -106,36 +96,42 @@ function SignupButton(props) {
 
   const updateInterest = (e) => {
     const { id, value } = e.target;
-    if (id === 'sport') {
+    if (id === "sport") {
       sportValue = value;
-      console.log('Updating %s: %s', id, value)
+      console.log("Updating %s: %s", id, value);
     } else {
       levelValue = value;
-      console.log('Updating %s: %d', id, value)
-    }    
+      console.log("Updating %s: %d", id, value);
+    }
   };
 
   const addInterest = () => {
     // TODO: change value of a sport if it already exists
-    interestsList.push({ 'sport': sportValue, 'level': levelValue });
-    console.log(interestsList)
+    setData({
+      ...data,
+      interests: [...data.interests,
+                  {sport: sportValue, level: levelValue}],
+    });
   };
 
-  // TODO: Fix rendering
-  const renderInterests = interestsList.map((interest) => {
+  const renderInterests = data.interests.map((interest) => {
     const { sport, level } = interest;
     const labelText = `${sport} (${level})`;
     return (
       <div style={{ marginLeft: "8px", marginTop: "10px", display: "inline-block" }}>
         <Chip
           label={labelText}
-          // removable
-          // onRemove={() => {
-          //   const newInterestArray = interestsList.filter((remainingInterest) => {
-          //     return remainingInterest.sport !== sport;
-          //   });
-          //   console.log(newInterestArray);
-          // }}
+          removable // TODO: Fix remove button not showing
+          onRemove={() => {
+            const newInterestArray = data.interests.filter((remainingInterest) => {
+              return remainingInterest.sport !== sport;
+            });
+            setData({
+              ...data,
+              interests: newInterestArray,
+            });
+            console.log(newInterestArray);
+          }}
         />
       </div>
     );
@@ -194,13 +190,19 @@ function SignupButton(props) {
               <InputGroup>
                 <Form.Select id="sport" onChange={updateInterest}>
                   <option>Select Sport</option>
-                  {sports.map((sport) => <option value={sport}>{sport}</option>)}
+                  {sports.map((sport) => (
+                    <option value={sport}>{sport}</option>
+                  ))}
                 </Form.Select>
                 <Form.Select id="level" onChange={updateInterest}>
                   <option>Select Skill Level</option>
-                  {skillLevelMapping.map((proficiency, level) => <option value={level}>{proficiency}</option>)}
+                  {skillLevelMapping.map((proficiency, level) => (
+                    <option value={level}>{proficiency}</option>
+                  ))}
                 </Form.Select>
-                <Button variant="light" onClick={addInterest}>Add</Button>
+                <Button variant="light" onClick={addInterest}>
+                  Add
+                </Button>
               </InputGroup>
               <div>{renderInterests}</div>
             </Form.Group>
