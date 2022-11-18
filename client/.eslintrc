@@ -6,5 +6,7 @@
     "react/prop-types": ["off"],
     "arrow-body-style": 0,
     "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+    "import/no-named-as-default": 0,
+    "import/no-named-as-default-member": 0,
   }
 }

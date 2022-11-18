@@ -4,7 +4,7 @@ const AuthContext = createContext();
 
 // Wraps all components to provide the login state of a user.
 // Can be used to render different components depending on log in state.
-export function AuthProvider ({ children }){
+export function AuthProvider({ children }) {
   const [authState, setAuthState] = useState(false);
 
   // TODO: broken, does not actually log the user out though the sessionStorage updates
@@ -20,16 +20,10 @@ export function AuthProvider ({ children }){
     }
   };
 
-  const auth = useMemo(() => ({authState, toggleAuthState}), [authState])
+  const auth = useMemo(() => ({ authState, toggleAuthState }), [authState]);
 
-  return (
-    <AuthContext.Provider
-      value={auth}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+}
 
 export const AuthConsumer = AuthContext.Consumer;
 

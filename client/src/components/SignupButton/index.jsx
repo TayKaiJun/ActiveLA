@@ -13,6 +13,9 @@ function SignupButton(props) {
   const [toastShow, setToastShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
+  const interestsList = [{ sport: "Baseball", level: 1 }];
+  let sportValue = "";
+  let levelValue = 0;
 
   const sports = [
     "Badminton",
@@ -28,12 +31,13 @@ function SignupButton(props) {
     "Swimming",
   ];
 
-  const proficiency = {
-    0: "No Experience",
-    1: "Beginner",
-    2: "Intermediate",
-    3: "Expert",
-  };
+  const skillLevelMapping = [
+    (1, "No Experience"),
+    (2, "Beginner"),
+    (3, "Intermediate"),
+    (4, "Expert"),
+    (5, "Professional"),
+  ];
 
   const [data, setData] = useState({
     username: "",
@@ -74,6 +78,12 @@ function SignupButton(props) {
   const onFormSubmit = (e) => {
     e.preventDefault();
     console.log(data);
+
+    setData({
+      ...data,
+      interests: interestsList,
+    });
+
     createNewUser(data)
       .then((res) => {
         if (res.success) {
@@ -94,63 +104,49 @@ function SignupButton(props) {
       });
   };
 
-  const updateInterests = (e) => {
-    console.log(e);
+  const updateInterest = (e) => {
+    const { id, value } = e.target;
+    if (id === 'sport') {
+      sportValue = value;
+      console.log('Updating %s: %s', id, value)
+    } else {
+      levelValue = value;
+      console.log('Updating %s: %d', id, value)
+    }    
   };
 
-  // TODO: Figure this shit out
-  
-  // const interestForm = (
-  //   <InputGroup>
-  //     <Dropdown onSelect={(eventKey) => {
-  //             setData((prevState) => ({
-  //               ...prevState,
-  //               interests: [],
-  //             }}>
-  //       {sports.map((sportName) => {
-  //           return <option value={sportName}>{sportName}</option>;
-  //         })}
-  //       </Dropdown>
-  //       <Dropdown id="proficiency">
-  //         {proficiency.map((skills) => {
-  //           const { level, description } = skills;
-  //           return <option value={level}>{description}</option>;
-  //         })}
-  //     </Dropdown>
-  //     <Button onClick={updateInterests}>Add</Button>
-  //   </InputGroup>
-  // );
+  const addInterest = () => {
+    // TODO: change value of a sport if it already exists
+    interestsList.push({ 'sport': sportValue, 'level': levelValue });
+    console.log(interestsList)
+  };
 
-  const renderInterests = data.interests
-    ? data.interests.map((interest) => {
-        const { sport, level } = interest;
-        const labelText = `${sport} (${level})`;
-        return (
-          <div style={{ marginLeft: "8px", marginTop: "10px", display: "inline-block" }}>
-            <Chip
-              label={labelText}
-              removable // TODO: Debug the remove button
-              onRemove={() => {
-                const newInterestArray = data.interests.filter((remainingInterest) => {
-                  return remainingInterest.sport !== sport;
-                });
-                console.log(newInterestArray);
-                setData((prevState) => ({
-                  ...prevState,
-                  interests: newInterestArray,
-                }));
-              }}
-            />
-          </div>
-        );
-      })
-    : null;
+  // TODO: Fix rendering
+  const renderInterests = interestsList.map((interest) => {
+    const { sport, level } = interest;
+    const labelText = `${sport} (${level})`;
+    return (
+      <div style={{ marginLeft: "8px", marginTop: "10px", display: "inline-block" }}>
+        <Chip
+          label={labelText}
+          // removable
+          // onRemove={() => {
+          //   const newInterestArray = interestsList.filter((remainingInterest) => {
+          //     return remainingInterest.sport !== sport;
+          //   });
+          //   console.log(newInterestArray);
+          // }}
+        />
+      </div>
+    );
+  });
 
   return (
     <>
       <Button className="ms-2 btn btn-primary" variant="primary" onClick={handleShow}>
         Sign Up
       </Button>
+
       <Modal show={modalShow} onHide={handleClose} size="m" centered scrollable>
         <Modal.Header closeButton>
           <Modal.Title>Sign Up</Modal.Title>
@@ -196,20 +192,15 @@ function SignupButton(props) {
             <Form.Group className="mb-2">
               <Form.Label>Interests & Proficiency Level</Form.Label>
               <InputGroup>
-                {/* {interestForm} */}
-                {/* <Form.Select>
-                  <option value="Badminton">Badminton</option>
-                  <option value="Basketball">Basketball</option>
-                  <option value="Soccer">Soccer</option>
-                  <option value="Volleyball">Volleyball</option>
+                <Form.Select id="sport" onChange={updateInterest}>
+                  <option>Select Sport</option>
+                  {sports.map((sport) => <option value={sport}>{sport}</option>)}
                 </Form.Select>
-                <Form.Select>
-                  <option value="0">No experience</option>
-                  <option value="1">Beginner</option>
-                  <option value="2">Intermediate</option>
-                  <option value="3">Expert</option>
+                <Form.Select id="level" onChange={updateInterest}>
+                  <option>Select Skill Level</option>
+                  {skillLevelMapping.map((proficiency, level) => <option value={level}>{proficiency}</option>)}
                 </Form.Select>
-                <Button onClick={updateInterests}>Add</Button> */}
+                <Button variant="light" onClick={addInterest}>Add</Button>
               </InputGroup>
               <div>{renderInterests}</div>
             </Form.Group>
