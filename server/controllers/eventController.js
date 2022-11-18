@@ -16,8 +16,8 @@ export const getAllEvents = async (req, res) => {
       success: true,
       message: "List of all events",
       Event: data,
-    }); 
-    
+    });
+
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -43,7 +43,7 @@ export const addEvent = async (req, res) => {
       host: req.body.currentUser,
       pendingAccept: [],
       attending: []
-    }); 
+    });
 
     await event.save();
     return res.status(201).json({
@@ -67,21 +67,21 @@ export const addEvent = async (req, res) => {
 */
 export const getInterestedUsers = async (req, res) => {
   try {
-    const event = (await Event.find({_id: req.query.eid}))[0];
+    const event = (await Event.find({ _id: req.query.eid }))[0];
     const pendingAccept = event.pendingAccept;
     const attendees = event.attending;
 
     const pending = {}
-    for (let i = 0; i < pendingAccept.length; i++){
-      const user = await User.find({_id: pendingAccept[i]});
+    for (let i = 0; i < pendingAccept.length; i++) {
+      const user = await User.find({ _id: pendingAccept[i] });
       pending[i] = user;
     }
     const attending = {}
-    for (let i = 0; i < attendees.length; i++){
-      const user = await User.find({_id: attendees[i]});
+    for (let i = 0; i < attendees.length; i++) {
+      const user = await User.find({ _id: attendees[i] });
       attending[i] = user;
     }
-    
+
     return res.status(201).json({
       success: true,
       message: "Successfully returned pending and attending users",
@@ -96,10 +96,3 @@ export const getInterestedUsers = async (req, res) => {
     });
   }
 }
-
-
-/*
-  For a given EventID of a hosted event and a UID of a requesting user, 
-  update Event model with ID of new attendee,
-  update User model with ID of new going event
-*/

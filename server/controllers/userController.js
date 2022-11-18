@@ -112,19 +112,17 @@ export const requestToJoinEvent = async (req, res) => {
         const eid = req.body.event;
         const uid = req.body.uid
         // findOneAndUpdate overcomes race conditions
-        const event = await Event.findOneAndUpdate(
+        await Event.findOneAndUpdate(
             { _id: eid },
-            { $push: { "pendingAccept": uid}}
+            { $push: { "pendingAccept": uid } }
         )
-        const user = await User.findOneAndUpdate(
+        await User.findOneAndUpdate(
             { _id: uid },
             { $push: { "eventsPending": eid } }
         )
         return res.status(201).json({
             success: true,
             message: "Successfully requested to join event",
-            user: user,
-            event: event
         })
 
     } catch (err) {
@@ -136,6 +134,47 @@ export const requestToJoinEvent = async (req, res) => {
     }
 }
 
+/*
+  For a given EventID of a hosted event and a UID of a requesting user, 
+  update Event model with ID of new attendee,
+  update User model with ID of new going event
+
+  Request body = {
+    uid,
+    eventID
+  }
+*/
+export const acceptJoinRequest = async (req, res) => {
+    try {
+        const eid = req.body.eventID;
+        const uid = req.body.uid;
+
+        await Event.findOneAndUpdate(
+            { _id: eid },
+            {
+                $push: { "attending": uid },
+                $pull: { "pendingAccept": uid }
+            }
+        )
+        await User.findOneAndUpdate(
+            { _id: uid },
+            {
+                $push: { "eventsGoing": eid },
+                $pull: { "eventsPending": eid }
+            }
+        )
+        return res.status(201).json({
+            success: true,
+            message: "Successfully accepted a join request",
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch some event",
+            error: err.message
+        })
+    }
+}
 
 
 /*
@@ -151,27 +190,27 @@ export const getRelatedEvents = async (req, res) => {
 
         // A bit slow but it works
         const hosting = {}
-        for (let i = 0; i < eventsHosting.length; i++){
-            const e = await Event.find({_id: eventsHosting[i]});
+        for (let i = 0; i < eventsHosting.length; i++) {
+            const e = await Event.find({ _id: eventsHosting[i] });
             hosting[i] = e;
         }
         const pending = {}
-        for (let i = 0; i < eventsPending.length; i++){
-            const e = await Event.find({_id: eventsPending[i]});
+        for (let i = 0; i < eventsPending.length; i++) {
+            const e = await Event.find({ _id: eventsPending[i] });
             pending[i] = e;
         }
         const going = {}
-        for (let i = 0; i < eventsGoing.length; i++){
-            const e = await Event.find({_id: eventsGoing[i]});
+        for (let i = 0; i < eventsGoing.length; i++) {
+            const e = await Event.find({ _id: eventsGoing[i] });
             going[i] = e;
         }
-        
+
         return res.status(200).json({
             success: true,
             message: "Successfully fetched all events.",
             hosting: hosting,
             pending: pending,
-            going: going 
+            going: going
         })
     } catch (err) {
         return res.status(500).json({

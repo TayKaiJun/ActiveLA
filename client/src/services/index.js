@@ -45,3 +45,17 @@ export async function getInterestedUsers(eventID) {
     return err;
   }
 }
+
+export async function acceptJoinRequest(uid, eventID) {
+  try {
+    const body = {
+      "uid": uid,
+      "eventID": eventID
+    }
+    const resp = await http.post(`/acceptJoinRequest`, body);
+    return resp;
+  } catch (err) {
+    console.log(err.message);
+    return err;
+  }
+}
