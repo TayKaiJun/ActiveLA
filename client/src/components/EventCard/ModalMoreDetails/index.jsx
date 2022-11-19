@@ -3,10 +3,9 @@ import ListGroup from "react-bootstrap/ListGroup";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import badmintonImage from "../badminton.jpg";
 
 function ModalMoreDetails(props) {
-  const { event, requestJoinHandler} = props;
+  const { event, requestJoinHandler, modalImageDisplay} = props;
   const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
   const [show, setShow] = useState(false);
 
@@ -22,9 +21,9 @@ function ModalMoreDetails(props) {
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Badminton</Modal.Title>
+          <Modal.Title>{name}</Modal.Title>
         </Modal.Header>
-        <img className="img-responsive" src={badmintonImage} alt="" />
+        <img className="img-responsive" src={modalImageDisplay} alt="" />
         <Modal.Body>
           <ListGroup className="list-group-flush">
             <ListGroup.Item>Date: {date}</ListGroup.Item>
