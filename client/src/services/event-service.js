@@ -1,10 +1,7 @@
 import http from "./http-common";
 
-export function getAllEvents() {
-    return http.get(`/getAllEvents`);
-}
 
-export function addEventService(form) {
+export default function addEventService(form) {
 
     return http.post(`/addEvent`, form);
 }
