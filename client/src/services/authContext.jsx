@@ -9,14 +9,14 @@ export function AuthProvider({ children }) {
 
   // TODO: broken, does not actually log the user out though the sessionStorage updates
   const toggleAuthState = (uid) => {
-    if (uid.length > 0){
-      setAuthState(true)
-      sessionStorage.setItem("loginState", true)
-      sessionStorage.setItem("currentUser", uid)
+    if (uid.length > 0) {
+      setAuthState(true);
+      sessionStorage.setItem("loginState", true);
+      sessionStorage.setItem("currentUser", uid);
     } else {
-      setAuthState(false)
-      sessionStorage.setItem("loginState", false)
-      sessionStorage.setItem("currentUser", null)
+      setAuthState(false);
+      sessionStorage.setItem("loginState", false);
+      sessionStorage.setItem("currentUser", null);
     }
   };
 

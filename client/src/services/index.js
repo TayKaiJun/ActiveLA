@@ -15,10 +15,10 @@ export async function getAllEvents(filter) {
 export async function requestToJoinEvent(uid, eventID) {
   try {
     const body = {
-      "uid": uid,
-      "event": eventID
-    }
-    console.log(body.event)
+      'uid': uid,
+      'event': eventID,
+    };
+    console.log(body.event);
     const resp = await http.post(`/requestToJoin`, body);
     return resp;
   } catch (error) {

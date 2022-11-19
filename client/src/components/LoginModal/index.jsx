@@ -4,10 +4,9 @@ import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import bcrypt from "bcryptjs";
 import AuthContext from "../../services/authContext";
 import { getUserByEmail } from "../../services/user-service";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 
 function LoginModal(props) {
   const [modalShow, setModalShow] = useState(false);
@@ -36,16 +35,6 @@ function LoginModal(props) {
               console.log("Passwords does not match");
               return;
             }
-
-            //JWT token created here
-            const token = jwt.sign(
-              {
-                userID: res.data.User[0]._id,
-                userEmail: res.data.User[0].email,
-              },
-              "RANDOM-TOKEN",
-              { expiresIn: "1hr" }
-            );
 
             console.log("Login Successful");
             toggleAuthState(res.data.User[0]._id);
