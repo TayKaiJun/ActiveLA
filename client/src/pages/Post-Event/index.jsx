@@ -62,12 +62,25 @@ const validateForm = () => {
       <Form>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Your Name</Form.Label>
-          <Form.Control
+          <Form.Select
             type="text"
             value={form.name}
             onChange={(e) => setField("name", e.target.value)}
-            isInvalid={!!errors.name}
-          />
+            isInvalid={!!errors.name} >
+            <option value="" selected disabled>-- Select a Sport --</option>
+            <option value="Badminton">Badminton</option>
+            <option value="Baseball">Baseball</option>
+            <option value="Basketball">Basketball</option>
+            <option value="Cricket">Cricket</option>
+            <option value="Football">Football</option>
+            <option value="Hockey">Hockey</option>
+            <option value="Rugby">Rugby</option>
+            <option value="Soccer">Soccer</option>
+            <option value="Swimming">Swimming</option>
+            <option value="Table Tennis">Table Tennis</option>
+            <option value="Ultimate Frisbee">Ultimate Frisbee</option>
+            <option value="Volleyball">Volleyball</option>
+          </Form.Select>
           <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
           <Form.Text className="text-muted">Full name please!</Form.Text>
         </Form.Group>
@@ -75,7 +88,7 @@ const validateForm = () => {
         <Form.Group className="mb-3" controlId="date">
           <Form.Label>Date</Form.Label>
           <Form.Control
-            type="text"
+            type="date"
             placeholder="eg. 10/24/2022"
             value={form.date}
             onChange={(e) => setField("date", e.target.value)}
@@ -110,13 +123,18 @@ const validateForm = () => {
 
         <Form.Group className="mb-3" controlId="ageGroup">
           <Form.Label>Age Group</Form.Label>
-          <Form.Control
+          <Form.Select    
             type="text"
             placeholder="eg. 18-25"
             value={form.ageGroup}
             onChange={(e) => setField("ageGroup", e.target.value)}
-            isInvalid={!!errors.ageGroup}
-          />
+            isInvalid={!!errors.ageGroup}>
+            <option value="" selected disabled>-- Age Group --</option>
+            <option value="Open to All Ages">Open to All Ages</option>
+            <option value="Teens">Teens</option>
+            <option value="Adults">Adults</option>
+            <option value="Seniors">Seniors</option>
+          </Form.Select>
           <Form.Control.Feedback type="invalid">{errors.ageGroup}</Form.Control.Feedback>
         </Form.Group>
 
@@ -165,31 +183,3 @@ const validateForm = () => {
 }
 
 export default postEvent;
-
-// let Event = new Schema({
-//   // List attributes model will contain. They will correspond to attribute name in MongoDB
-//   name: {
-//       type: String
-//   },
-//   date: {
-//       type: String
-//   },
-//   time: {
-//       type: String
-//   },
-//   location: {
-//       type: String
-//   },
-//   skilllevel: {
-//       type: String
-//   },
-//   agegroup: {
-//       type: String
-//   },
-//   numberofplayerslookingfor: {
-//       type: String
-//   },
-//   costs: {
-//       type: String
-//   }
-// });
