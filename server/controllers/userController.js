@@ -220,3 +220,42 @@ export const getRelatedEvents = async (req, res) => {
         })
     }
 }
+
+// Query param as user _id
+// Request body as updated event
+export const updateUser = async (req, res) => {
+    try {
+        await User.findByIdAndUpdate(
+        req.query._id, 
+        { $set: req.body }
+        )
+        return res.status(201).json({
+        success: true,
+        message: "Successfully updated user.",
+        user: req.body
+        })
+    } catch (err) {
+        return res.status(500).json({
+        success: false,
+        message: "Failed to update user",
+        error: err.message,
+        });
+    }
+}
+
+// Pass in event ID
+export const deleteUser = async (req, res) => {
+    try {
+      await User.findByIdAndDelete(req.query._id);
+      return res.status(202).json({
+        success: true,
+        message: "Successfully deleted user"
+      })
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to delete user",
+        err: err.message,
+      });
+    }
+  }
