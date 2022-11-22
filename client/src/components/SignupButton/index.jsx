@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
+import Toast from "react-bootstrap/Toast";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import Toast from "react-bootstrap/Toast";
 import InputGroup from "react-bootstrap/InputGroup";
-import Dropdown from "react-bootstrap/Dropdown";
 import { Chip } from "primereact/chip";
 import bcrypt from "bcryptjs";
 import { createNewUser } from "../../services/user-service";
 
 function SignupButton(props) {
   const [modalShow, setModalShow] = useState(false);
-  const [toastShow, setToastShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
-  const interestsList = [];
   let sportValue = "";
   let levelValue = 0;
 
@@ -59,14 +56,6 @@ function SignupButton(props) {
   const onInput = (e) => {
     const { id, value } = e.target;
 
-    // if (data.confirmPassword && id === "password") {
-    //   if (data.confirmPassword !== value) setError(() => ({ [id]: "Passwords do not match!" }));
-    //   else setError(() => ({ [id]: "" }));
-    // } else if(data.password && id === "confirmPassword"){
-    //   if (data.password !== value) setError(() => ({ [id]: "Passwords do not match!" }));
-    //   else setError(() => ({ [id]: "" }));
-    // }
-
     let pass = false;
     if (data.password && data.confirmPassword && (id === "password" || id === "confirmPassword")) {
       if (data.password !== data.confirmPassword) {
@@ -78,11 +67,11 @@ function SignupButton(props) {
       }
     }
 
-    if(id === "password"){
+    if (id === "password") {
       bcrypt
         .hash(value, 10)
         .then((hashedPassword) => {
-          console.log(hashedPassword);
+          console.log(value);
           setData({
             ...data,
             password: hashedPassword,
@@ -104,18 +93,11 @@ function SignupButton(props) {
 
     createNewUser(data)
       .then((res) => {
-        console.log(data);
         if (res.success) {
-          // TODO: Make the Toast Popup showup
-          <Toast onClose={() => setToastShow(false)} show={toastShow} delay={3000} autohide>
-            <Toast.Header>
-              <strong className="me-auto">Sign-up Status</strong>
-            </Toast.Header>
-            <Toast.Body>Woohoo, you&apos;ve successfully signed up!</Toast.Body>
-          </Toast>;
+          console.log("success");
+          setData({});
+          handleClose();
         }
-        setData({});
-        handleClose();
       })
       .catch((err) => {
         console.log(err.message);

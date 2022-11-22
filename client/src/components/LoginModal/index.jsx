@@ -5,18 +5,16 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import bcrypt from "bcryptjs";
-import AuthContext from "../../services/authContext";
 import { getUserByEmail } from "../../services/user-service";
+import { setLoginState } from "../../services/auth-service";
+import AuthContext from "../../services/authContext";
 
 function LoginModal(props) {
   const [modalShow, setModalShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
-
-  // authState: {Logged in: true, Logged out: false} toggleAuthState: {sets authState to state}
-  const { authState, toggleAuthState } = useContext(AuthContext);
-
   const [data, setData] = useState({});
+
   const onInput = (e) => {
     const { id, value } = e.target;
     setData((prevState) => ({
@@ -24,28 +22,48 @@ function LoginModal(props) {
       [id]: value,
     }));
   };
+
+  const { authState, toggleAuthState } = useContext(AuthContext);
+
+  const [formErrors, setError] = useState({
+    email: "",
+    password: "",
+  });
+
   const onFormSubmit = (e) => {
     e.preventDefault();
     getUserByEmail(data.email)
       .then((res) => {
-        bcrypt
-          .compare(res.data.User[0].password, data.password)
-          .then((passwordCheck) => {
-            if (!passwordCheck) {
-              console.log("Passwords does not match");
-              return;
-            }
+        setError({
+          ...formErrors,
+          email: ""
+        })
 
-            console.log("Login Successful");
-            toggleAuthState(res.data.User[0]._id);
-            setData({});
-            handleClose();
+        bcrypt
+          .compare(data.password, res.data.User[0].password)
+          .then((passwordCheck) => {
+            if (passwordCheck) {
+              setLoginState(true);
+              // toggleAuthState(res.data.User[0]._id);
+              console.log("login successful") // TODO: make a toast for this instead
+              setData({});
+              handleClose();
+            }
+            else {
+              setError({
+                ...formErrors,
+                password: "Wrong password!"
+              })
+              setLoginState(false);
+            }
           })
-          .catch(() => console.log("Passwords does not match"));
+          .catch((err) => console.log(err.message));
       })
       .catch((err) => {
-        // TODO: Display some error message. Maybe a cute toast on bottom right corner
-        console.log(err.message);
+        setError({
+          ...formErrors,
+          email: "Email does not exist!"
+        })
       });
   };
 
@@ -61,10 +79,12 @@ function LoginModal(props) {
             <Form.Group className="mb-3" controlId="email">
               <Form.Label>Email address</Form.Label>
               <Form.Control type="email" placeholder="Enter email" onChange={onInput} />
+              {formErrors.email && <p className="text-danger">{formErrors.email}</p>}
             </Form.Group>
             <Form.Group className="mb-3" controlId="password">
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" placeholder="Password" onChange={onInput} />
+              {formErrors.password && <p className="text-danger">{formErrors.password}</p>}
             </Form.Group>
             <Form.Text className="text-muted">
               Forgot your password? Reset <a href="www.google.com">here</a>.

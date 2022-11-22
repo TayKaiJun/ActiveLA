@@ -1,4 +1,4 @@
-import React, { useState, createContext, useMemo } from "react";
+import React, { useState, createContext } from "react";
 
 const AuthContext = createContext();
 
@@ -20,9 +20,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const auth = useMemo(() => ({ authState, toggleAuthState }), [authState]);
-
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>;
 }
 
 export const AuthConsumer = AuthContext.Consumer;
