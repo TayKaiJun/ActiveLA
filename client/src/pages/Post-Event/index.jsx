@@ -1,13 +1,28 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import PageLayout from "../../components/PageLayout";
 import {addEventService} from "../../services";
 
 function postEvent() {
-  const uid = sessionStorage.getItem("currentUser")
-  const [form, setForm] = useState({host: uid});
+  /* For number of players */
+  const playerNumArray = [];
+  const maxPlayerNum = 15;
+  for (let x = 1; x <= maxPlayerNum; x += 1) {
+    playerNumArray.push(x);
+  }
+
+  /* For Dropdown Menu */
+  const [dropDown, setDropDown] = useState("Select a Number");
+  const setDropDownFunc = (field) => {
+    setDropDown(field);
+  };
+
+  const uid = sessionStorage.getItem("currentUser");
+  const [form, setForm] = useState({ host: uid });
   const [errors, setErrors] = useState({});
   const setField = (field, value) => {
     setForm({
@@ -22,17 +37,17 @@ function postEvent() {
       });
   };
 
-const validateForm = () => {
-  const {name, date,time,location,ageGroup,playerNumber,costs,skillLevel} = form
-  const newErrors = {}
-  if (!name || name ==='') newErrors.name = 'Please enter your name'
-  if (!date || date ==='') newErrors.date = 'Please enter date'
-  if (!time || time ==='') newErrors.time = 'Please enter time'
-  if (!location || location ==='') newErrors.location = 'Please enter location'
-  if (!ageGroup || ageGroup ==='') newErrors.ageGroup = 'Please enter an age group'
-  if (!playerNumber || playerNumber ==='') newErrors.playerNumber = 'Please enter player number'
-  if (!costs || costs ==='') newErrors.costs = 'Please enter costs'
-  if (!skillLevel || skillLevel ==='') newErrors.skillLevel = 'Please enter skill level'
+  const validateForm = () => {
+    const { name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = form;
+    const newErrors = {};
+    if (!name || name === "") newErrors.name = "Please enter your name";
+    if (!date || date === "") newErrors.date = "Please enter date";
+    if (!time || time === "") newErrors.time = "Please enter time";
+    if (!location || location === "") newErrors.location = "Please enter location";
+    if (!ageGroup || ageGroup === "") newErrors.ageGroup = "Please enter an age group";
+    if (!playerNumber || playerNumber === "") newErrors.playerNumber = "Please enter player number";
+    if (!costs || costs === "") newErrors.costs = "Please enter costs";
+    if (!skillLevel || skillLevel === "") newErrors.skillLevel = "Please enter skill level";
 
     return newErrors;
   };
@@ -133,11 +148,13 @@ const validateForm = () => {
       <h2>Post An Event!</h2>
 
       <Form>
+
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Your Name</Form.Label>
           <Form.Select
             id = "selectSport"
             type="text"
+            placeholder="eg. Basketball"
             value={form.name}
             onChange={(e) => {setField("name", e.target.value); handleSport(e.target.value)}}
             isInvalid={!!errors.name} >
@@ -149,8 +166,8 @@ const validateForm = () => {
             })}
           </Form.Select>
           <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
-          <Form.Text className="text-muted">Full name please!</Form.Text>
         </Form.Group>
+        
 
         <Form.Group className="mb-3" controlId="date">
           <Form.Label>Date</Form.Label>
@@ -175,6 +192,7 @@ const validateForm = () => {
           />
           <Form.Control.Feedback type="invalid">{errors.time}</Form.Control.Feedback>
         </Form.Group>
+
 
         <Form.Group className="mb-3" controlId="location">
           <Form.Label>Location</Form.Label>
@@ -210,7 +228,7 @@ const validateForm = () => {
           <Form.Control.Feedback type="invalid">{errors.ageGroup}</Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="playerNumber">
+        {/* <Form.Group className="mb-3" controlId="playerNumber">
           <Form.Label>Number of Player to look for</Form.Label>
           <Form.Control
             type="text"
@@ -220,7 +238,7 @@ const validateForm = () => {
             isInvalid={!!errors.playerNumber}
           />
           <Form.Control.Feedback type="invalid">{errors.playerNumber}</Form.Control.Feedback>
-        </Form.Group>
+        </Form.Group> */}
 
         <Form.Group className="mb-3" controlId="costs">
           <Form.Label>Costs</Form.Label>
@@ -234,7 +252,66 @@ const validateForm = () => {
           <Form.Control.Feedback type="invalid">{errors.costs}</Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="skillLevel">
+        <Row classname="mb-3">
+          <Form.Group as={Col} className="mb-3" id="Dropdown">
+            <Form.Label>Number Of Players</Form.Label>
+            <Dropdown>
+              <Dropdown.Toggle id="dropdown-button" variant="secondary">
+                {dropDown}
+              </Dropdown.Toggle>
+              <Dropdown.Menu variant="dark">
+                {playerNumArray.map((type) => (
+                  <Dropdown.Item
+                    href="#/action-1"
+                    onClick={(e) => {
+                      setDropDownFunc(type);
+                      setField("playerNumber", `${type}`);
+                      /* update button title */
+                    }}
+                  >
+                    {type}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Form.Group>
+
+          <Form.Group as={Col} className="mt-5" id="skillLevel">
+            {["radio"].map((type) => (
+              <div key={`inline-${type}`} className="mb-3">
+                <Form.Label>Skill Level:</Form.Label>
+                <Form.Check
+                  inline
+                  label="Beginner"
+                  name="group1"
+                  onChange={(e) => setField("skillLevel", "Beginner")}
+                  type={type}
+                  id="skillLevel-Beginner"
+                  isInvalid={!!errors.skillLevel}
+                />
+                <Form.Check
+                  inline
+                  label="Intermediate"
+                  name="group1"
+                  onChange={(e) => setField("skillLevel", "Intermediate")}
+                  type={type}
+                  id="skillLevel-Intermediate"
+                  isInvalid={!!errors.skillLevel}
+                />
+                <Form.Check
+                  inline
+                  label="Advanced"
+                  name="group1"
+                  onChange={(e) => setField("skillLevel", "Advanced")}
+                  type={type}
+                  id="skillLevel-Advanced"
+                  isInvalid={!!errors.skillLevel} /* Display error message? */
+                />
+              </div>
+            ))}
+          </Form.Group>
+        </Row>
+        {/* <Form.Group className="mb-3" controlId="skillLevel">
           <Form.Label>Skill Level</Form.Label>
           <Form.Control
             type="text"
@@ -244,7 +321,7 @@ const validateForm = () => {
             isInvalid={!!errors.skillLevel}
           />
           <Form.Control.Feedback type="invalid">{errors.skillLevel}</Form.Control.Feedback>
-        </Form.Group>
+        </Form.Group> */}
 
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
