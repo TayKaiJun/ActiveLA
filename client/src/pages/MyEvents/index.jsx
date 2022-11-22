@@ -1,24 +1,18 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import PageLayout from "../../components/PageLayout";
+import Pending from "./navbarComponents/pending";
+import Hosting from "./navbarComponents/hosting";
+import Going from "./navbarComponents/going";
+import Navbarry from "./Navbar";
 
 function MyEvents() {
   return (
     <PageLayout>
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#hosting">Hosting</Nav.Link>
-              <Nav.Link href="#going">Going</Nav.Link>
-              <Nav.Link href="#pending">Pending</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <Navbarry />
     </PageLayout>
   );
 }
