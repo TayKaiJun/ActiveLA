@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import PageLayout from "../../components/PageLayout";
-import addEventService from "../../services/event-service";
+import {addEventService} from "../../services";
 
 function postEvent() {
   const uid = sessionStorage.getItem("currentUser")

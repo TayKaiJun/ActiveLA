@@ -96,3 +96,20 @@ export const getInterestedUsers = async (req, res) => {
     });
   }
 }
+
+// Pass in event ID
+export const deleteEvent = async (req, res) => {
+  try {
+    await Event.deleteOne({_id: req.query._id});
+    return res.status(202).json({
+      success: true,
+      message: "Successfully deleted event"
+    })
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete event",
+      err: err.message,
+    });
+  }
+}

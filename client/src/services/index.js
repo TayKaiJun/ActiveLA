@@ -59,3 +59,13 @@ export async function acceptJoinRequest(uid, eventID) {
     return err;
   }
 }
+
+export async function addEventService(form) {
+  try {
+    const resp = await http.post(`/addEvent`, form);
+    return resp
+  } catch (err) {
+    console.log(err.message);
+    return err;
+  }
+}
