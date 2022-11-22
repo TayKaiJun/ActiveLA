@@ -100,7 +100,7 @@ export const getInterestedUsers = async (req, res) => {
 // Pass in event ID
 export const deleteEvent = async (req, res) => {
   try {
-    await Event.deleteOne({_id: req.query._id});
+    await Event.findByIdAndDelete(req.query._id);
     return res.status(202).json({
       success: true,
       message: "Successfully deleted event"
@@ -110,6 +110,28 @@ export const deleteEvent = async (req, res) => {
       success: false,
       message: "Failed to delete event",
       err: err.message,
+    });
+  }
+}
+
+// Query param as event _id
+// Request body as updated event
+export const updateEvent = async (req, res) => {
+  try {
+    await Event.findByIdAndUpdate(
+      req.query._id, 
+      { $set: req.body }
+    )
+    return res.status(201).json({
+      success: true,
+      message: "Successfully updated event.",
+      event: req.body
+    })
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update event",
+      error: err.message,
     });
   }
 }
