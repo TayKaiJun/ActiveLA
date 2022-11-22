@@ -18,7 +18,6 @@ export async function requestToJoinEvent(uid, eventID) {
       "uid": uid,
       "event": eventID
     }
-    console.log(body.event)
     const resp = await http.post(`/requestToJoin`, body);
     return resp;
   } catch (error) {
@@ -27,4 +26,36 @@ export async function requestToJoinEvent(uid, eventID) {
   }
 }
 
+export async function getRelatedEvents(uid) {
+  try {
+    const resp = await http.get(`/getRelatedEvents?uid=${uid}`);
+    return resp;
+  } catch (err) {
+    console.log(err.message);
+    return err;
+  }
+}
 
+export async function getInterestedUsers(eventID) {
+  try {
+    const resp = await http.get(`/getInterestedUsers?eid=${eventID}`);
+    return resp;
+  } catch (err) {
+    console.log(err.message);
+    return err;
+  }
+}
+
+export async function acceptJoinRequest(uid, eventID) {
+  try {
+    const body = {
+      "uid": uid,
+      "eventID": eventID
+    }
+    const resp = await http.post(`/acceptJoinRequest`, body);
+    return resp;
+  } catch (err) {
+    console.log(err.message);
+    return err;
+  }
+}
