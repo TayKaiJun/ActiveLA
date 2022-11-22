@@ -4,12 +4,15 @@ import {
     findUserByUsername,
     findUserByEmail,
     addNewUser,
-    requestToJoinEvent
+    requestToJoinEvent,
+    getRelatedEvents,
+    acceptJoinRequest
 } from "./controllers/userController.js";
 
 import {
     addEvent, 
-    getAllEvents
+    getAllEvents,
+    getInterestedUsers
 } from "./controllers/eventController.js"
 
 const apiRoutes = express.Router();
@@ -22,6 +25,11 @@ apiRoutes.post('/user', addNewUser);
 apiRoutes.post('/requestToJoin', requestToJoinEvent) // Body includes uid and eventID
 
 apiRoutes.post('/getallEvents', getAllEvents);
+apiRoutes.get('/getRelatedEvents', getRelatedEvents);
+apiRoutes.get('/getInterestedUsers', getInterestedUsers);
+
+apiRoutes.post('/acceptJoinRequest', acceptJoinRequest); // Body includes uid and eventID
+
 apiRoutes.post('/addEvent', addEvent);
 
 export default apiRoutes;
