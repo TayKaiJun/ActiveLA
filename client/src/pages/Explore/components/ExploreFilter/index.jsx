@@ -4,24 +4,28 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import FiltersGroup from "../../../../components/Filters/FiltersGroup";
 import useIsFirstRender from "../../../../hooks/useIsFirstRender";
-
-const FILTERS_CONFIG = [
-  { type: "dropdown", options: ["1km", "2km", "Any"], name: "Distance" },
-  { type: "dropdown", options: ["Badminton"], name: "Sports" },
-  {
-    type: "toggle",
-    name: "Active",
-  },
-  {
-    type: "toggle",
-    name: "Show",
-  },
-  {
-    type: "reset",
-  },
-];
+import { AGE_GROUPS, SKILL_LEVEL, SPORT_TO_LOCATIONS_MAPPING } from "../../../../constants";
 
 function ExploreFilter(props) {
+  const FILTERS_CONFIG = [
+    { type: "dropdown", options: Object.keys(SPORT_TO_LOCATIONS_MAPPING), name: "Sports", field: "name" },
+    {
+      type: "dropdown",
+      options: [...new Set(Object.values(SPORT_TO_LOCATIONS_MAPPING).flat())],
+      name: "Location",
+      field: "location",
+    },
+    { type: "dropdown", options: SKILL_LEVEL, name: "Skill Level", field: "skillLevel" },
+    { type: "dropdown", options: AGE_GROUPS, name: "Age Groups", field: "ageGroup" },
+    {
+      type: "toggle",
+      name: "Free",
+      field: "free",
+    },
+    {
+      type: "reset",
+    },
+  ];
   const { onChange } = props;
   const [filters, setFilters] = useState({});
   const [searchText, setSearchText] = useState("");
@@ -74,6 +78,7 @@ function ExploreFilter(props) {
           height: 38,
           width: 120,
         }}
+        dateFormat="mm/dd/yy"
         value={filters.date}
         placeholder="Date"
         onChange={(e) => {

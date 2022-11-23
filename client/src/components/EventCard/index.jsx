@@ -16,32 +16,32 @@ import basketballImage from "./images/basketball.png";
 import baseballImage from "./images/baseball.png";
 
 function ImageDisplay(props) {
-  const {event} = props;
-  switch(event.name) {
-    case 'Badminton':
+  const { event } = props;
+  switch (event.name) {
+    case "Badminton":
       return badmintonImage;
-    case 'Table Tennis':
+    case "Table Tennis":
       return tableTennisImage;
-    case 'Volleyball':
+    case "Volleyball":
       return volleyballImage;
-    case 'Swimming':
+    case "Swimming":
       return swimmingImage;
-    case 'Soccer':
+    case "Soccer":
       return soccerImage;
-    case 'Rugby':
+    case "Rugby":
       return rugbyImage;
-    case 'Hockey':
+    case "Hockey":
       return hockeyImage;
-    case 'Ultimate Frisbee':
+    case "Ultimate Frisbee":
       return frisbeeImage;
-    case 'Football':
+    case "Football":
       return footballImage;
-    case 'Cricket':
+    case "Cricket":
       return cricketImage;
-    case 'Basketball':
+    case "Basketball":
       return basketballImage;
-    case 'Baseball':
-      return baseballImage; 
+    case "Baseball":
+      return baseballImage;
     default:
       return badmintonImage;
   }
@@ -50,18 +50,20 @@ function ImageDisplay(props) {
 function EventCard(props) {
   const { event, requestJoinHandler } = props;
   const sportsname = ImageDisplay(props);
+  const host = event.host === undefined || event.host === null ? "" : event.host.name;
+
   return (
     <Card>
       <Card.Img variant="top" src={sportsname} />
       <Card.Body>
         <Card.Title>{event.name}</Card.Title>
         <ListGroup className="list-group-flush">
-          <ListGroup.Item>Host: {event.host}</ListGroup.Item>
+          <ListGroup.Item>Host: {host}</ListGroup.Item>
           <ListGroup.Item>Date: {event.date}</ListGroup.Item>
           <ListGroup.Item>Time: {event.time}</ListGroup.Item>
           <ListGroup.Item>Location: {event.location}</ListGroup.Item>
         </ListGroup>
-        <ModalMoreDetails event={event} requestJoinHandler={requestJoinHandler} modalImageDisplay={sportsname}/>
+        <ModalMoreDetails event={event} requestJoinHandler={requestJoinHandler} modalImageDisplay={sportsname} />
       </Card.Body>
     </Card>
   );
