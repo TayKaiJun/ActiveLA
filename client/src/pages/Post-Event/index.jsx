@@ -46,7 +46,6 @@ function postEvent() {
     if (!location || location === "") newErrors.location = "Please enter location";
     if (!ageGroup || ageGroup === "") newErrors.ageGroup = "Please enter an age group";
     if (!playerNumber || playerNumber === "") newErrors.playerNumber = "Please enter player number";
-    if (!costs || costs === "") newErrors.costs = "Please enter costs";
     if (!skillLevel || skillLevel === "") newErrors.skillLevel = "Please enter skill level";
 
     return newErrors;
@@ -151,7 +150,7 @@ function postEvent() {
       <Form>
 
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Your Name</Form.Label>
+          <Form.Label>Sport: </Form.Label>
           <Form.Select
             id = "selectSport"
             type="text"
@@ -171,7 +170,7 @@ function postEvent() {
         
 
         <Form.Group className="mb-3" controlId="date">
-          <Form.Label>Date</Form.Label>
+          <Form.Label>Date: </Form.Label>
           <Form.Control
             type="date"
             placeholder="eg. 10/24/2022"
@@ -183,9 +182,9 @@ function postEvent() {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="time">
-          <Form.Label>Time</Form.Label>
+          <Form.Label>Time:</Form.Label>
           <Form.Control
-            type="text"
+            type="time"
             placeholder="eg. 2:00pm"
             value={form.time}
             onChange={(e) => setField("time", e.target.value)}
@@ -196,7 +195,7 @@ function postEvent() {
 
 
         <Form.Group className="mb-3" controlId="location">
-          <Form.Label>Location</Form.Label>
+          <Form.Label>Location:</Form.Label>
           <Form.Select
             id = "selectLocation"
             type="text"
@@ -214,7 +213,7 @@ function postEvent() {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="ageGroup">
-          <Form.Label>Age Group</Form.Label>
+          <Form.Label>Age Group:</Form.Label>
           <Form.Select    
             type="text"
             value={form.ageGroup}
@@ -242,7 +241,7 @@ function postEvent() {
         </Form.Group> */}
 
         <Form.Group className="mb-3" controlId="costs">
-          <Form.Label>Costs</Form.Label>
+          <Form.Label>Costs:</Form.Label>
           <Form.Control
             type="text"
             placeholder="$100"
@@ -255,7 +254,7 @@ function postEvent() {
 
         <Row classname="mb-3">
           <Form.Group as={Col} className="mb-3" id="Dropdown">
-            <Form.Label>Number Of Players</Form.Label>
+            <Form.Label>Number Of Players Looking For:</Form.Label>
             <Dropdown>
               <Dropdown.Toggle id="dropdown-button" variant="secondary">
                 {dropDown}
