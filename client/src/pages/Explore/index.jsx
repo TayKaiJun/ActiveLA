@@ -4,7 +4,6 @@ import ExploreFilter from "./components/ExploreFilter";
 import Events from "./components/Events";
 import useIsFirstRender from "../../hooks/useIsFirstRender";
 import AuthContext from "../../services/authContext";
-import { getLoginState } from "../../services/auth-service";
 import {
   getAllEvents,
   requestToJoinEvent
@@ -15,7 +14,7 @@ function Explore() {
   const [filters, setFilters] = useState({});
   const [events, setEvents] = useState([]);
   const [filterChangeObserver, setFilterChangeObserver] = useState(0);
-  const loggedIn = getLoginState();
+  const loggedIn = useContext(AuthContext);
   const updateEventsOnFilterChange = async () => {
     const fetchedEvents = await getAllEvents(filters);
     setEvents(fetchedEvents);

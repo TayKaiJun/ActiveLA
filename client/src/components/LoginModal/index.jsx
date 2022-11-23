@@ -6,7 +6,6 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import bcrypt from "bcryptjs";
 import { getUserByEmail } from "../../services/user-service";
-import { setLoginState } from "../../services/auth-service";
 import AuthContext from "../../services/authContext";
 
 function LoginModal(props) {
@@ -14,6 +13,7 @@ function LoginModal(props) {
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
   const [data, setData] = useState({});
+  const authContext = useContext(AuthContext);
 
   const onInput = (e) => {
     const { id, value } = e.target;
@@ -22,8 +22,6 @@ function LoginModal(props) {
       [id]: value,
     }));
   };
-
-  const { authState, toggleAuthState } = useContext(AuthContext);
 
   const [formErrors, setError] = useState({
     email: "",
@@ -36,25 +34,23 @@ function LoginModal(props) {
       .then((res) => {
         setError({
           ...formErrors,
-          email: ""
-        })
+          email: "",
+        });
 
         bcrypt
           .compare(data.password, res.data.User[0].password)
           .then((passwordCheck) => {
             if (passwordCheck) {
-              setLoginState(true);
-              // toggleAuthState(res.data.User[0]._id);
-              console.log("login successful") // TODO: make a toast for this instead
+              authContext.setupSessionInfo(true, res.data.User[0]._id);
+              console.log("login successful"); // TODO: make a toast for this instead
               setData({});
               handleClose();
-            }
-            else {
+            } else {
               setError({
                 ...formErrors,
-                password: "Wrong password!"
-              })
-              setLoginState(false);
+                password: "Wrong password!",
+              });
+              authContext.setupSessionInfo(false, "");
             }
           })
           .catch((err) => console.log(err.message));
@@ -62,8 +58,8 @@ function LoginModal(props) {
       .catch((err) => {
         setError({
           ...formErrors,
-          email: "Email does not exist!"
-        })
+          email: "Email does not exist!",
+        });
       });
   };
 

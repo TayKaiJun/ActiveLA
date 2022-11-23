@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
 
+// Utility functions that to interact with session storage &
+// uses bcrypt to compare the hashed loginState
+
 export function setLoginState(state) {
   bcrypt
-    .hash((state ? "true" : "false"), 10)
+    .hash(state ? "true" : "false", 10)
     .then((hashedState) => {
-      // console.log((state ? "true" : "false"));
-      // console.log("Printing hashedState: ");
-      // console.log(hashedState);
       sessionStorage.setItem("loginState", hashedState);
     })
     .catch(() => {
@@ -23,4 +23,16 @@ export function getLoginState() {
     .catch(() => {
       console.log("hash does not match");
     });
+}
+
+export function setUserID(uid) {
+  if (uid.length > 0) {
+    sessionStorage.setItem("userID", uid);
+  } else {
+    sessionStorage.removeItem("userID");
+  }
+}
+
+export function getUserID() {
+  return sessionStorage.getItem("userID");
 }
