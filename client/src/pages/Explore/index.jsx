@@ -4,10 +4,7 @@ import ExploreFilter from "./components/ExploreFilter";
 import Events from "./components/Events";
 import useIsFirstRender from "../../hooks/useIsFirstRender";
 import AuthContext from "../../services/authContext";
-import {
-  getAllEvents,
-  requestToJoinEvent
-} from "../../services";
+import { getAllEvents, requestToJoinEvent } from "../../services";
 
 function Explore() {
   const name = "Beryl";
@@ -31,13 +28,13 @@ function Explore() {
   const requestJoinHandler = async (eid) => {
     if (!loggedIn) {
       // TODO: Auto redirect to login
-      console.log("Please login first")
+      console.log("Please login first");
     } else {
       const uid = sessionStorage.getItem("currentUser");
       const res = await requestToJoinEvent(uid, eid);
       console.log("Request to join event", res);
     }
-  }
+  };
 
   return (
     <PageLayout>

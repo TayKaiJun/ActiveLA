@@ -32,7 +32,7 @@ function ModalMoreDetails(props) {
             <ListGroup.Item>Skill Level: {skillLevel}</ListGroup.Item>
             <ListGroup.Item>Age Group: {ageGroup}</ListGroup.Item>
             <ListGroup.Item>Number of Players Looking For: {playerNumber}</ListGroup.Item>
-            <ListGroup.Item>Costs: {costs}</ListGroup.Item>
+            <ListGroup.Item>Costs: {costs === undefined ? "None" : costs}</ListGroup.Item>
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
