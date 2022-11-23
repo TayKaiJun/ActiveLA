@@ -14,8 +14,7 @@ function Explore() {
   const [filters, setFilters] = useState({});
   const [events, setEvents] = useState([]);
   const [filterChangeObserver, setFilterChangeObserver] = useState(0);
-
-  const loggedIn = sessionStorage.getItem("loginState")
+  const loggedIn = useContext(AuthContext);
   const updateEventsOnFilterChange = async () => {
     const fetchedEvents = await getAllEvents(filters);
     setEvents(fetchedEvents);

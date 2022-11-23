@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import SignupButton from "../SignupButton";
 import LoginModal from "../LoginModal";
@@ -18,13 +18,13 @@ const PATHS = {
 
 function Header() {
   const location = useLocation();
+  const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const { authState, toggleAuthState } = useContext(AuthContext);
-
-  const loggedIn = sessionStorage.getItem("loginState");
   const signOut = () => {
     // TODO: Auto-redirect to some page
-    toggleAuthState("");
+    authContext.setupSessionInfo(false, "");
+    navigate("/");
   };
   return (
     <Navbar bg="light" expand="lg">
@@ -39,7 +39,7 @@ function Header() {
               flexGrow: 1,
             }}
           >
-            {!loggedIn ? (
+            {!authContext.authState ? (
               <>
                 <LoginModal />
                 <SignupButton />
