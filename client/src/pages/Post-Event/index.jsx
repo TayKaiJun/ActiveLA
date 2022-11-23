@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import PageLayout from "../../components/PageLayout";
-import addEventService from "../../services/event-service";
+import {addEventService} from "../../services";
 
 function postEvent() {
   /* For number of players */
@@ -62,9 +62,10 @@ function postEvent() {
       setErrors(formErrors);
     } else {
       addEventService(form)
-        .then(
-          // TODO: Redirect
-          (res) => console.log(res.message)
+        .then((res) => {
+            // TODO: Redirect
+            console.log(res.message)
+          }
         )
         .catch((err) => console.log(err.message));
     }

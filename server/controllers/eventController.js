@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import Event from "../models/event.model.js"
+import mongoose from "mongoose";
 
 /*
     Gets all events from the DB
@@ -31,7 +32,9 @@ export const getAllEvents = async (req, res) => {
 export const addEvent = async (req, res) => {
   // Create a new event object using the passed in req. Follow the
   try {
+    const newEventID = new mongoose.Types.ObjectId()
     const event = new Event({
+      _id: newEventID,
       name: req.body.name,
       date: req.body.date,
       time: req.body.time,
@@ -40,10 +43,15 @@ export const addEvent = async (req, res) => {
       playerNumber: req.body.playerNumber,
       costs: req.body.costs,
       skillLevel: req.body.skillLevel,
-      host: req.body.currentUser,
+      host: req.body.host,
       pendingAccept: [],
       attending: []
     });
+
+    await User.findByIdAndUpdate(
+      req.body.host,
+      {$push: {"eventsHosting": newEventID}}
+    )
 
     await event.save();
     return res.status(201).json({
@@ -93,6 +101,45 @@ export const getInterestedUsers = async (req, res) => {
       success: false,
       message: "Server error",
       err: err.message,
+    });
+  }
+}
+
+// Pass in event ID
+export const deleteEvent = async (req, res) => {
+  try {
+    await Event.findByIdAndDelete(req.query._id);
+    return res.status(202).json({
+      success: true,
+      message: "Successfully deleted event"
+    })
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete event",
+      err: err.message,
+    });
+  }
+}
+
+// Query param as event _id
+// Request body as updated event
+export const updateEvent = async (req, res) => {
+  try {
+    await Event.findByIdAndUpdate(
+      req.query._id, 
+      { $set: req.body }
+    )
+    return res.status(201).json({
+      success: true,
+      message: "Successfully updated event.",
+      event: req.body
+    })
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update event",
+      error: err.message,
     });
   }
 }
