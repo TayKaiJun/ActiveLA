@@ -40,6 +40,14 @@ function ExploreFilter(props) {
     }
   }, [filterChangeObserver]);
 
+  const handleSearchSubmit = () => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      query: searchText,
+    }));
+    setFilterChangObserver((prevFilterChangeCounter) => prevFilterChangeCounter + 1);
+  };
+
   return (
     <div
       style={{
@@ -54,22 +62,18 @@ function ExploreFilter(props) {
           marginRight: 10,
         }}
       >
-        <Button
-          onClick={() => {
-            setFilters((prevFilters) => ({
-              ...prevFilters,
-              query: searchText,
-            }));
-            setFilterChangObserver((prevFilterChangeCounter) => prevFilterChangeCounter + 1);
-          }}
-          label="Search"
-        />
+        <Button onClick={handleSearchSubmit} label="Search" />
         <InputText
           value={searchText}
-          onChange={(e) => {
+          onInput={(e) => {
             setSearchText(e.target.value);
           }}
-          placeholder="Keyword"
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleSearchSubmit();
+            }
+          }}
+          placeholder="Users"
         />
       </div>
       <Calendar
