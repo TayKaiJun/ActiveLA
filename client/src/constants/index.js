@@ -27,7 +27,7 @@ const SPORT_TO_LOCATIONS_MAPPING = {
     "Intramural Field (Court 3)",
     "Walls Annenberg Stadium",
   ],
-  "Table Tennis": ["Pardee Gym (Table 1)", "Pardee Gym (Table 1)", "Pardee Gym (Table 1)"],
+  "Table Tennis": ["Pardee Gym (Table 1)", "Pardee Gym (Table 2)", "Pardee Gym (Table 3)"],
   "Ultimate Frisbee": ["Intramural Field (Court 1)", "Intramural Field (Court 2)", "Intramural Field (Court 3)"],
   Volleyball: [
     "Pardee Gym (Court 1)",
