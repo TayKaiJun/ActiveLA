@@ -62,9 +62,10 @@ function postEvent() {
       setErrors(formErrors);
     } else {
       addEventService(form)
-        .then(
-          // TODO: Redirect
-          (res) => console.log(res.message)
+        .then((res) => {
+            // TODO: Redirect
+            console.log(res.message)
+          }
         )
         .catch((err) => console.log(err.message));
     }
