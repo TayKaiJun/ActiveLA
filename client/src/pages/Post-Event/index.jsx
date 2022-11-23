@@ -120,8 +120,8 @@ function postEvent() {
     { id: "32", sportsID: "Swimming", sportLocation: "Speiker Aquatic Center (Lane 5)" },
     { id: "33", sportsID: "Swimming", sportLocation: "Speiker Aquatic Center (Lane 6)" },
     { id: "34", sportsID: "Table Tennis", sportLocation: "Pardee Gym (Table 1)" },
-    { id: "35", sportsID: "Table Tennis", sportLocation: "Pardee Gym (Table 1)" },
-    { id: "36", sportsID: "Table Tennis", sportLocation: "Pardee Gym (Table 1)" },
+    { id: "35", sportsID: "Table Tennis", sportLocation: "Pardee Gym (Table 2)" },
+    { id: "36", sportsID: "Table Tennis", sportLocation: "Pardee Gym (Table 3)" },
     { id: "37", sportsID: "Ultimate Frisbee", sportLocation: "Intramural Field (Court 1)" },
     { id: "38", sportsID: "Ultimate Frisbee", sportLocation: "Intramural Field (Court 2)" },
     { id: "39", sportsID: "Ultimate Frisbee", sportLocation: "Intramural Field (Court 3)" },
@@ -259,7 +259,7 @@ function postEvent() {
           <Form.Label>Costs:</Form.Label>
           <Form.Control
             type="text"
-            placeholder="$100"
+            placeholder="None / eg. $10"
             value={form.costs}
             onChange={(e) => setField("costs", e.target.value)}
             isInvalid={!!errors.costs}
@@ -294,7 +294,7 @@ function postEvent() {
           <Form.Group as={Col} className="mt-5" id="skillLevel">
             {["radio"].map((type) => (
               <div key={`inline-${type}`} className="mb-3">
-                <Form.Label>Skill Level:</Form.Label>
+                <Form.Label>Skill Level: </Form.Label>
                 <Form.Check
                   inline
                   label="Beginner"
