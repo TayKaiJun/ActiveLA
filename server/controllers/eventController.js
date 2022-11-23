@@ -1,24 +1,55 @@
 import User from "../models/user.model.js";
 import Event from "../models/event.model.js"
 import mongoose from "mongoose";
+import { formatDate } from "../utils/index.js";
 
 /*
     Gets all events from the DB
     req -> The HTTP POST request sent to the server, in JSON format
     res -> HTTP response returned. Contains a lot of info can print out to see.
 */
+
+const buildFilterQuery = (filter) => {
+  const { date, name, ageGroup, location, free, skillLevel } = filter;
+  let filterQuery = {};
+  if (ageGroup !== undefined) {
+    filterQuery = { ...filterQuery, ageGroup };
+  }
+  if (name !== undefined) {
+    filterQuery = { ...filterQuery, name };
+  }
+  if (location !== undefined) {
+    filterQuery = { ...filterQuery, location };
+  }
+  if (free !== undefined) {
+    if (free) {
+      filterQuery = { ...filter, costs: { $nin: ["None"] } };
+    } else {
+      filterQuery = { ...filter, costs: { $in: ["None"] } };
+    }
+  }
+  if (skillLevel !== undefined) {
+    filterQuery = { ...filterQuery, skillLevel };
+  }
+  if (date !== undefined) {
+    filterQuery = { ...filter, date: formatDate(date) };
+  }
+  return filterQuery;
+};
+
 export const getAllEvents = async (req, res) => {
   const filter = req.body;
-  console.log(filter)
-
+  const query = buildFilterQuery(filter);
   try {
-    const data = await Event.find({});
+    const data = await Event.find(query).populate({
+      path: "host",
+      select: "name -_id",
+    });
     return res.status(200).json({
       success: true,
       message: "List of all events",
       Event: data,
     });
-
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -45,7 +76,7 @@ export const addEvent = async (req, res) => {
       skillLevel: req.body.skillLevel,
       host: req.body.host,
       pendingAccept: [],
-      attending: []
+      attending: [],
     });
 
     await User.findByIdAndUpdate(
@@ -59,7 +90,6 @@ export const addEvent = async (req, res) => {
       message: "New event created",
       Event: event,
     });
-
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -79,12 +109,12 @@ export const getInterestedUsers = async (req, res) => {
     const pendingAccept = event.pendingAccept;
     const attendees = event.attending;
 
-    const pending = {}
+    const pending = {};
     for (let i = 0; i < pendingAccept.length; i++) {
       const user = await User.find({ _id: pendingAccept[i] });
       pending[i] = user;
     }
-    const attending = {}
+    const attending = {};
     for (let i = 0; i < attendees.length; i++) {
       const user = await User.find({ _id: attendees[i] });
       attending[i] = user;
@@ -94,8 +124,8 @@ export const getInterestedUsers = async (req, res) => {
       success: true,
       message: "Successfully returned pending and attending users",
       pending: pending,
-      attending: attending
-    })
+      attending: attending,
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,

@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function ModalMoreDetails(props) {
-  const { event, requestJoinHandler, modalImageDisplay} = props;
+  const { event, requestJoinHandler, modalImageDisplay } = props;
   const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
   const [show, setShow] = useState(false);
 
