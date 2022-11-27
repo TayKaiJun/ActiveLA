@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
-import Activities from "./pages/Activities";
+import LoginPage from "./pages/Login";
 import { AuthContext } from "./services/authContext";
 import PostEvent from "./pages/Post-Event";
 import MyEvents from "./pages/MyEvents";
@@ -11,6 +11,7 @@ import Going from "./pages/MyEvents/navbarComponents/going";
 import Pending from "./pages/MyEvents/navbarComponents/pending";
 import Hosting from "./pages/MyEvents/navbarComponents/hosting";
 import * as authUtil from "./services/authUtil"
+import SignUpPage from "./pages/Signup";
 
 function App() {
 
@@ -31,8 +32,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Explore />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/activities" element={<Activities />} />
           <Route path="/MyEvents" element={<MyEvents />} />
           <Route path="/going" element={<Going />} />
           <Route path="/hosting" element={<Hosting />} />

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout";
 import ExploreFilter from "./components/ExploreFilter";
 import Events from "./components/Events";
@@ -12,6 +13,8 @@ import {
 
 function Explore() {
 
+  const navigate = useNavigate();
+
   const [filters, setFilters] = useState({});
   const [events, setEvents] = useState([]);
   const [filterChangeObserver, setFilterChangeObserver] = useState(0);
@@ -22,7 +25,6 @@ function Explore() {
 
   useEffect(() => {
     getUserByID(uid).then((res) => {
-      console.log(res)
       setName(res.data.User.name)
     }).catch((err) => {
       console.log(err)
@@ -45,17 +47,18 @@ function Explore() {
 
   const requestJoinHandler = async (eid) => {
     if (!authContext.authState) {
-      // TODO: Auto redirect to login
-      console.log("Please login first")
+      // TODO: Toast to notify need to login first
+      navigate('/login')
       return null
     }
     const res = await requestToJoinEvent(uid, eid);
+    navigate('/MyEvents')
     return res;
   }
 
   return (
     <PageLayout>
-      <h2>Welcome { uid ? name : "to ActiveLA"} 👋</h2>
+      <h2>Welcome { uid && authContext.authState ? name : "to ActiveLA"} 👋</h2>
       <p className="mt-4">Discover Events</p>
       <p
         style={{

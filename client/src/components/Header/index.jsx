@@ -10,7 +10,6 @@ import AuthContext from "../../services/authContext";
 
 const PATHS = {
   Explore: "/",
-  Activities: "/activities",
   Profile: "/profile",
   PostEvent: "/postevent",
   MyEvents: "/MyEvents",
@@ -22,10 +21,10 @@ function Header() {
   const navigate = useNavigate();
 
   const signOut = () => {
-    // TODO: Auto-redirect to some page
     authContext.setupSessionInfo(false, "");
     navigate("/");
   };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>

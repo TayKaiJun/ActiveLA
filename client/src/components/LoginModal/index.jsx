@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 
 import React, { useState, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -14,6 +15,7 @@ function LoginModal(props) {
   const handleShow = () => setModalShow(true);
   const [data, setData] = useState({});
   const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const onInput = (e) => {
     const { id, value } = e.target;
@@ -42,9 +44,10 @@ function LoginModal(props) {
           .then((passwordCheck) => {
             if (passwordCheck) {
               authContext.setupSessionInfo(true, res.data.User._id);
-              console.log("login successful"); // TODO: make a toast for this instead
+              // TODO: make a toast to notify successful login
               setData({});
               handleClose();
+              navigate('/')
             } else {
               setError({
                 ...formErrors,
@@ -53,7 +56,10 @@ function LoginModal(props) {
               authContext.setupSessionInfo(false, "");
             }
           })
-          .catch((err) => console.log(err.message));
+          .catch((err) => {
+            console.log(err.message)
+
+          });
       })
       .catch((err) => {
         setError({
