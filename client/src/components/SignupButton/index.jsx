@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
-import Toast from "react-bootstrap/Toast";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Chip } from "primereact/chip";
 import bcrypt from "bcryptjs";
+import { useNavigate } from "react-router-dom";
 import { createNewUser } from "../../services/user-service";
+import notify from "../CustomToast";
 
 function SignupButton(props) {
+  const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
@@ -94,7 +96,8 @@ function SignupButton(props) {
     createNewUser(data)
       .then((res) => {
         if (res.success) {
-          console.log("success");
+          notify("Account created successfully", "success")
+          navigate('/')
           setData({});
           handleClose();
         }

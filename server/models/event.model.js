@@ -21,7 +21,7 @@ let Event = new Schema({
     ageGroup: {
         type: String
     },
-    playerNumber: { // TODO: What is this exactly and can we possibly use len of one of its refs
+    playerNumber: {
         type: String
     },
     costs: {

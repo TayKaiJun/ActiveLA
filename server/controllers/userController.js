@@ -1,8 +1,6 @@
 import User from "../models/user.model.js";
 import Event from "../models/event.model.js"
 
-// TODO: Make login and signup methods that are secure 
-
 export const findUserByUsername = async (req, res) => {
     try {
         const user = await User.findOne({ username: req.query.username })
