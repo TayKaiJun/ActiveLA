@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import bcrypt from "bcryptjs";
 import { getUserByEmail } from "../../services/user-service";
 import AuthContext from "../../services/authContext";
+import notify from "../CustomToast";
 
 function LoginModal(props) {
   const [modalShow, setModalShow] = useState(false);
@@ -44,7 +45,7 @@ function LoginModal(props) {
           .then((passwordCheck) => {
             if (passwordCheck) {
               authContext.setupSessionInfo(true, res.data.User._id);
-              // TODO: make a toast to notify successful login
+              notify("Login successful!", "success")
               setData({});
               handleClose();
               navigate('/')

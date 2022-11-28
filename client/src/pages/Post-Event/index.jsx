@@ -4,10 +4,13 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
+import { useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout";
 import {addEventService} from "../../services";
+import notify from "../../components/CustomToast";
 
 function postEvent() {
+  const navigate = useNavigate();
   /* For number of players */
   const playerNumArray = [];
   const maxPlayerNum = 15;
@@ -62,8 +65,8 @@ function postEvent() {
     } else {
       addEventService(form)
         .then((res) => {
-            // TODO: Redirect
-            console.log(res.message)
+            notify("Successfully posted a new event!", "success")
+            navigate("/MyEvents")
           }
         )
         .catch((err) => console.log(err.message));

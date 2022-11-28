@@ -10,6 +10,7 @@ import {
   getUserByID,
   requestToJoinEvent
 } from "../../services";
+import notify from "../../components/CustomToast";
 
 function Explore() {
 
@@ -31,7 +32,6 @@ function Explore() {
     })
   }, [uid])
 
-
   const updateEventsOnFilterChange = async () => {
     const fetchedEvents = await getAllEvents(filters);
     setEvents(fetchedEvents);
@@ -47,10 +47,11 @@ function Explore() {
 
   const requestJoinHandler = async (eid) => {
     if (!authContext.authState) {
-      // TODO: Toast to notify need to login first
       navigate('/login')
+      notify("Login required", "error")
       return null
     }
+    notify("Request to join sent!", "success")
     const res = await requestToJoinEvent(uid, eid);
     navigate('/MyEvents')
     return res;

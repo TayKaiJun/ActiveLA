@@ -9,6 +9,7 @@ import bcrypt from "bcryptjs";
 import FormLayout from "../../components/FormLayout";
 import { getUserByEmail } from "../../services/user-service";
 import AuthContext from "../../services/authContext";
+import notify from "../../components/CustomToast";
 
 function LoginForm() {
   const [data, setData] = useState({});
@@ -42,7 +43,7 @@ function LoginForm() {
           .then((passwordCheck) => {
             if (passwordCheck) {
               authContext.setupSessionInfo(true, res.data.User._id);
-              // TODO: make a toast to notify successful login
+              notify("Login successful!", "success")
               setData({});
               navigate('/')
             } else {
@@ -101,8 +102,6 @@ function LoginForm() {
     </Form>
   );
 }
-
-// TODO: Change navbar
 
 function LoginPage() {
   return (

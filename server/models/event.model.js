@@ -23,8 +23,7 @@ let Event = new Schema(
       type: String, // Open
     },
     playerNumber: {
-      // TODO: What is this exactly and can we possibly use len of one of its refs
-      type: String,
+      type: String
     },
     costs: {
       type: String, // toggle

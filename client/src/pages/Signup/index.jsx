@@ -9,6 +9,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { Chip } from "primereact/chip";
 import { createNewUser } from "../../services/user-service";
 import FormLayout from "../../components/FormLayout";
+import notify from "../../components/CustomToast";
 
 function SignupForm(props) {
 
@@ -95,7 +96,7 @@ function SignupForm(props) {
     createNewUser(data)
       .then((res) => {
         if (res.success) {
-          console.log("success"); // TODO: Add toast
+          notify("Created a new account!", "success")
           setData({});
           navigate("/login")
         }
