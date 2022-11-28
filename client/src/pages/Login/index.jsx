@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import bcrypt from "bcryptjs";
 import FormLayout from "../../components/FormLayout";
@@ -78,16 +79,16 @@ function LoginForm() {
         <Form.Control type="password" placeholder="Password" onChange={onInput} />
         {formErrors.password && <p className="text-danger">{formErrors.password}</p>}
       </Form.Group>
-      <Container style={{display: "flex", flexDirection: "column", marginBottom: "8px", marginLeft: "-12px"}}>
+      <Container style={{ display: "flex", flexDirection: "column", marginBottom: "8px", marginLeft: "-12px" }}>
         <Form.Text className="text-muted">
-          Forgot your password? 
-          <Form.Text style={{color: "blue", marginRight: "8px", marginLeft: "8px"}} onClick={() => navigate("/signup")}>
+          Forgot your password?
+          <Form.Text style={{ color: "blue", marginRight: "8px", marginLeft: "8px" }} onClick={() => navigate("/signup")}>
             Reset.
           </Form.Text>
         </Form.Text>
         <Form.Text className="text-muted">
           No Account?
-          <Form.Text style={{color: "blue", marginRight: "8px", marginLeft: "8px"}} onClick={() => navigate("/signup")}>
+          <Form.Text style={{ color: "blue", marginRight: "8px", marginLeft: "8px" }} onClick={() => navigate("/signup")}>
             Sign up
           </Form.Text>
         </Form.Text>
@@ -102,14 +103,11 @@ function LoginForm() {
 }
 
 // TODO: Change navbar
-// TODO: Restyle form margin
 
 function LoginPage() {
   return (
     <FormLayout>
-      <Container className="mt-6 px-12">
-        <LoginForm />
-      </Container>
+      <LoginForm />
     </FormLayout>
   )
 }
