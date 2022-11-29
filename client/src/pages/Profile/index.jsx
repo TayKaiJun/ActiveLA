@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
@@ -7,10 +8,11 @@ import Col from "react-bootstrap/Col";
 import PageLayout from "../../components/PageLayout";
 import { getUserByID } from "../../services/index";
 import AuthContext from "../../services/authContext";
-import EditProfile from "./EditProfile";
 
 function Profile() {
   const userID = useContext(AuthContext).getUser();
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
     username: "",
     email: "",
@@ -20,9 +22,6 @@ function Profile() {
     interests: [],
     password: "",
   });
-
-  const [editing, setEditing] = useState(false);
-  const toggleEditing = () => setEditing(!editing);
 
   useEffect(() => {
     getUserByID(userID)
@@ -34,76 +33,78 @@ function Profile() {
       .catch((err) => console.log(err.message));
   }, []);
 
+  const editPressed = () => {
+    navigate("/profile/edit");
+  };
+
   return (
     <PageLayout>
       <h1>{data.name}&apos;s Profile</h1>
 
-      {!editing ? (
-        <Card style={{ width: "60rem", marginLeft: "auto", marginRight: "auto" }}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <Row>
-                <Col sm={3} style={{ fontWeight: "bold" }}>
-                  Username
-                </Col>
-                <Col>{data.username}</Col>
-              </Row>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Row>
-                <Col sm={3} style={{ fontWeight: "bold" }}>
-                  Email
-                </Col>
-                <Col>{data.email}</Col>
-              </Row>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Row>
-                <Col sm={3} style={{ fontWeight: "bold" }}>
-                  Name
-                </Col>
-                <Col>{data.name}</Col>
-              </Row>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Row>
-                <Col sm={3} style={{ fontWeight: "bold" }}>
-                  Pronouns
-                </Col>
-                <Col>{data.pronouns}</Col>
-              </Row>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Row>
-                <Col sm={3} style={{ fontWeight: "bold" }}>
-                  About
-                </Col>
-                <Col>{data.about}</Col>
-              </Row>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Row>
-                <Col sm={3} style={{ fontWeight: "bold" }}>
-                  Interests
-                </Col>
-                <Col>{data.interests}</Col>
-              </Row>
-            </ListGroup.Item>
-          </ListGroup>
-          <Button className="ms-2 btn btn-primary" variant="primary" onClick={toggleEditing}>
-            Edit
-          </Button>
-        </Card>
-      ) : (
-        <>
-          <Button className="ms-2 btn btn-primary" variant="primary" type='submit' onClick={toggleEditing}>
-            Submit
-          </Button>
-          <Button className="ms-2 btn btn-primary" variant="secondary" onClick={toggleEditing}>
-            Cancel
-          </Button>
-        </>
-      )}
+      <Card style={{ width: "60rem", marginLeft: "auto", marginRight: "auto" }}>
+        <ListGroup variant="flush">
+          <ListGroup.Item>
+            <Row>
+              <Col sm={3} style={{ fontWeight: "bold" }}>
+                Username
+              </Col>
+              <Col>{data.username}</Col>
+            </Row>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <Row>
+              <Col sm={3} style={{ fontWeight: "bold" }}>
+                Email
+              </Col>
+              <Col>{data.email}</Col>
+            </Row>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <Row>
+              <Col sm={3} style={{ fontWeight: "bold" }}>
+                Name
+              </Col>
+              <Col>{data.name}</Col>
+            </Row>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <Row>
+              <Col sm={3} style={{ fontWeight: "bold" }}>
+                Pronouns
+              </Col>
+              <Col>{data.pronouns}</Col>
+            </Row>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <Row>
+              <Col sm={3} style={{ fontWeight: "bold" }}>
+                About
+              </Col>
+              <Col>{data.about}</Col>
+            </Row>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <Row>
+              <Col sm={3} style={{ fontWeight: "bold" }}>
+                Interests
+              </Col>
+              <Col>
+                {data.interests.map((entry) => {
+                  return (
+                    <Row>
+                      <Col sm={3}>{entry.sport}</Col>
+                      <Col style={{ fontStyle: "italic" }}>{entry.level}</Col>
+                    </Row>
+                  );
+                })}
+              </Col>
+            </Row>
+          </ListGroup.Item>
+        </ListGroup>
+        <Button variant="primary" onClick={editPressed}>
+          Edit
+        </Button>
+      </Card>
     </PageLayout>
   );
 }

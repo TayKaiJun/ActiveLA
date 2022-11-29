@@ -16,7 +16,7 @@ function SignupButton(props) {
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
   let sportValue = "";
-  let levelValue = 0;
+  let levelValue = "";
 
   const [data, setData] = useState({
     username: "",
@@ -90,10 +90,10 @@ function SignupButton(props) {
     const { id, value } = e.target;
     if (id === "sport") {
       sportValue = value;
-      console.log("Updating %s: %s", id, value);
+      // console.log("Updating %s: %s", id, value);
     } else {
       levelValue = value;
-      console.log("Updating %s: %d", id, value);
+      // console.log("Updating %s: %d", id, value);
     }
   };
 
