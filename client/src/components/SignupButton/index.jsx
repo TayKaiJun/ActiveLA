@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import { useNavigate } from "react-router-dom";
 import { createNewUser } from "../../services/user-service";
 import notify from "../CustomToast";
+import * as constants from "../../constants";
 
 function SignupButton(props) {
   const navigate = useNavigate();
@@ -16,28 +17,6 @@ function SignupButton(props) {
   const handleShow = () => setModalShow(true);
   let sportValue = "";
   let levelValue = 0;
-
-  const sports = [
-    "Badminton",
-    "Basketball",
-    "Baseball",
-    "Cricket",
-    "Hockey",
-    "Soccer",
-    "Rugby",
-    "Football",
-    "Ultimate",
-    "Volleyball",
-    "Swimming",
-  ];
-
-  const skillLevelMapping = [
-    (1, "No Experience"),
-    (2, "Beginner"),
-    (3, "Intermediate"),
-    (4, "Expert"),
-    (5, "Professional"),
-  ];
 
   const [data, setData] = useState({
     username: "",
@@ -204,14 +183,14 @@ function SignupButton(props) {
               <InputGroup>
                 <Form.Select id="sport" onChange={updateInterest}>
                   <option>Select Sport</option>
-                  {sports.map((sport) => (
+                  {Object.keys(constants.SPORT_TO_LOCATIONS_MAPPING).map((sport) => (
                     <option value={sport}>{sport}</option>
                   ))}
                 </Form.Select>
                 <Form.Select id="level" onChange={updateInterest}>
                   <option>Select Skill Level</option>
-                  {skillLevelMapping.map((proficiency, level) => (
-                    <option value={level}>{proficiency}</option>
+                  {constants.SKILL_LEVEL.map((proficiency) => (
+                    <option value={proficiency}>{proficiency}</option>
                   ))}
                 </Form.Select>
                 <Button variant="light" onClick={addInterest}>
