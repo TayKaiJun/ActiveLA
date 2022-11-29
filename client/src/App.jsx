@@ -10,6 +10,7 @@ import PostEvent from "./pages/Post-Event";
 import MyEvents from "./pages/MyEvents";
 import { getLoginState, setLoginState, setUserID, getUserID } from "./services/authUtil";
 import SignUpPage from "./pages/Signup";
+import EditProfile from "./pages/Profile/EditProfile";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

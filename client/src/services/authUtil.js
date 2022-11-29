@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
 import bcrypt from "bcryptjs";
+import notify from "../components/CustomToast";
+
 // Utility functions that to interact with session storage &
 // uses bcrypt to compare the hashed loginState
 
@@ -10,13 +12,13 @@ export function setLoginState(state) {
       sessionStorage.setItem("loginState", hashedState);
     })
     .catch(() => {
-      console.log("loginState not hashed successfully");
+      notify("loginState not hashed successfully", "error");
     });
 }
 
 export function getLoginState() {
   const loginState = sessionStorage.getItem("loginState");
-  if (loginState){
+  if (loginState) {
     const state = bcrypt.compareSync("true", loginState);
     return state;
   }

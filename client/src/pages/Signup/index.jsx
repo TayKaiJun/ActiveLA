@@ -10,34 +10,12 @@ import { Chip } from "primereact/chip";
 import { createNewUser } from "../../services/user-service";
 import FormLayout from "../../components/FormLayout";
 import notify from "../../components/CustomToast";
+import * as constants from "../../constants";
 
 function SignupForm(props) {
-
   const navigate = useNavigate();
   let sportValue = "";
   let levelValue = 0;
-
-  const sports = [
-    "Badminton",
-    "Basketball",
-    "Baseball",
-    "Cricket",
-    "Hockey",
-    "Soccer",
-    "Rugby",
-    "Football",
-    "Ultimate",
-    "Volleyball",
-    "Swimming",
-  ];
-
-  const skillLevelMapping = [
-    (1, "No Experience"),
-    (2, "Beginner"),
-    (3, "Intermediate"),
-    (4, "Expert"),
-    (5, "Professional"),
-  ];
 
   const [data, setData] = useState({
     username: "",
@@ -96,9 +74,9 @@ function SignupForm(props) {
     createNewUser(data)
       .then((res) => {
         if (res.success) {
-          notify("Created a new account!", "success")
+          notify("Created a new account!", "success");
           setData({});
-          navigate("/login")
+          navigate("/login");
         }
       })
       .catch((err) => {
@@ -127,27 +105,27 @@ function SignupForm(props) {
 
   const renderInterests = data.interests
     ? data.interests.map((interest) => {
-      const { sport, level } = interest;
-      const labelText = `${sport} (${level})`;
-      return (
-        <div style={{ marginLeft: "8px", marginTop: "10px", display: "inline-block" }}>
-          <Chip
-            label={labelText}
-            removable // TODO: Fix remove button not showing
-            onRemove={() => {
-              const newInterestArray = data.interests.filter((remainingInterest) => {
-                return remainingInterest.sport !== sport;
-              });
-              setData({
-                ...data,
-                interests: newInterestArray,
-              });
-              console.log(newInterestArray);
-            }}
-          />
-        </div>
-      );
-    })
+        const { sport, level } = interest;
+        const labelText = `${sport} (${level})`;
+        return (
+          <div style={{ marginLeft: "8px", marginTop: "10px", display: "inline-block" }}>
+            <Chip
+              label={labelText}
+              removable // TODO: Fix remove button not showing
+              onRemove={() => {
+                const newInterestArray = data.interests.filter((remainingInterest) => {
+                  return remainingInterest.sport !== sport;
+                });
+                setData({
+                  ...data,
+                  interests: newInterestArray,
+                });
+                console.log(newInterestArray);
+              }}
+            />
+          </div>
+        );
+      })
     : null;
 
   return (
@@ -196,16 +174,14 @@ function SignupForm(props) {
       <Form.Group className="mb-2">
         <Form.Label>Interests & Proficiency Level</Form.Label>
         <InputGroup>
-          <Form.Select id="sport" onChange={updateInterest}>
-            <option>Select Sport</option>
-            {sports.map((sport) => (
+          <Form.Select id="sport" onChange={updateInterest} defaultValue="Select Sport">
+            {Object.keys(constants.SPORT_TO_LOCATIONS_MAPPING).map((sport) => (
               <option value={sport}>{sport}</option>
             ))}
           </Form.Select>
-          <Form.Select id="level" onChange={updateInterest}>
-            <option>Select Skill Level</option>
-            {skillLevelMapping.map((proficiency, level) => (
-              <option value={level}>{proficiency}</option>
+          <Form.Select id="level" onChange={updateInterest} defaultValue="Select Skill Level">
+            {constants.SKILL_LEVEL.map((proficiency) => (
+              <option value={proficiency}>{proficiency}</option>
             ))}
           </Form.Select>
           <Button variant="light" onClick={addInterest}>
@@ -233,13 +209,12 @@ function SignupForm(props) {
   );
 }
 
-
 function SignUpPage() {
   return (
     <FormLayout>
       <SignupForm />
     </FormLayout>
-  )
+  );
 }
 
-export default SignUpPage
+export default SignUpPage;
