@@ -148,7 +148,7 @@ function postEvent() {
 
   return (
     <PageLayout>
-      <h2>Post An Event!</h2>
+      <h2>Host An Event!</h2>
 
       <Form>
         <Form.Group className="mb-3" controlId="name">
@@ -177,31 +177,31 @@ function postEvent() {
           </Form.Select>
           <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
         </Form.Group>
+        <Row>
+          <Form.Group as={Col} className="mb-3" controlId="date">
+            <Form.Label>Date: </Form.Label>
+            <Form.Control
+              type="date"
+              placeholder="eg. 10/24/2022"
+              value={form.date}
+              onChange={(e) => setField("date", e.target.value)}
+              isInvalid={!!errors.date}
+            />
+            <Form.Control.Feedback type="invalid">{errors.date}</Form.Control.Feedback>
+          </Form.Group>
 
-        <Form.Group className="mb-3" controlId="date">
-          <Form.Label>Date: </Form.Label>
-          <Form.Control
-            type="date"
-            placeholder="eg. 10/24/2022"
-            value={form.date}
-            onChange={(e) => setField("date", e.target.value)}
-            isInvalid={!!errors.date}
-          />
-          <Form.Control.Feedback type="invalid">{errors.date}</Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="time">
-          <Form.Label>Time:</Form.Label>
-          <Form.Control
-            type="time"
-            placeholder="eg. 2:00pm"
-            value={form.time}
-            onChange={(e) => setField("time", e.target.value)}
-            isInvalid={!!errors.time}
-          />
-          <Form.Control.Feedback type="invalid">{errors.time}</Form.Control.Feedback>
-        </Form.Group>
-
+          <Form.Group as={Col} className="mb-3" controlId="time">
+            <Form.Label>Time:</Form.Label>
+            <Form.Control
+              type="time"
+              placeholder="eg. 2:00pm"
+              value={form.time}
+              onChange={(e) => setField("time", e.target.value)}
+              isInvalid={!!errors.time}
+            />
+            <Form.Control.Feedback type="invalid">{errors.time}</Form.Control.Feedback>
+          </Form.Group>
+        </Row>
         <Form.Group className="mb-3" controlId="location">
           <Form.Label>Location:</Form.Label>
           <Form.Select
@@ -224,7 +224,7 @@ function postEvent() {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="ageGroup">
-          <Form.Label>Age Group</Form.Label>
+          <Form.Label>Age Group: </Form.Label>
           <Form.Select
             type="text"
             value={form.ageGroup}
@@ -255,7 +255,7 @@ function postEvent() {
         </Form.Group> */}
 
         <Form.Group className="mb-3" controlId="costs">
-          <Form.Label>Costs:</Form.Label>
+          <Form.Label>Cost:</Form.Label>
           <Form.Control
             type="text"
             placeholder="None / eg. $10"
@@ -293,7 +293,7 @@ function postEvent() {
           <Form.Group as={Col} className="mt-5" id="skillLevel">
             {["radio"].map((type) => (
               <div key={`inline-${type}`} className="mb-3">
-                <Form.Label>Skill Level: </Form.Label>
+                <Form.Label style={{ paddingRight: "10px" }}>Skill Level: </Form.Label>
                 <Form.Check
                   inline
                   label="Beginner"
