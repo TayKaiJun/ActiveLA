@@ -4,6 +4,7 @@ import { getRelatedEvents } from "../../services";
 import PageLayout from "../../components/PageLayout";
 import AuthContext from "../../services/authContext";
 import Events from "../Explore/components/Events";
+import GoingPendingEvents from "./components/goingPendingDisplay";
 
 function MyEvents() {
   const authContext = useContext(AuthContext);
@@ -39,10 +40,10 @@ function MyEvents() {
           <Events events={hostingEvents} />
         </TabPanel>
         <TabPanel header="Going">
-          <Events events={goingEvents} />
+          <GoingPendingEvents events={goingEvents} />
         </TabPanel>
         <TabPanel header="Pending">
-          <Events events={pendingEvents} />
+          <GoingPendingEvents events={pendingEvents} />
         </TabPanel>
       </TabView>
     </PageLayout>
