@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 
 function formatDate(dateStr) {
   const date = DateTime.fromISO(dateStr);
-  return date.toFormat("LL/dd/y");
+  return date.toFormat("y-LL-dd");
 }
 
 export { formatDate };
