@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout";
 import ExploreFilter from "./components/ExploreFilter";
 import Events from "./components/Events";
@@ -9,8 +10,11 @@ import {
   getUserByID,
   requestToJoinEvent
 } from "../../services";
+import notify from "../../components/CustomToast";
 
 function Explore() {
+
+  const navigate = useNavigate();
 
   const [filters, setFilters] = useState({});
   const [events, setEvents] = useState([]);
@@ -21,14 +25,15 @@ function Explore() {
   const [name, setName] = useState()
 
   useEffect(() => {
+    if (!uid){
+      return
+    }
     getUserByID(uid).then((res) => {
-      console.log(res)
       setName(res.data.User.name)
     }).catch((err) => {
       console.log(err)
     })
   }, [uid])
-
 
   const updateEventsOnFilterChange = async () => {
     const fetchedEvents = await getAllEvents(filters);
@@ -45,17 +50,19 @@ function Explore() {
 
   const requestJoinHandler = async (eid) => {
     if (!authContext.authState) {
-      // TODO: Auto redirect to login
-      console.log("Please login first")
+      navigate('/login')
+      notify("Login required", "error")
       return null
     }
+    notify("Request to join sent!", "success")
     const res = await requestToJoinEvent(uid, eid);
+    navigate('/MyEvents')
     return res;
   }
 
   return (
     <PageLayout>
-      <h2>Welcome { uid ? name : "to ActiveLA"} 👋</h2>
+      <h2>Welcome { uid && authContext.authState ? name : "to ActiveLA"} 👋</h2>
       <p className="mt-4">Discover Events</p>
       <p
         style={{

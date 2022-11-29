@@ -22,9 +22,8 @@ let Event = new Schema(
     ageGroup: {
       type: String, // Open
     },
-    playerNumber: {
-      // TODO: What is this exactly and can we possibly use len of one of its refs
-      type: String,
+    playerNumber: { // TODO: What is this exactly and can we possibly use len of one of its refs
+        type: String
     },
     costs: {
       type: String, // toggle
