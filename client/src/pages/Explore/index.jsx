@@ -5,35 +5,32 @@ import ExploreFilter from "./components/ExploreFilter";
 import Events from "./components/Events";
 import useIsFirstRender from "../../hooks/useIsFirstRender";
 import AuthContext from "../../services/authContext";
-import {
-  getAllEvents,
-  getUserByID,
-  requestToJoinEvent
-} from "../../services";
+import { getAllEvents, getUserByID, requestToJoinEvent } from "../../services";
 import notify from "../../components/CustomToast";
 
 function Explore() {
-
   const navigate = useNavigate();
 
   const [filters, setFilters] = useState({});
   const [events, setEvents] = useState([]);
   const [filterChangeObserver, setFilterChangeObserver] = useState(0);
 
-  const authContext = useContext(AuthContext)
-  const uid = authContext.getUser()
-  const [name, setName] = useState()
+  const authContext = useContext(AuthContext);
+  const uid = authContext.user;
+  const [name, setName] = useState();
 
   useEffect(() => {
-    if (!uid){
-      return
+    if (!uid) {
+      return;
     }
-    getUserByID(uid).then((res) => {
-      setName(res.data.User.name)
-    }).catch((err) => {
-      console.log(err)
-    })
-  }, [uid])
+    getUserByID(uid)
+      .then((res) => {
+        setName(res.data.User.name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [uid]);
 
   const updateEventsOnFilterChange = async () => {
     const fetchedEvents = await getAllEvents(filters);
@@ -49,20 +46,20 @@ function Explore() {
   }, [filterChangeObserver]);
 
   const requestJoinHandler = async (eid) => {
-    if (!authContext.authState) {
-      navigate('/login')
-      notify("Login required", "error")
-      return null
+    if (!authContext.isLoggedIn) {
+      navigate("/login");
+      notify("Login required", "error");
+      return null;
     }
-    notify("Request to join sent!", "success")
+    notify("Request to join sent!", "success");
     const res = await requestToJoinEvent(uid, eid);
-    navigate('/MyEvents')
+    navigate("/MyEvents");
     return res;
-  }
+  };
 
   return (
     <PageLayout>
-      <h2>Welcome { uid && authContext.authState ? name : "to ActiveLA"} 👋</h2>
+      <h2>Welcome {uid && authContext.isLoggedIn ? name : "to ActiveLA"} 👋</h2>
       <p className="mt-4">Discover Events</p>
       <p
         style={{

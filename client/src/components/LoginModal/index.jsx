@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 
 import React, { useState, useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -11,9 +11,6 @@ import AuthContext from "../../services/authContext";
 import notify from "../CustomToast";
 
 function LoginModal(props) {
-
-  const { callRefresh } = props;
-
   const [modalShow, setModalShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
@@ -48,11 +45,10 @@ function LoginModal(props) {
           .then((passwordCheck) => {
             if (passwordCheck) {
               authContext.setupSessionInfo(true, res.data.User._id);
-              notify("Login successful!", "success")
+              notify("Login successful!", "success");
               setData({});
               handleClose();
-              callRefresh();
-              navigate('/');
+              navigate("/");
             } else {
               setError({
                 ...formErrors,
@@ -62,8 +58,7 @@ function LoginModal(props) {
             }
           })
           .catch((err) => {
-            console.log(err.message)
-
+            console.log(err.message);
           });
       })
       .catch((err) => {
@@ -76,7 +71,10 @@ function LoginModal(props) {
 
   return (
     <>
-      <Button style={{fontWeight: "bold", color: "grey", backgroundColor: "transparent", border: "none"}}  onClick={handleShow}>
+      <Button
+        style={{ fontWeight: "bold", color: "grey", backgroundColor: "transparent", border: "none" }}
+        onClick={handleShow}
+      >
         Login
       </Button>
       <Modal show={modalShow} onHide={handleClose} size="s" aria-labelledby="contained-modal-title-vcenter" centered>
