@@ -53,7 +53,7 @@ function Explore() {
     }
     notify("Request to join sent!", "success");
     const res = await requestToJoinEvent(uid, eid);
-    navigate("/MyEvents");
+    navigate("/my-events");
     return res;
   };
 
