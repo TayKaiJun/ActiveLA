@@ -1,10 +1,9 @@
-import React, { useState, createContext } from "react";
-import * as authUtil from "./authUtil";
+import { createContext } from "react";
 
 export const AuthContext = createContext({
-  authState: false,
   setupSessionInfo: (userID) => {},
-  getUser: () => {}
+  isLoggedIn: false,
+  user: null,
 });
 
 export default AuthContext;

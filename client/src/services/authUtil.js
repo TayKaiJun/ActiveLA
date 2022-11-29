@@ -1,10 +1,10 @@
+/* eslint-disable no-undef */
 import bcrypt from "bcryptjs";
-
 // Utility functions that to interact with session storage &
 // uses bcrypt to compare the hashed loginState
 
 export function setLoginState(state) {
-  bcrypt
+  return bcrypt
     .hash(state ? "true" : "false", 10)
     .then((hashedState) => {
       sessionStorage.setItem("loginState", hashedState);
@@ -15,14 +15,12 @@ export function setLoginState(state) {
 }
 
 export function getLoginState() {
-  bcrypt
-    .compare(sessionStorage.getItem("loginState"), "true")
-    .then((loginCheck) => {
-      return loginCheck;
-    })
-    .catch(() => {
-      console.log("hash does not match");
-    });
+  const loginState = sessionStorage.getItem("loginState");
+  if (loginState){
+    const state = bcrypt.compareSync("true", loginState);
+    return state;
+  }
+  return null;
 }
 
 export function setUserID(uid) {

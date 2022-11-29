@@ -1,19 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link, useLocation, useNavigate} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import SignupButton from "../SignupButton";
 import LoginModal from "../LoginModal";
 import AuthContext from "../../services/authContext";
+import notify from "../CustomToast";
 
 const PATHS = {
   Explore: "/",
-  Activities: "/activities",
   Profile: "/profile",
-  PostEvent: "/postevent",
-  MyEvents: "/MyEvents",
+  "Host an event": "/postevent",
+  "My events": "/MyEvents",
 };
 
 function Header() {
@@ -22,14 +22,20 @@ function Header() {
   const navigate = useNavigate();
 
   const signOut = () => {
-    // TODO: Auto-redirect to some page
+    notify("Successfully signed out", "success");
     authContext.setupSessionInfo(false, "");
     navigate("/");
   };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="/">Active LA</Navbar.Brand>
+        <Button
+          style={{ color: "black", backgroundColor: "transparent", border: "none" }}
+          onClick={() => navigate("/")}
+        >
+          <h3>ActiveLA</h3>
+        </Button>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav
             activeKey={location.pathname}
@@ -39,7 +45,7 @@ function Header() {
               flexGrow: 1,
             }}
           >
-            {!authContext.authState ? (
+            {!authContext.isLoggedIn ? (
               <>
                 <LoginModal />
                 <SignupButton />
@@ -60,7 +66,13 @@ function Header() {
                     </Link>
                   </Nav.Link>
                 ))}
-                <Button onClick={signOut}> Sign out </Button>
+                <Button
+                  style={{ fontWeight: "bold", color: "grey", backgroundColor: "transparent", border: "none" }}
+                  onClick={signOut}
+                >
+                  {" "}
+                  Sign out{" "}
+                </Button>
               </>
             )}
           </Nav>
