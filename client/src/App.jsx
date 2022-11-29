@@ -40,6 +40,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/edit-profile" element={<EditProfile />}/>
           <Route path="/my-events" element={<MyEvents />} />
           <Route path="/post-event" element={<PostEvent />} />
         </Routes>

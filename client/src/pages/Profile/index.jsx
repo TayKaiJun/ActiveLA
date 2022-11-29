@@ -35,7 +35,7 @@ function Profile() {
   }, []);
 
   const editPressed = () => {
-    navigate("/profile/edit");
+    navigate("/profile/edit-profile");
   };
 
   return (
