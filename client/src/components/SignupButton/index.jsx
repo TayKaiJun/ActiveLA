@@ -182,14 +182,12 @@ function SignupButton(props) {
             <Form.Group className="mb-2">
               <Form.Label>Interests & Proficiency Level</Form.Label>
               <InputGroup>
-                <Form.Select id="sport" onChange={updateInterest}>
-                  <option>Select Sport</option>
+                <Form.Select id="sport" onChange={updateInterest} defaultValue="Select Sport">
                   {Object.keys(constants.SPORT_TO_LOCATIONS_MAPPING).map((sport) => (
                     <option value={sport}>{sport}</option>
                   ))}
                 </Form.Select>
-                <Form.Select id="level" onChange={updateInterest}>
-                  <option>Select Skill Level</option>
+                <Form.Select id="level" onChange={updateInterest} defaultValue="Select Skill Level">
                   {constants.SKILL_LEVEL.map((proficiency) => (
                     <option value={proficiency}>{proficiency}</option>
                   ))}
