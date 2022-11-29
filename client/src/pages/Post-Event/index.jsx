@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -6,11 +6,13 @@ import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout";
-import {addEventService} from "../../services";
+import { addEventService } from "../../services";
+import AuthContext from "../../services/authContext";
 import notify from "../../components/CustomToast";
 
 function postEvent() {
   const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
   /* For number of players */
   const playerNumArray = [];
   const maxPlayerNum = 15;
@@ -23,8 +25,7 @@ function postEvent() {
   const setDropDownFunc = (field) => {
     setDropDown(field);
   };
-
-  const uid = sessionStorage.getItem("userID");
+  const uid = authContext.user;
   const [form, setForm] = useState({ host: uid });
   const [errors, setErrors] = useState({});
   const setField = (field, value) => {
@@ -65,10 +66,9 @@ function postEvent() {
     } else {
       addEventService(form)
         .then((res) => {
-            notify("Successfully posted a new event!", "success")
-            navigate("/MyEvents")
-          }
-        )
+          notify("Successfully posted a new event!", "success");
+          navigate("/MyEvents");
+        })
         .catch((err) => console.log(err.message));
     }
   };
@@ -134,7 +134,6 @@ function postEvent() {
     { id: "43", sportsID: "Volleyball", sportLocation: "Students Activities Center Hall (Court 2)" },
   ];
 
-
   const [sport, setSport] = useState([]);
   const [location, setLocation] = useState([]);
 
@@ -152,7 +151,6 @@ function postEvent() {
       <h2>Post An Event!</h2>
 
       <Form>
-
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Sport: </Form.Label>
           <Form.Select
@@ -179,7 +177,6 @@ function postEvent() {
           </Form.Select>
           <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
         </Form.Group>
-        
 
         <Form.Group className="mb-3" controlId="date">
           <Form.Label>Date: </Form.Label>
@@ -204,7 +201,6 @@ function postEvent() {
           />
           <Form.Control.Feedback type="invalid">{errors.time}</Form.Control.Feedback>
         </Form.Group>
-
 
         <Form.Group className="mb-3" controlId="location">
           <Form.Label>Location:</Form.Label>
