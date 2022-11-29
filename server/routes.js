@@ -8,7 +8,8 @@ import {
     getRelatedEvents,
     acceptJoinRequest,
     deleteUser,
-    updateUser
+    updateUser,
+    checkIfRequested
 } from "./controllers/userController.js";
 
 import {
@@ -40,5 +41,6 @@ apiRoutes.delete('/deleteEvent', deleteEvent); // Query param event _id
 // Both
 apiRoutes.post('/requestToJoin', requestToJoinEvent) // Body includes uid and eventID
 apiRoutes.post('/acceptJoinRequest', acceptJoinRequest); // Body includes uid and eventID
+apiRoutes.get('/checkIfRequested', checkIfRequested) // takes in params uid and eid
 
 export default apiRoutes;

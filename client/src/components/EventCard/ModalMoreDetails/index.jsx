@@ -1,13 +1,35 @@
-import React, { useState } from "react";
-import ListGroup from "react-bootstrap/ListGroup";
+/* eslint no-nested-ternary: "off" */
 
+import React, { useState, useContext, useEffect } from "react";
+import ListGroup from "react-bootstrap/ListGroup";
+import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import AuthContext from "../../../services/authContext";
+import { checkIfRequested } from '../../../services'
 
 function ModalMoreDetails(props) {
   const { event, requestJoinHandler, modalImageDisplay } = props;
   const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
+  const authContext = useContext(AuthContext);
   const [show, setShow] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [going, setGoing] = useState(false);
+  
+  const navigate = useNavigate();
+
+  const hostID = event.host.id;
+  const uid = authContext.user;
+
+  const getIfEventRequested = async () => {
+    const res = await checkIfRequested(uid, hostID);
+    setPending(res.data.pending)
+    setGoing(res.data.going)
+  }
+
+  useEffect(() => {
+    getIfEventRequested();
+  }, [event])
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -39,9 +61,17 @@ function ModalMoreDetails(props) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => requestJoinHandler(_id)}>
-            Request to Join
-          </Button>
+          {
+            uid === hostID ? 
+              <p> You host this event </p> : 
+            pending ?  
+              <Button value="View request" onClick={navigate('/my-events')}/> :
+            going ?
+            <Button value="You are going" onClick={navigate('/my-events')}/> :
+            <Button variant="primary" onClick={() => requestJoinHandler(_id)}>
+              Request to Join
+            </Button>
+          }
         </Modal.Footer>
       </Modal>
     </>
