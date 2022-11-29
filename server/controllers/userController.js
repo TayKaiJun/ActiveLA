@@ -186,21 +186,31 @@ export const getRelatedEvents = async (req, res) => {
         const eventsPending = user.eventsPending;
         const eventsGoing = user.eventsGoing;
 
+        
         // A bit slow but it works
-        const hosting = {}
+        const hosting = []
         for (let i = 0; i < eventsHosting.length; i++) {
-            const e = await Event.find({ _id: eventsHosting[i] });
-            hosting[i] = e;
+            const e = await Event.findOne({ _id: eventsHosting[i] }).populate({
+                path: "host",
+                select: "name -_id",
+              });
+            hosting.push(e);
         }
-        const pending = {}
+        const pending = []
         for (let i = 0; i < eventsPending.length; i++) {
-            const e = await Event.find({ _id: eventsPending[i] });
-            pending[i] = e;
+            const e = await Event.findOne({ _id: eventsPending[i] }).populate({
+                path: "host",
+                select: "name -_id",
+              });
+            pending.push(e);
         }
-        const going = {}
+        const going = []
         for (let i = 0; i < eventsGoing.length; i++) {
-            const e = await Event.find({ _id: eventsGoing[i] });
-            going[i] = e;
+            const e = await Event.findOne({ _id: eventsGoing[i] }).populate({
+                path: "host",
+                select: "name -_id",
+              });
+            going.push(e);
         }
 
         return res.status(200).json({
