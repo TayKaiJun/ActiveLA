@@ -3,57 +3,63 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const User = new Schema({
-  // List attributes model will contain
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  pronouns: {
-    type: String,
-  },
-  about: {
-    type: String,
-  },
-  interests: [
-    {
-      sport: String,
-      level: Number, // Proficiency at the sport, 1 being lowest 5 being highest
+const User = new Schema(
+  {
+    // List attributes model will contain
+    username: {
+      type: String,
+      required: true,
+      unique: true,
     },
-  ],
-  eventsHosting: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Event",
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-  ],
-  eventsGoing: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Event",
+    password: {
+      type: String,
+      required: true,
     },
-  ],
-  eventsPending: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Event",
+    name: {
+      type: String,
+      required: true,
     },
-  ],
-});
+    pronouns: {
+      type: String,
+    },
+    about: {
+      type: String,
+    },
+    interests: [
+      {
+        sport: String,
+        level: Number, // Proficiency at the sport, 1 being lowest 5 being highest
+      },
+    ],
+    eventsHosting: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Event",
+      },
+    ],
+    eventsGoing: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Event",
+      },
+    ],
+    eventsPending: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Event",
+      },
+    ],
+  },
+  {
+    toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals
+    toObject: { virtuals: true }, // So `console.log()` and other functions that use `toObject()` include virtuals
+  }
+);
 
 User.index({
   username: "text",
