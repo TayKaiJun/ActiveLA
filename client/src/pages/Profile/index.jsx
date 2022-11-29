@@ -5,12 +5,13 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import AuthContext from "../../services/authContext";
 import PageLayout from "../../components/PageLayout";
 import { getUserByID } from "../../services/index";
-import AuthContext from "../../services/authContext";
+
 
 function Profile() {
-  const userID = useContext(AuthContext).getUser();
+  const userID = useContext(AuthContext).user;
   const navigate = useNavigate();
 
   const [data, setData] = useState({

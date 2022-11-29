@@ -74,8 +74,9 @@ function SignupButton(props) {
 
     createNewUser(data)
       .then((res) => {
-        if (res.success) {
+        if (res.data.success) {
           notify("Account created successfully", "success")
+
           navigate('/')
           setData({});
           handleClose();

@@ -7,14 +7,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import AuthContext from "../../../services/authContext";
 import * as constants from "../../../constants";
 import { getUserByID, updateUser } from "../../../services/index";
-import AuthContext from "../../../services/authContext";
+
 import PageLayout from "../../../components/PageLayout";
 import notify from "../../../components/CustomToast";
 
 function EditProfile() {
-  const userID = useContext(AuthContext).getUser();
+  const userID = useContext(AuthContext).user;
   const navigate = useNavigate();
 
   const [data, setData] = useState({
@@ -79,21 +80,19 @@ function EditProfile() {
   };
 
   const onFormSubmit = (e) => {
+    e.preventDefault();
     updateUser(userID, data)
       .then((res) => {
-        if (res.success) {
+        if (res.data.success) {
           notify("Profile updated successfully", "success");
           setData({});
           navigate("/profile");
-          console.log("YAYAYAY");
         } else {
           notify("Did not manage to update profile", "warning");
-          console.log("ohno");
         }
       })
       .catch((err) => {
         notify(err.message, "error");
-        console.log("whyyyy");
       });
   };
 
