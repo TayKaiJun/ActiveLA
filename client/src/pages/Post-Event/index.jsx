@@ -21,7 +21,7 @@ function postEvent() {
     setDropDown(field);
   };
 
-  const uid = sessionStorage.getItem("currentUser");
+  const uid = sessionStorage.getItem("userID");
   const [form, setForm] = useState({ host: uid });
   const [errors, setErrors] = useState({});
   const setField = (field, value) => {
