@@ -8,21 +8,17 @@ export default function Going() {
   const uid = sessionStorage.getItem("userID");
   const [goingEvents, setGoingEvents] = useState([]);
 
+  const getEvent = async () => {
+    const data = await getRelatedEvents(uid);
+    setGoingEvents(data.data.going);
+    console.log(data);
+    console.log(data.data.going);
+  };
+
   useEffect(() => {
-    const getEvent = async () => {
-      const data = await getRelatedEvents(uid);
-      setGoingEvents(data.going);
-      console.log(data.going);
-    };
     getEvent();
   }, []);
   console.log(goingEvents);
-
-  // useEffect(() => {
-  //   const returnValue = getRelatedEvents(uid);
-  //   console.log(returnValue);
-  //   return returnValue;
-  // }, []);
 
   return (
     <PageLayout>

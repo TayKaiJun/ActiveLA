@@ -27,23 +27,23 @@ function FiltersGroup(props) {
     onChange(filtersState);
   }, [changeCounter]);
 
-  const getFilterState = (filterName) => {
+  const getFilterState = (filterField) => {
     if (filtersState === null) {
       return null;
     }
-    if (filterName in filtersState) {
-      return filtersState[filterName];
+    if (filterField in filtersState) {
+      return filtersState[filterField];
     }
     return null;
   };
 
   const renderedFilters = filters.map((filterConfig) => {
-    const { type, name } = filterConfig;
-    const filterState = getFilterState(name);
+    const { type, name, field } = filterConfig;
+    const filterState = getFilterState(field);
     if (type === "dropdown") {
       return (
         <div
-          key={name}
+          key={field}
           style={{
             marginRight: 10,
           }}
@@ -54,7 +54,7 @@ function FiltersGroup(props) {
             onSelect={(eventKey) => {
               setFiltersState((prevState) => ({
                 ...prevState,
-                [name]: eventKey,
+                [field]: eventKey,
               }));
               setChangeCounter((prevState) => prevState + 1);
             }}
@@ -65,7 +65,7 @@ function FiltersGroup(props) {
     if (type === "reset") {
       return (
         <div
-          key={name}
+          key={field}
           style={{
             marginRight: 10,
           }}
@@ -91,11 +91,11 @@ function FiltersGroup(props) {
       >
         <ToggleFilter
           name={name}
-          checked={getFilterState(name)}
+          checked={getFilterState(field)}
           onToggle={(checked) => {
             setFiltersState((prevState) => ({
               ...prevState,
-              [name]: checked,
+              [field]: checked,
             }));
             setChangeCounter((prevState) => prevState + 1);
           }}

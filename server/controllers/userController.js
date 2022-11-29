@@ -5,7 +5,7 @@ import Event from "../models/event.model.js"
 
 export const findUserByUsername = async (req, res) => {
     try {
-        const user = await User.find({ username: req.query.username })
+        const user = await User.findOne({ username: req.query.username })
         return res.status(200).json({
             success: true,
             message: "Returned user by username",
@@ -22,7 +22,7 @@ export const findUserByUsername = async (req, res) => {
 
 export const findUserByEmail = async (req, res) => {
     try {
-        const user = await User.find({ email: req.query.email })
+        const user = await User.findOne({ email: req.query.email })
         return res.status(200).json({
             success: true,
             message: "Returned user by email",
@@ -56,7 +56,7 @@ export const login = async (req, res) => {
 
 export const findUserByID = async (req, res) => {
     try {
-        const user = await User.find({ _id: req.query.id })
+        const user = await User.findOne({ _id: req.query._id })
         return res.status(200).json({
             success: true,
             message: "Returned user by ID",
@@ -192,17 +192,26 @@ export const getRelatedEvents = async (req, res) => {
         // A bit slow but it works
         const hosting = []
         for (let i = 0; i < eventsHosting.length; i++) {
-            const e = await Event.findOne({ _id: eventsHosting[i] });
+            const e = await Event.findOne({ _id: eventsHosting[i] }).populate({
+                path: "host",
+                select: "name -_id",
+              });
             hosting.push(e);
         }
         const pending = []
         for (let i = 0; i < eventsPending.length; i++) {
-            const e = await Event.findOne({ _id: eventsPending[i] });
+            const e = await Event.findOne({ _id: eventsPending[i] }).populate({
+                path: "host",
+                select: "name -_id",
+              });
             pending.push(e);
         }
         const going = []
         for (let i = 0; i < eventsGoing.length; i++) {
-            const e = await Event.findOne({ _id: eventsGoing[i] });
+            const e = await Event.findOne({ _id: eventsGoing[i] }).populate({
+                path: "host",
+                select: "name -_id",
+              });
             going.push(e);
         }
 

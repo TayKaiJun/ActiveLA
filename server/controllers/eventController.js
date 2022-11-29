@@ -1,24 +1,66 @@
 import User from "../models/user.model.js";
-import Event from "../models/event.model.js"
+import Event from "../models/event.model.js";
 import mongoose from "mongoose";
+import { formatDate } from "../utils/index.js";
 
 /*
     Gets all events from the DB
     req -> The HTTP POST request sent to the server, in JSON format
     res -> HTTP response returned. Contains a lot of info can print out to see.
 */
+
+const buildFilterQuery = (filter) => {
+  const { date, name, ageGroup, location, free, skillLevel } = filter;
+  let filterQuery = {};
+  if (ageGroup !== undefined) {
+    filterQuery = { ...filterQuery, ageGroup };
+  }
+  if (name !== undefined) {
+    filterQuery = { ...filterQuery, name };
+  }
+  if (location !== undefined) {
+    filterQuery = { ...filterQuery, location };
+  }
+  if (free !== undefined) {
+    if (free) {
+      filterQuery = { ...filter, costs: { $in: ["None"] } };
+    } else {
+      filterQuery = { ...filter, costs: { $nin: ["None"] } };
+    }
+  }
+  if (skillLevel !== undefined) {
+    filterQuery = { ...filterQuery, skillLevel };
+  }
+  if (date !== undefined) {
+    filterQuery = { ...filter, date: formatDate(date) };
+  }
+  return filterQuery;
+};
+
 export const getAllEvents = async (req, res) => {
   const filter = req.body;
-  console.log(filter)
-
+  const { query } = filter;
+  const filterQuery = buildFilterQuery(filter);
+  const userMatch =
+    query !== undefined && query !== ""
+      ? {
+          $text: {
+            $search: filter.query,
+          },
+        }
+      : {};
   try {
-    const data = await Event.find({});
+    const data = await Event.find(filterQuery).populate({
+      path: "host",
+      select: "name -_id",
+      match: userMatch,
+    });
+    const filteredData = data.filter((event) => event.host?.name !== undefined);
     return res.status(200).json({
       success: true,
       message: "List of all events",
-      Event: data,
+      Event: filteredData,
     });
-
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -32,7 +74,7 @@ export const getAllEvents = async (req, res) => {
 export const addEvent = async (req, res) => {
   // Create a new event object using the passed in req. Follow the
   try {
-    const newEventID = new mongoose.Types.ObjectId()
+    const newEventID = new mongoose.Types.ObjectId();
     const event = new Event({
       _id: newEventID,
       name: req.body.name,
@@ -45,13 +87,12 @@ export const addEvent = async (req, res) => {
       skillLevel: req.body.skillLevel,
       host: req.body.host,
       pendingAccept: [],
-      attending: []
+      attending: [],
     });
 
-    await User.findByIdAndUpdate(
-      req.body.host,
-      {$push: {"eventsHosting": newEventID}}
-    )
+    await User.findByIdAndUpdate(req.body.host, {
+      $push: { eventsHosting: newEventID },
+    });
 
     await event.save();
     return res.status(201).json({
@@ -59,7 +100,6 @@ export const addEvent = async (req, res) => {
       message: "New event created",
       Event: event,
     });
-
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -79,12 +119,12 @@ export const getInterestedUsers = async (req, res) => {
     const pendingAccept = event.pendingAccept;
     const attendees = event.attending;
 
-    const pending = {}
+    const pending = {};
     for (let i = 0; i < pendingAccept.length; i++) {
       const user = await User.find({ _id: pendingAccept[i] });
       pending[i] = user;
     }
-    const attending = {}
+    const attending = {};
     for (let i = 0; i < attendees.length; i++) {
       const user = await User.find({ _id: attendees[i] });
       attending[i] = user;
@@ -94,8 +134,8 @@ export const getInterestedUsers = async (req, res) => {
       success: true,
       message: "Successfully returned pending and attending users",
       pending: pending,
-      attending: attending
-    })
+      attending: attending,
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -103,7 +143,7 @@ export const getInterestedUsers = async (req, res) => {
       err: err.message,
     });
   }
-}
+};
 
 // Pass in event ID
 export const deleteEvent = async (req, res) => {
@@ -111,8 +151,8 @@ export const deleteEvent = async (req, res) => {
     await Event.findByIdAndDelete(req.query._id);
     return res.status(202).json({
       success: true,
-      message: "Successfully deleted event"
-    })
+      message: "Successfully deleted event",
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -120,21 +160,18 @@ export const deleteEvent = async (req, res) => {
       err: err.message,
     });
   }
-}
+};
 
 // Query param as event _id
 // Request body as updated event
 export const updateEvent = async (req, res) => {
   try {
-    await Event.findByIdAndUpdate(
-      req.query._id, 
-      { $set: req.body }
-    )
+    await Event.findByIdAndUpdate(req.query._id, { $set: req.body });
     return res.status(201).json({
       success: true,
       message: "Successfully updated event.",
-      event: req.body
-    })
+      event: req.body,
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -142,4 +179,4 @@ export const updateEvent = async (req, res) => {
       error: err.message,
     });
   }
-}
+};

@@ -8,22 +8,17 @@ export default function Pending() {
   const uid = sessionStorage.getItem("userID");
   const [pendingEvents, setPendingEvents] = useState([]);
 
+  const getEvent = async () => {
+    const data = await getRelatedEvents(uid);
+    setPendingEvents(data.data.pending);
+    console.log(data);
+    console.log(data.data.pending);
+  };
+
   useEffect(() => {
-    const returnValue = async () => {
-      const data = await getRelatedEvents(uid);
-      setPendingEvents(data.pending);
-      console.log(data);
-    };
-    returnValue();
+    getEvent();
   }, []);
   console.log(pendingEvents);
-
-  // useEffect(() => {
-  //   const returnValue = getRelatedEvents(uid);
-  //   console.log(returnValue);
-  //   return returnValue;
-  // }, []);
-
   return (
     <PageLayout>
       <NavBarry />

@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function ModalMoreDetails(props) {
-  const { event, requestJoinHandler, modalImageDisplay} = props;
+  const { event, requestJoinHandler, modalImageDisplay } = props;
   const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
   const [show, setShow] = useState(false);
 
@@ -32,7 +32,7 @@ function ModalMoreDetails(props) {
             <ListGroup.Item>Skill Level: {skillLevel}</ListGroup.Item>
             <ListGroup.Item>Age Group: {ageGroup}</ListGroup.Item>
             <ListGroup.Item>Number of Players Looking For: {playerNumber}</ListGroup.Item>
-            <ListGroup.Item>Costs: {costs}</ListGroup.Item>
+            <ListGroup.Item>Costs: {costs === undefined ? "None" : costs}</ListGroup.Item>
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>

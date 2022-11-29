@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
 import Activities from "./pages/Activities";
-// import { AuthProvider } from "./services/authContext";
 import { AuthContext } from "./services/authContext";
 import PostEvent from "./pages/Post-Event";
 import MyEvents from "./pages/MyEvents";

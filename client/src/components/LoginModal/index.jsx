@@ -38,10 +38,10 @@ function LoginModal(props) {
         });
 
         bcrypt
-          .compare(data.password, res.data.User[0].password)
+          .compare(data.password, res.data.User.password)
           .then((passwordCheck) => {
             if (passwordCheck) {
-              authContext.setupSessionInfo(true, res.data.User[0]._id);
+              authContext.setupSessionInfo(true, res.data.User._id);
               console.log("login successful"); // TODO: make a toast for this instead
               setData({});
               handleClose();

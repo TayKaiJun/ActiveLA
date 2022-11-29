@@ -4,7 +4,7 @@ import * as authUtil from "./authUtil";
 export const AuthContext = createContext({
   authState: false,
   setupSessionInfo: (userID) => {},
-  getUser: () => {},
+  getUser: () => {}
 });
 
 export default AuthContext;

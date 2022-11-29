@@ -23,7 +23,7 @@ export default function Hosting() {
   return (
     <PageLayout>
       <NavBarry />
-      <h1> This should display the HOSTING subpage</h1>
+      <h1> This should display the HOSTING subpage </h1>
       <Events events={hostingEvents} />
     </PageLayout>
   );
