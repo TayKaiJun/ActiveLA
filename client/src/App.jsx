@@ -39,8 +39,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/MyEvents" element={<MyEvents />} />
-          <Route path="/PostEvent" element={<PostEvent />} />
+          <Route path="/my-events" element={<MyEvents />} />
+          <Route path="/post-event" element={<PostEvent />} />
         </Routes>
       </Router>
       <ToastContainer />
