@@ -67,7 +67,7 @@ function postEvent() {
       addEventService(form)
         .then((res) => {
           notify("Successfully posted a new event!", "success");
-          navigate("/MyEvents");
+          navigate("/my-events");
         })
         .catch((err) => console.log(err.message));
     }
