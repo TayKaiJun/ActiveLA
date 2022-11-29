@@ -15,14 +15,12 @@ export function setLoginState(state) {
 }
 
 export function getLoginState() {
-  bcrypt
-    .compare(sessionStorage.getItem("loginState"), "true")
-    .then((loginCheck) => {
-      return loginCheck;
-    })
-    .catch(() => {
-      console.log("hash does not match");
-    });
+  const loginState = sessionStorage.getItem("loginState");
+  if (loginState){
+    const state = bcrypt.compareSync("true", loginState);
+    return state;
+  }
+  return null;
 }
 
 export function setUserID(uid) {

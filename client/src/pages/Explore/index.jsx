@@ -25,6 +25,9 @@ function Explore() {
   const [name, setName] = useState()
 
   useEffect(() => {
+    if (!uid){
+      return
+    }
     getUserByID(uid).then((res) => {
       setName(res.data.User.name)
     }).catch((err) => {

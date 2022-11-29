@@ -153,7 +153,7 @@ function SignupButton(props) {
 
   return (
     <>
-      <Button className="ms-2 btn btn-primary" variant="primary" onClick={handleShow}>
+      <Button style={{fontWeight: "bold", color: "grey", backgroundColor: "transparent", border: "none"}} onClick={handleShow}>
         Sign Up
       </Button>
 

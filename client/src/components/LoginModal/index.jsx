@@ -11,6 +11,9 @@ import AuthContext from "../../services/authContext";
 import notify from "../CustomToast";
 
 function LoginModal(props) {
+
+  const { callRefresh } = props;
+
   const [modalShow, setModalShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
@@ -48,7 +51,8 @@ function LoginModal(props) {
               notify("Login successful!", "success")
               setData({});
               handleClose();
-              navigate('/')
+              callRefresh();
+              navigate('/');
             } else {
               setError({
                 ...formErrors,
@@ -72,7 +76,7 @@ function LoginModal(props) {
 
   return (
     <>
-      <Button className="me-2 ms-5 btn btn-primary" variant="primary" onClick={handleShow}>
+      <Button style={{fontWeight: "bold", color: "grey", backgroundColor: "transparent", border: "none"}}  onClick={handleShow}>
         Login
       </Button>
       <Modal show={modalShow} onHide={handleClose} size="s" aria-labelledby="contained-modal-title-vcenter" centered>
