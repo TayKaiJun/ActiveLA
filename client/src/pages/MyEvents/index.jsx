@@ -1,18 +1,50 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import React, { useState, useContext, useEffect } from "react";
+import { TabView, TabPanel } from "primereact/tabview";
+import { getRelatedEvents } from "../../services";
 import PageLayout from "../../components/PageLayout";
-import Pending from "./navbarComponents/pending";
-import Hosting from "./navbarComponents/hosting";
-import Going from "./navbarComponents/going";
-import Navbarry from "./Navbar";
+import AuthContext from "../../services/authContext";
+import Events from "../Explore/components/Events";
 
 function MyEvents() {
+  const authContext = useContext(AuthContext);
+  const uid = authContext.user;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [goingEvents, setGoingEvents] = useState([]);
+  const [pendingEvents, setPendingEvents] = useState([]);
+  const [hostingEvents, setHostingEvents] = useState([]);
+
+  const getEvents = async () => {
+    if (uid !== null) {
+      const res = await getRelatedEvents(uid);
+      const { hosting, going, pending } = res.data;
+      setPendingEvents(pending);
+      setGoingEvents(going);
+      setHostingEvents(hosting);
+    }
+  };
+
+  useEffect(() => {
+    getEvents();
+  }, [uid]);
+
+  const handleTabChange = async (e) => {
+    setActiveIndex(e.index);
+    await getEvents();
+  };
+
   return (
     <PageLayout>
-      <Navbarry />
+      <TabView activeIndex={activeIndex} onTabChange={handleTabChange}>
+        <TabPanel header="Hosting">
+          <Events events={hostingEvents} />
+        </TabPanel>
+        <TabPanel header="Going">
+          <Events events={goingEvents} />
+        </TabPanel>
+        <TabPanel header="Pending">
+          <Events events={pendingEvents} />
+        </TabPanel>
+      </TabView>
     </PageLayout>
   );
 }

@@ -8,9 +8,6 @@ import LoginPage from "./pages/Login";
 import { AuthContext } from "./services/authContext";
 import PostEvent from "./pages/Post-Event";
 import MyEvents from "./pages/MyEvents";
-import Going from "./pages/MyEvents/navbarComponents/going";
-import Pending from "./pages/MyEvents/navbarComponents/pending";
-import Hosting from "./pages/MyEvents/navbarComponents/hosting";
 import { getLoginState, setLoginState, setUserID, getUserID } from "./services/authUtil";
 import SignUpPage from "./pages/Signup";
 import EditProfile from "./pages/Profile/EditProfile";
@@ -42,13 +39,9 @@ function App() {
           <Route path="/" element={<Explore />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/profile" element={<Profile />}/>
-          <Route path="/profile/edit" element={<EditProfile />} />
-          <Route path="/MyEvents" element={<MyEvents />} />
-          <Route path="/going" element={<Going />} />
-          <Route path="/hosting" element={<Hosting />} />
-          <Route path="/pending" element={<Pending />} />
-          <Route path="/PostEvent" element={<PostEvent />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/my-events" element={<MyEvents />} />
+          <Route path="/post-event" element={<PostEvent />} />
         </Routes>
       </Router>
       <ToastContainer />

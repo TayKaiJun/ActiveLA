@@ -12,8 +12,8 @@ import notify from "../CustomToast";
 const PATHS = {
   Explore: "/",
   Profile: "/profile",
-  "Host an event": "/postevent",
-  "My events": "/MyEvents",
+  "Host Event": "/post-event",
+  "My Events": "/my-events",
 };
 
 function Header() {
