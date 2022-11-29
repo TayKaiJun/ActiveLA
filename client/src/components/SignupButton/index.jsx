@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import { useNavigate } from "react-router-dom";
 import { createNewUser } from "../../services/user-service";
 import notify from "../CustomToast";
+import * as constants from "../../constants";
 
 function SignupButton(props) {
   const navigate = useNavigate();
@@ -15,29 +16,7 @@ function SignupButton(props) {
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
   let sportValue = "";
-  let levelValue = 0;
-
-  const sports = [
-    "Badminton",
-    "Basketball",
-    "Baseball",
-    "Cricket",
-    "Hockey",
-    "Soccer",
-    "Rugby",
-    "Football",
-    "Ultimate",
-    "Volleyball",
-    "Swimming",
-  ];
-
-  const skillLevelMapping = [
-    (1, "No Experience"),
-    (2, "Beginner"),
-    (3, "Intermediate"),
-    (4, "Expert"),
-    (5, "Professional"),
-  ];
+  let levelValue = "";
 
   const [data, setData] = useState({
     username: "",
@@ -95,8 +74,9 @@ function SignupButton(props) {
 
     createNewUser(data)
       .then((res) => {
-        if (res.success) {
+        if (res.data.success) {
           notify("Account created successfully", "success")
+
           navigate('/')
           setData({});
           handleClose();
@@ -111,10 +91,10 @@ function SignupButton(props) {
     const { id, value } = e.target;
     if (id === "sport") {
       sportValue = value;
-      console.log("Updating %s: %s", id, value);
+      // console.log("Updating %s: %s", id, value);
     } else {
       levelValue = value;
-      console.log("Updating %s: %d", id, value);
+      // console.log("Updating %s: %d", id, value);
     }
   };
 
@@ -202,16 +182,14 @@ function SignupButton(props) {
             <Form.Group className="mb-2">
               <Form.Label>Interests & Proficiency Level</Form.Label>
               <InputGroup>
-                <Form.Select id="sport" onChange={updateInterest}>
-                  <option>Select Sport</option>
-                  {sports.map((sport) => (
+                <Form.Select id="sport" onChange={updateInterest} defaultValue="Select Sport">
+                  {Object.keys(constants.SPORT_TO_LOCATIONS_MAPPING).map((sport) => (
                     <option value={sport}>{sport}</option>
                   ))}
                 </Form.Select>
-                <Form.Select id="level" onChange={updateInterest}>
-                  <option>Select Skill Level</option>
-                  {skillLevelMapping.map((proficiency, level) => (
-                    <option value={level}>{proficiency}</option>
+                <Form.Select id="level" onChange={updateInterest} defaultValue="Select Skill Level">
+                  {constants.SKILL_LEVEL.map((proficiency) => (
+                    <option value={proficiency}>{proficiency}</option>
                   ))}
                 </Form.Select>
                 <Button variant="light" onClick={addInterest}>

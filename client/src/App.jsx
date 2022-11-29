@@ -13,6 +13,7 @@ import Pending from "./pages/MyEvents/navbarComponents/pending";
 import Hosting from "./pages/MyEvents/navbarComponents/hosting";
 import { getLoginState, setLoginState, setUserID, getUserID } from "./services/authUtil";
 import SignUpPage from "./pages/Signup";
+import EditProfile from "./pages/Profile/EditProfile";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,7 +42,8 @@ function App() {
           <Route path="/" element={<Explore />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />}/>
+          <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/MyEvents" element={<MyEvents />} />
           <Route path="/going" element={<Going />} />
           <Route path="/hosting" element={<Hosting />} />
