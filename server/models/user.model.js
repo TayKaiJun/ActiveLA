@@ -33,7 +33,7 @@ const User = new Schema(
     interests: [
       {
         sport: String,
-        level: Number, // Proficiency at the sport, 1 being lowest 5 being highest
+        level: String,
       },
     ],
     eventsHosting: [
