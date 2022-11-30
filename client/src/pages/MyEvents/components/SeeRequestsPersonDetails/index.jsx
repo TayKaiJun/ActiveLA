@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import AccordionBody from "react-bootstrap/esm/AccordionBody";
 import { acceptJoinRequest, getUserByID } from "../../../../services";
 import notify from "../../../../components/CustomToast";
 
-function handleDecline() {}
 function PersonDetails(props) {
+  const navigate = useNavigate();
   const { event } = props;
   const userIDs = event.pendingAccept;
   const eventID = event.id;
@@ -32,10 +33,12 @@ function PersonDetails(props) {
     generateUsers();
   }, []);
 
+  const handleDecline = (uid) => {};
+
   const handleAccept = (uid) => {
     acceptJoinRequest(uid, eventID)
       .then((res) => {
-        notify("Accepted user!", "success");
+        navigate(0);
         console.log(uid);
       })
       .catch((err) => console.log(err.message));

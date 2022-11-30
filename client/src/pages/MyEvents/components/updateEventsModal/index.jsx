@@ -16,20 +16,17 @@ function UpdateEventsModal(props) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Update Event
+      <Button variant="danger" onClick={handleShow}>
+        Delete Event
       </Button>{" "}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Update Event</Modal.Title>
+          <Modal.Title>Are you sure?</Modal.Title>
         </Modal.Header>
         <UpdateEventsFormInModal eventID={eventID} />
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
+            I changed my mind
           </Button>
         </Modal.Footer>
       </Modal>
