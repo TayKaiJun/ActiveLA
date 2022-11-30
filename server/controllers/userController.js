@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import Event from "../models/event.model.js";
-import { ObjectId } from "mongodb";
+import { ObjectID } from "bson";
 
 export const findUserByUsername = async (req, res) => {
   try {
