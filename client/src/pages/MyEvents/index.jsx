@@ -5,6 +5,7 @@ import PageLayout from "../../components/PageLayout";
 import AuthContext from "../../services/authContext";
 import Events from "../Explore/components/Events";
 import GoingPendingEvents from "./components/goingPendingDisplay";
+import HostingEvents from "./components/hostingDisplay";
 
 function MyEvents() {
   const authContext = useContext(AuthContext);
@@ -37,7 +38,7 @@ function MyEvents() {
     <PageLayout>
       <TabView activeIndex={activeIndex} onTabChange={handleTabChange}>
         <TabPanel header="Hosting">
-          <Events events={hostingEvents} />
+          <HostingEvents events={hostingEvents} />
         </TabPanel>
         <TabPanel header="Going">
           <GoingPendingEvents events={goingEvents} />
