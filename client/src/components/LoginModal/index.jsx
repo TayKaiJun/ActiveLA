@@ -95,15 +95,18 @@ function LoginModal(props) {
               Forgot your password? Reset <a href="www.google.com">here</a>.
             </Form.Text>
             <Form.Group>
-              <Button variant="primary" type="submit">
+              <Button
+                style={{
+                  marginTop: 10,
+                }}
+                variant="primary"
+                type="submit"
+              >
                 Submit
               </Button>
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={handleClose}>Close</Button>
-        </Modal.Footer>
       </Modal>
     </>
   );
