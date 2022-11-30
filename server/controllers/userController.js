@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import Event from "../models/event.model.js";
-import { ObjectID } from "bson";
+import { ObjectId } from "mongodb";
 
 export const findUserByUsername = async (req, res) => {
   try {
@@ -223,30 +223,26 @@ export const getRelatedEvents = async (req, res) => {
 
 export const checkIfRequested = async (req, res) => {
   try {
-    const uid = new ObjectID(req.query.uid);
-    const eid = req.query.eid;
+    const uid = ObjectId(req.query.uid);
+    const eid = ObjectId(req.query.eid);
 
-    console.log(eid)
     let pending = false;
     let going = false;
 
     const user = await User.findById(uid)
 
-    // TODO: comparing objectID does not work
     for (let event of user.eventsGoing) {
-      if (event._id.equals(eid)){
+      if (event._id.toString() == eid._id.toString()){
         going = true;
         break;
       }
     }
-
     for (let event of user.eventsPending) {
-      if (event._id.equals(eid)){
+      if (event._id.toString() == eid._id.toString()){
         pending = true;
         break;
       }
     }
-
     return res.status(200).json({
       success: true,
       message: "Returned if user has requested to join the event.",

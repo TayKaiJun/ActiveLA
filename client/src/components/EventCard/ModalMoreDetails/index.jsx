@@ -19,17 +19,22 @@ function ModalMoreDetails(props) {
   const navigate = useNavigate();
 
   const hostID = event.host.id;
+  const eid = _id;
   const uid = authContext.user;
 
   const getIfEventRequested = async () => {
-    const res = await checkIfRequested(uid, hostID);
-    setPending(res.data.pending)
-    setGoing(res.data.going)
+    const res = await checkIfRequested(uid, eid);
+    if (res.data.success){
+      setPending(res.data.pending)
+      setGoing(res.data.going)
+    }
   }
 
   useEffect(() => {
-    getIfEventRequested();
-  }, [event])
+    if (authContext.isLoggedIn){
+      getIfEventRequested();
+    }
+  }, [event, authContext.user])
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -65,9 +70,13 @@ function ModalMoreDetails(props) {
             uid === hostID ? 
               <p> You host this event </p> : 
             pending ?  
-              <Button value="View request" onClick={navigate('/my-events')}/> :
+              <Button onClick={() => navigate('/my-events')}>
+                Previously requested
+              </Button> :
             going ?
-            <Button value="You are going" onClick={navigate('/my-events')}/> :
+              <Button onClick={() => navigate('/my-events')}>
+                You are going
+              </Button> :
             <Button variant="primary" onClick={() => requestJoinHandler(_id)}>
               Request to Join
             </Button>
