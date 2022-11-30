@@ -14,7 +14,7 @@ import footballImage from "./images/football.png";
 import cricketImage from "./images/cricket.png";
 import basketballImage from "./images/basketball.png";
 import baseballImage from "./images/baseball.png";
-import UpdateEventsModal from "../updateEventsModal";
+import DeleteEventModal from "../DeleteEventModal";
 import SeeRequestsModal from "../SeeRequestsModal";
 
 function ImageDisplay(props) {
@@ -70,7 +70,7 @@ function HostingCard(props) {
           <ListGroup.Item>Number of Players Looking For: {playerNumber}</ListGroup.Item>
           <ListGroup.Item>Costs: {costs === undefined ? "None" : costs}</ListGroup.Item>
         </ListGroup>
-        <UpdateEventsModal eventID={_id} />
+        <DeleteEventModal eventID={_id} />
         <SeeRequestsModal event={event} />
       </Card.Body>
     </Card>

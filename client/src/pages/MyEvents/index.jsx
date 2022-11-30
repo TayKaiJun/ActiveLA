@@ -4,7 +4,8 @@ import { getRelatedEvents } from "../../services";
 import PageLayout from "../../components/PageLayout";
 import AuthContext from "../../services/authContext";
 import Events from "../Explore/components/Events";
-import GoingPendingEvents from "./components/goingPendingDisplay";
+import GoingEvents from "./components/goingDisplay";
+import PendingEvents from "./components/pendingDisplay";
 import HostingEvents from "./components/hostingDisplay";
 
 function MyEvents() {
@@ -41,10 +42,10 @@ function MyEvents() {
           <HostingEvents events={hostingEvents} />
         </TabPanel>
         <TabPanel header="Going">
-          <GoingPendingEvents events={goingEvents} />
+          <GoingEvents events={goingEvents} />
         </TabPanel>
         <TabPanel header="Pending">
-          <GoingPendingEvents events={pendingEvents} />
+          <PendingEvents events={pendingEvents} />
         </TabPanel>
       </TabView>
     </PageLayout>
