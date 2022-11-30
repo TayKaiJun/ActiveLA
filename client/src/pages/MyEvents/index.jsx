@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { TabView, TabPanel } from "primereact/tabview";
+import PageStatus from "../../global/page-status";
 import { getRelatedEvents } from "../../services";
 import PageLayout from "../../components/PageLayout";
 import AuthContext from "../../services/authContext";
@@ -12,11 +13,14 @@ function MyEvents() {
   const [goingEvents, setGoingEvents] = useState([]);
   const [pendingEvents, setPendingEvents] = useState([]);
   const [hostingEvents, setHostingEvents] = useState([]);
+  const pageStatus = useContext(PageStatus);
 
   const getEvents = async () => {
     if (uid !== null) {
+      pageStatus.updatePageStatus(true);
       const res = await getRelatedEvents(uid);
       const { hosting, going, pending } = res.data;
+      pageStatus.updatePageStatus(false);
       setPendingEvents(pending);
       setGoingEvents(going);
       setHostingEvents(hosting);

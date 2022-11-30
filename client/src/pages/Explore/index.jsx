@@ -5,6 +5,8 @@ import ExploreFilter from "./components/ExploreFilter";
 import Events from "./components/Events";
 import useIsFirstRender from "../../hooks/useIsFirstRender";
 import AuthContext from "../../services/authContext";
+import PageStatus from "../../global/page-status";
+
 import { getAllEvents, getUserByID, requestToJoinEvent } from "../../services";
 import notify from "../../components/CustomToast";
 
@@ -16,6 +18,7 @@ function Explore() {
   const [filterChangeObserver, setFilterChangeObserver] = useState(0);
 
   const authContext = useContext(AuthContext);
+  const pageStatus = useContext(PageStatus);
   const uid = authContext.user;
   const [name, setName] = useState();
 
@@ -33,8 +36,10 @@ function Explore() {
   }, [uid]);
 
   const updateEventsOnFilterChange = async () => {
+    pageStatus.updatePageStatus(true);
     const fetchedEvents = await getAllEvents(filters);
     setEvents(fetchedEvents);
+    pageStatus.updatePageStatus(false);
   };
 
   const firstRender = useIsFirstRender();

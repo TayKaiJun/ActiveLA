@@ -75,9 +75,9 @@ function SignupButton(props) {
     createNewUser(data)
       .then((res) => {
         if (res.data.success) {
-          notify("Account created successfully", "success")
+          notify("Account created successfully", "success");
 
-          navigate('/')
+          navigate("/");
           setData({});
           handleClose();
         }
@@ -133,7 +133,10 @@ function SignupButton(props) {
 
   return (
     <>
-      <Button style={{fontWeight: "bold", color: "grey", backgroundColor: "transparent", border: "none"}} onClick={handleShow}>
+      <Button
+        style={{ fontWeight: "bold", color: "grey", backgroundColor: "transparent", border: "none" }}
+        onClick={handleShow}
+      >
         Sign Up
       </Button>
 
@@ -211,16 +214,11 @@ function SignupButton(props) {
               {formErrors.confirmPassword && <p className="text-danger">{formErrors.confirmPassword}</p>}
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button style={{ marginTop: 10 }} variant="primary" type="submit">
               Submit
             </Button>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );
