@@ -6,6 +6,7 @@ import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
 import LoginPage from "./pages/Login";
 import { AuthContext } from "./services/authContext";
+import PageStatus from "./global/page-status";
 import PostEvent from "./pages/Post-Event";
 import MyEvents from "./pages/MyEvents";
 import { getLoginState, setLoginState, setUserID, getUserID } from "./services/authUtil";
@@ -16,6 +17,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [refresh, setRefresh] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const setupSessionInfo = (loginState, uid) => {
     setLoginState(loginState)
@@ -27,6 +29,10 @@ function App() {
       });
   };
 
+  const updatePageStatus = (status) => {
+    setIsLoading(status);
+  };
+
   useEffect(() => {
     setIsLoggedIn(getLoginState());
     setUser(getUserID());
@@ -34,17 +40,20 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ setupSessionInfo, user, isLoggedIn }}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Explore />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/my-events" element={<MyEvents />} />
-          <Route path="/post-event" element={<PostEvent />} />
-        </Routes>
-      </Router>
-      <ToastContainer />
+      <PageStatus.Provider value={{ updatePageStatus, isLoading }}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Explore />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/edit-profile" element={<EditProfile />} />
+            <Route path="/my-events" element={<MyEvents />} />
+            <Route path="/post-event" element={<PostEvent />} />
+          </Routes>
+        </Router>
+        <ToastContainer />
+      </PageStatus.Provider>
     </AuthContext.Provider>
   );
 }
