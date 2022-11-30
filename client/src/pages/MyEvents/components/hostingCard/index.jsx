@@ -15,6 +15,7 @@ import cricketImage from "./images/cricket.png";
 import basketballImage from "./images/basketball.png";
 import baseballImage from "./images/baseball.png";
 import UpdateEventsModal from "../updateEventsModal";
+import SeeRequestsModal from "../SeeRequestsModal";
 
 function ImageDisplay(props) {
   const { event } = props;
@@ -48,8 +49,6 @@ function ImageDisplay(props) {
   }
 }
 
-function displayModal(props) {}
-
 function HostingCard(props) {
   const { event, requestJoinHandler } = props;
   const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
@@ -72,9 +71,7 @@ function HostingCard(props) {
           <ListGroup.Item>Costs: {costs === undefined ? "None" : costs}</ListGroup.Item>
         </ListGroup>
         <UpdateEventsModal eventID={_id} />
-        <Button variant="primary" onClick={displayModal}>
-          See Requests
-        </Button>
+        <SeeRequestsModal event={event} />
       </Card.Body>
     </Card>
   );

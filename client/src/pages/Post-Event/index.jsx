@@ -330,7 +330,7 @@ function postEvent() {
           <Form.Control
             type="text"
             placeholder="eg Beginner/Intermediate/Advanced"
-            value={form.skillLevel}
+            value={form.skillLevel} 
             onChange={(e) => setField("skillLevel", e.target.value)}
             isInvalid={!!errors.skillLevel}
           />
