@@ -52,7 +52,7 @@ export const getAllEvents = async (req, res) => {
   try {
     const data = await Event.find(filterQuery).populate({
       path: "host",
-      select: "name -_id",
+      select: "name",
       match: userMatch,
     });
     const filteredData = data.filter((event) => event.host?.name !== undefined);

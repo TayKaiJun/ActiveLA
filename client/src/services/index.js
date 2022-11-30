@@ -151,3 +151,13 @@ export async function requestToJoinEvent(uid, eventID) {
     return error;
   }
 }
+
+export async function checkIfRequested(uid, eid) {
+  try {
+    const resp = await http.get(`/checkIfRequested?uid=${uid}&eid=${eid}`)
+    return resp;
+  } catch (error) {
+    console.log(error.message);
+    return error;
+  }
+}

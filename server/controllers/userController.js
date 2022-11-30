@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import Event from "../models/event.model.js";
+import { ObjectId } from "mongodb";
 
 export const findUserByUsername = async (req, res) => {
   try {
@@ -184,21 +185,21 @@ export const getRelatedEvents = async (req, res) => {
         path: "eventsHosting",
         populate: {
           path: "host",
-          select: "name -_id",
+          select: "name",
         },
       })
       .populate({
         path: "eventsPending",
         populate: {
           path: "host",
-          select: "name -_id",
+          select: "name",
         },
       })
       .populate({
         path: "eventsGoing",
         populate: {
           path: "host",
-          select: "name -_id",
+          select: "name",
         },
       });
 
@@ -219,6 +220,44 @@ export const getRelatedEvents = async (req, res) => {
     });
   }
 };
+
+export const checkIfRequested = async (req, res) => {
+  try {
+    const uid = ObjectId(req.query.uid);
+    const eid = ObjectId(req.query.eid);
+
+    let pending = false;
+    let going = false;
+
+    const user = await User.findById(uid)
+
+    for (let event of user.eventsGoing) {
+      if (event._id.toString() == eid._id.toString()){
+        going = true;
+        break;
+      }
+    }
+    for (let event of user.eventsPending) {
+      if (event._id.toString() == eid._id.toString()){
+        pending = true;
+        break;
+      }
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Returned if user has requested to join the event.",
+      pending: pending,
+      going: going
+    })
+
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get join status.",
+      error: err.message,
+    });
+  }
+}
 
 // Query param as user _id
 // Request body as updated event
