@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import AccordionBody from "react-bootstrap/esm/AccordionBody";
-import { acceptJoinRequest, getUserByID } from "../../../../services";
+import { acceptJoinRequest, getUserByID, denyJoinRequest } from "../../../../services";
 import notify from "../../../../components/CustomToast";
 
 function PersonDetails(props) {
   const navigate = useNavigate();
-  const { event } = props;
+  const { event, handleClose } = props;
   const userIDs = event.pendingAccept;
   const eventID = event.id;
 
-  const [userlist, setUserList] = useState([]);
+  const [userList, setUserList] = useState([]);
 
   const generateUsers = async () => {
     const promises = [];
@@ -25,7 +25,6 @@ function PersonDetails(props) {
     const unprocessedUsers = await Promise.all(promises);
     // process data in each slot
     const processedUsers = unprocessedUsers.map((value) => value.data.User);
-    console.log(processedUsers);
     setUserList(processedUsers);
   };
 
@@ -33,21 +32,30 @@ function PersonDetails(props) {
     generateUsers();
   }, []);
 
-  const handleDecline = (uid) => {};
+  const handleDecline = async (uid) => {
+    const resp = await denyJoinRequest(uid, eventID);
+    if (resp.data.success) {
+      notify("Declined join request", "success")
+      handleClose()
+      return;
+    }
+    notify("Failed to decline join request. Try again", "error")
+  };
 
-  const handleAccept = (uid) => {
-    acceptJoinRequest(uid, eventID)
-      .then((res) => {
-        navigate(0);
-        console.log(uid);
-      })
-      .catch((err) => console.log(err.message));
+  const handleAccept = async (uid) => {
+    const resp = await acceptJoinRequest(uid, eventID)
+    if (resp.data.success){
+      notify("Accepted join request", "success")
+      handleClose();
+      return;
+    }
+    notify("Failed to accept join request. Try again", "error")
   };
 
   return (
     <Accordion>
-      {userlist ? (
-        userlist.map((user) => (
+      {userList && (userList.length > 0) ? (
+        userList.map((user) => (
           <Accordion.Item eventKey={user}>
             <Accordion.Header>{user.name}</Accordion.Header>
             <AccordionBody>
@@ -57,14 +65,16 @@ function PersonDetails(props) {
               <Button variant="success" onClick={(e) => handleAccept(user.id)}>
                 Accept
               </Button>{" "}
-              <Button variant="danger" onClick={handleDecline}>
+              <Button variant="danger" onClick={() => handleDecline(user.id)}>
                 Decline
               </Button>
             </AccordionBody>
           </Accordion.Item>
         ))
       ) : (
-        <Accordion.Item />
+        <h5 style={{textAlign: "center", margin: "3rem auto 3rem auto"}}>
+          No requests for now
+        </h5>
       )}
     </Accordion>
   );

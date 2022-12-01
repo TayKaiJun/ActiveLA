@@ -175,6 +175,45 @@ export const acceptJoinRequest = async (req, res) => {
 };
 
 /*
+  For a given EventID of a hosted event and a UID of a requesting user, 
+  Remove UID from event model
+
+  Request body = {
+    uid,
+    eventID
+  }
+*/
+export const denyJoinRequest = async (req, res) => {
+  try {
+    const eid = req.body.eventID;
+    const uid = req.body.uid;
+
+    await Event.findOneAndUpdate(
+      { _id: eid },
+      {
+        $pull: { pendingAccept: uid },
+      }
+    );
+    await User.findOneAndUpdate(
+      { _id: uid },
+      {
+        $pull: { eventsPending: eid },
+      }
+    );
+    return res.status(201).json({
+      success: true,
+      message: "Successfully denied a join request",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch some event",
+      error: err.message,
+    });
+  }
+};
+
+/*
     For a given UID, find all the events within that User object
     eventsHosting, eventsGoing, eventsPending
 */

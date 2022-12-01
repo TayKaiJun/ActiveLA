@@ -7,6 +7,7 @@ import {
     requestToJoinEvent,
     getRelatedEvents,
     acceptJoinRequest,
+    denyJoinRequest,
     deleteUser,
     updateUser,
     checkIfRequested
@@ -41,6 +42,7 @@ apiRoutes.delete('/deleteEvent', deleteEvent); // Query param event _id
 // Both
 apiRoutes.post('/requestToJoin', requestToJoinEvent) // Body includes uid and eventID
 apiRoutes.post('/acceptJoinRequest', acceptJoinRequest); // Body includes uid and eventID
+apiRoutes.post('/denyJoinRequest', denyJoinRequest); // body takes in uid and eventID
 apiRoutes.get('/checkIfRequested', checkIfRequested) // takes in params uid and eid
 
 export default apiRoutes;

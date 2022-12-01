@@ -161,3 +161,17 @@ export async function checkIfRequested(uid, eid) {
     return error;
   }
 }
+
+export async function denyJoinRequest(uid, eid) {
+  try {
+    const body = {
+      "uid": uid,
+      "eventID": eid
+    }
+    const resp = await http.post('/denyJoinRequest', body);
+    return resp;
+  } catch (error) {
+    console.log(error.message);
+    return error;
+  }
+}

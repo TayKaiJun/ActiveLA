@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import badmintonImage from "../../../../components/EventCard/images/badminton.jpg";
@@ -50,7 +49,7 @@ function ImageDisplay(props) {
 }
 
 function HostingCard(props) {
-  const { event, requestJoinHandler } = props;
+  const { event } = props;
   const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
   const sportsname = ImageDisplay(props);
   const host = event.host === undefined || event.host === null ? "" : event.host.name;
