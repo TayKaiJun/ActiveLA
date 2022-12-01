@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import Toast from "react-bootstrap/Toast";
 import Form from "react-bootstrap/Form";
 import bcrypt from "bcryptjs";
-import Container from "react-bootstrap/esm/Container";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Chip } from "primereact/chip";
-import { createNewUser } from "../../services/user-service";
+import { createNewUser, getUserByEmail } from "../../services/index";
 import FormLayout from "../../components/FormLayout";
 import notify from "../../components/CustomToast";
 import * as constants from "../../constants";
+import AuthContext from "../../services/authContext";
 
-function SignupForm(props) {
+function SignupForm() {
   const navigate = useNavigate();
   let sportValue = "";
   let levelValue = 0;
+  const authContext = useContext(AuthContext);
 
   const [data, setData] = useState({
     username: "",
@@ -36,14 +36,11 @@ function SignupForm(props) {
   const onInput = (e) => {
     const { id, value } = e.target;
 
-    let pass = false;
     if (data.password && data.confirmPassword && (id === "password" || id === "confirmPassword")) {
       if (data.password !== data.confirmPassword) {
         setError(() => ({ [id]: "Passwords do not match!" }));
-        pass = false;
       } else {
         setError(() => ({ [id]: "" }));
-        pass = true;
       }
     }
 
@@ -75,6 +72,13 @@ function SignupForm(props) {
       .then((res) => {
         if (res.success) {
           notify("Created a new account!", "success");
+          getUserByEmail(data.email)
+            .then((result) => {
+              authContext.setupSessionInfo(true, result.data.User._id);
+            })
+            .catch((error) => {
+              notify(`Failed to fetch object ID (${error.message})`, "error")
+            });
           setData({});
           navigate("/login");
         }

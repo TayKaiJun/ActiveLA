@@ -7,7 +7,7 @@ import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import bcrypt from "bcryptjs";
 import FormLayout from "../../components/FormLayout";
-import { getUserByEmail } from "../../services/user-service";
+import { getUserByEmail } from "../../services/index";
 import AuthContext from "../../services/authContext";
 import notify from "../../components/CustomToast";
 

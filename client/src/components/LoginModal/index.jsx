@@ -6,11 +6,11 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import bcrypt from "bcryptjs";
-import { getUserByEmail } from "../../services/user-service";
+import { getUserByEmail } from "../../services/index";
 import AuthContext from "../../services/authContext";
 import notify from "../CustomToast";
 
-function LoginModal(props) {
+function LoginModal() {
   const [modalShow, setModalShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
@@ -58,10 +58,10 @@ function LoginModal(props) {
             }
           })
           .catch((err) => {
-            console.log(err.message);
+            notify(`Password failed to unhash/does not match (${err.message})`, "success");
           });
       })
-      .catch((err) => {
+      .catch(() => {
         setError({
           ...formErrors,
           email: "Email does not exist!",

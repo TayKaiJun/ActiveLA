@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -6,17 +6,19 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { Chip } from "primereact/chip";
 import bcrypt from "bcryptjs";
 import { useNavigate } from "react-router-dom";
-import { createNewUser } from "../../services/user-service";
+import { createNewUser, getUserByEmail } from "../../services/index";
 import notify from "../CustomToast";
 import * as constants from "../../constants";
+import AuthContext from "../../services/authContext";
 
-function SignupButton(props) {
+function SignupButton() {
   const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
   let sportValue = "";
   let levelValue = "";
+  const authContext = useContext(AuthContext);
 
   const [data, setData] = useState({
     username: "",
@@ -37,14 +39,11 @@ function SignupButton(props) {
   const onInput = (e) => {
     const { id, value } = e.target;
 
-    let pass = false;
     if (data.password && data.confirmPassword && (id === "password" || id === "confirmPassword")) {
       if (data.password !== data.confirmPassword) {
         setError(() => ({ [id]: "Passwords do not match!" }));
-        pass = false;
       } else {
         setError(() => ({ [id]: "" }));
-        pass = true;
       }
     }
 
@@ -52,14 +51,13 @@ function SignupButton(props) {
       bcrypt
         .hash(value, 10)
         .then((hashedPassword) => {
-          console.log(value);
           setData({
             ...data,
             password: hashedPassword,
           });
         })
         .catch(() => {
-          console.log("Password was not hashed successfully");
+          notify("Password was not hashed successfully", "error");
         });
       return;
     }
@@ -76,14 +74,20 @@ function SignupButton(props) {
       .then((res) => {
         if (res.data.success) {
           notify("Account created successfully", "success");
-
+          getUserByEmail(data.email)
+            .then((result) => {
+              authContext.setupSessionInfo(true, result.data.User._id);
+            })
+            .catch((error) => {
+              notify(`Failed to fetch object ID (${error.message})`, "error");
+            });
           navigate("/");
           setData({});
           handleClose();
         }
       })
       .catch((err) => {
-        console.log(err.message);
+        notify(`Failed to create a new user (${err.message})`, "error");
       });
   };
 
@@ -91,10 +95,8 @@ function SignupButton(props) {
     const { id, value } = e.target;
     if (id === "sport") {
       sportValue = value;
-      // console.log("Updating %s: %s", id, value);
     } else {
       levelValue = value;
-      // console.log("Updating %s: %d", id, value);
     }
   };
 
@@ -123,7 +125,6 @@ function SignupButton(props) {
                   ...data,
                   interests: newInterestArray,
                 });
-                console.log(newInterestArray);
               }}
             />
           </div>
