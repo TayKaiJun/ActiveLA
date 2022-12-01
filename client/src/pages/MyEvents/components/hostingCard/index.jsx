@@ -50,7 +50,8 @@ function ImageDisplay(props) {
 
 function HostingCard(props) {
   const { event } = props;
-  const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
+  const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel, attending } = event;
+  const numberOfAttendees = attending.length;
   const sportsname = ImageDisplay(props);
   const host = event.host === undefined || event.host === null ? "" : event.host.name;
 
@@ -66,7 +67,7 @@ function HostingCard(props) {
           <ListGroup.Item>Location: {location}</ListGroup.Item>
           <ListGroup.Item>Skill Level: {skillLevel}</ListGroup.Item>
           <ListGroup.Item>Age Group: {ageGroup}</ListGroup.Item>
-          <ListGroup.Item>Number of Players Looking For: {playerNumber}</ListGroup.Item>
+          <ListGroup.Item>Attendees: {numberOfAttendees} / {playerNumber}</ListGroup.Item>
           <ListGroup.Item>Costs: {costs === undefined ? "None" : costs}</ListGroup.Item>
         </ListGroup>
         <DeleteEventModal eventID={_id} />

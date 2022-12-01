@@ -36,23 +36,6 @@ export const findUserByEmail = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
-  try {
-    const data = await User.find({ email: req.query.email });
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      User: data,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-      error: err.message,
-    });
-  }
-};
-
 export const findUserByID = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.query._id });

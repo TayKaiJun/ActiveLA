@@ -62,6 +62,7 @@ function EventCard(props) {
           <ListGroup.Item>Date: {event.date}</ListGroup.Item>
           <ListGroup.Item>Time: {event.time}</ListGroup.Item>
           <ListGroup.Item>Location: {event.location}</ListGroup.Item>
+          <ListGroup.Item>Attendees: {event.attending.length} / {event.playerNumber}</ListGroup.Item>
         </ListGroup>
         <ModalMoreDetails event={event} requestJoinHandler={requestJoinHandler} modalImageDisplay={sportsname} />
       </Card.Body>
