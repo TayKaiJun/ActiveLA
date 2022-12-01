@@ -6,7 +6,7 @@ ActiveLA is a platform that brings sports enthusiasts together.
 ## Setup instructions
 Step 1: Clone the repository.
 ```
-$ git clone https://github.com/TayKaiJun/Swee.git
+$ git clone https://github.com/TayKaiJun/ActiveLA.git
 ```
 Step 2: Install required dependencies.
 ```
