@@ -146,6 +146,7 @@ export const getInterestedUsers = async (req, res) => {
 };
 
 // Pass in event ID
+// Deletes the event, but does not remove that EID from all the user's list of events
 export const deleteEvent = async (req, res) => {
   try {
     await Event.findByIdAndDelete(req.query._id);

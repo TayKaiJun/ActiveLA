@@ -5,16 +5,18 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import ParticipantModel from "../../ParticipantModal";
 import AuthContext from "../../../services/authContext";
-import { checkIfRequested } from '../../../services'
+import { checkIfRequested, getUserByID } from '../../../services'
 
 function ModalMoreDetails(props) {
   const { event, requestJoinHandler, modalImageDisplay } = props;
-  const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
+  const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel, attending} = event;
   const authContext = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [pending, setPending] = useState(false);
   const [going, setGoing] = useState(false);
+  const [attendees, setAttendees] = useState([]);
   
   const navigate = useNavigate();
 
@@ -29,11 +31,27 @@ function ModalMoreDetails(props) {
       setGoing(res.data.going)
     }
   }
+  const getAttendees = async () => {
+    attending.forEach(async (attendee) => {
+      const res = await getUserByID(attendee);
+      const user = res.data.User
+      if (user){
+        setAttendees((arr) => [
+          ...arr,
+          user
+        ])
+      }
+    })
+  }
 
   useEffect(() => {
     if (authContext.isLoggedIn){
       getIfEventRequested();
+      getAttendees();
     }
+    return (
+      setAttendees([])
+    )
   }, [event, authContext.user])
 
   const handleClose = () => setShow(false);
@@ -58,11 +76,12 @@ function ModalMoreDetails(props) {
             <ListGroup.Item>Location: {location}</ListGroup.Item>
             <ListGroup.Item>Skill Level: {skillLevel}</ListGroup.Item>
             <ListGroup.Item>Age Group: {ageGroup}</ListGroup.Item>
-            <ListGroup.Item>Number of Players Looking For: {playerNumber}</ListGroup.Item>
+            <ListGroup.Item>Attendees: {attending.length} / {playerNumber}</ListGroup.Item>
             <ListGroup.Item>Costs: {costs === undefined ? "None" : costs}</ListGroup.Item>
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
+          <ParticipantModel attendees={attendees}/>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>

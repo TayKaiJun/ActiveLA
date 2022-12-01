@@ -1,5 +1,4 @@
-import React from "react";
-import Button from "react-bootstrap/Button";
+import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import badmintonImage from "../../../../components/EventCard/images/badminton.jpg";
@@ -16,6 +15,8 @@ import basketballImage from "../../../../components/EventCard/images/basketball.
 import baseballImage from "../../../../components/EventCard/images/baseball.jpg";
 import DeleteEventModal from "../DeleteEventModal";
 import SeeRequestsModal from "../SeeRequestsModal";
+import ParticipantModel from "../../../../components/ParticipantModal";
+import { getUserByID } from "../../../../services"
 
 function ImageDisplay(props) {
   const { event } = props;
@@ -50,29 +51,55 @@ function ImageDisplay(props) {
 }
 
 function HostingCard(props) {
-  const { event, requestJoinHandler } = props;
-  const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel } = event;
+  const { event } = props;
+  const { _id, name, date, time, location, ageGroup, playerNumber, costs, skillLevel, attending } = event;
+  const numberOfAttendees = attending.length;
   const sportsname = ImageDisplay(props);
   const host = event.host === undefined || event.host === null ? "" : event.host.name;
+
+  const [attendees, setAttendees] = useState([])
+
+  const getAttendees = async () => {
+    attending.forEach(async (attendee) => {
+      const res = await getUserByID(attendee);
+      const user = res.data.User
+      if (user){
+        setAttendees((arr) => [
+          ...arr,
+          user
+        ])
+      }
+    })
+  }
+
+  useEffect(() => {
+    getAttendees()
+    return (
+      setAttendees([])
+    )
+  }, [event])
 
   return (
     <Card>
       <Card.Img variant="top" src={sportsname} />
-      <Card.Body>
-        <Card.Title>{name}</Card.Title>
-        <ListGroup className="list-group-flush">
-          <ListGroup.Item>Host: {host}</ListGroup.Item>
-          <ListGroup.Item>Date: {date}</ListGroup.Item>
-          <ListGroup.Item>Time: {time}</ListGroup.Item>
-          <ListGroup.Item>Location: {location}</ListGroup.Item>
-          <ListGroup.Item>Skill Level: {skillLevel}</ListGroup.Item>
-          <ListGroup.Item>Age Group: {ageGroup}</ListGroup.Item>
-          <ListGroup.Item>Number of Players Looking For: {playerNumber}</ListGroup.Item>
-          <ListGroup.Item>Costs: {costs === undefined ? "None" : costs}</ListGroup.Item>
-        </ListGroup>
-        <DeleteEventModal eventID={_id} />
-        <SeeRequestsModal event={event} />
-      </Card.Body>
+      <Card.Title style={{marginTop: "8px"}}>{name}</Card.Title>
+      <ListGroup className="list-group-flush">
+        <ListGroup.Item>Host: {host}</ListGroup.Item>
+        <ListGroup.Item>Date: {date}</ListGroup.Item>
+        <ListGroup.Item>Time: {time}</ListGroup.Item>
+        <ListGroup.Item>Location: {location}</ListGroup.Item>
+        <ListGroup.Item>Skill Level: {skillLevel}</ListGroup.Item>
+        <ListGroup.Item>Age Group: {ageGroup}</ListGroup.Item>
+        <ListGroup.Item>Attendees: {numberOfAttendees} / {playerNumber}</ListGroup.Item>
+        <ListGroup.Item>Costs: {costs === undefined ? "None" : costs}</ListGroup.Item>
+      </ListGroup>
+      <Card.Footer>
+        <div style={{display: "flex", margin: "1rem 0 0.5rem 0", alignItems: "center", justifyContent: "center"}}>
+          <DeleteEventModal eventID={_id} />
+          <SeeRequestsModal event={event} />
+        </div>
+        <ParticipantModel attendees={attendees}/>
+      </Card.Footer>
     </Card>
   );
 }

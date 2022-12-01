@@ -13,14 +13,14 @@ function SeeRequestsModal(props) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" onClick={handleShow} style={{marginLeft: "0.5rem"}}>
         See Requests
       </Button>{" "}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Join Requests</Modal.Title>
         </Modal.Header>
-        <PersonDetails event={event} />
+        <PersonDetails handleClose={handleClose} event={event} />
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close

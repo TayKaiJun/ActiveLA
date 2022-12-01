@@ -36,23 +36,6 @@ export const findUserByEmail = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
-  try {
-    const data = await User.find({ email: req.query.email });
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      User: data,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-      error: err.message,
-    });
-  }
-};
-
 export const findUserByID = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.query._id });
@@ -164,6 +147,45 @@ export const acceptJoinRequest = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Successfully accepted a join request",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch some event",
+      error: err.message,
+    });
+  }
+};
+
+/*
+  For a given EventID of a hosted event and a UID of a requesting user, 
+  Remove UID from event model
+
+  Request body = {
+    uid,
+    eventID
+  }
+*/
+export const denyJoinRequest = async (req, res) => {
+  try {
+    const eid = req.body.eventID;
+    const uid = req.body.uid;
+
+    await Event.findOneAndUpdate(
+      { _id: eid },
+      {
+        $pull: { pendingAccept: uid },
+      }
+    );
+    await User.findOneAndUpdate(
+      { _id: uid },
+      {
+        $pull: { eventsPending: eid },
+      }
+    );
+    return res.status(201).json({
+      success: true,
+      message: "Successfully denied a join request",
     });
   } catch (err) {
     return res.status(500).json({
