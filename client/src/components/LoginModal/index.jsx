@@ -58,7 +58,7 @@ function LoginModal() {
             }
           })
           .catch((err) => {
-            notify(`Password failed to unhash/does not match (${err.message})`, "success");
+            notify(`Password failed to unhash/does not match (${err.message})`, "error");
           });
       })
       .catch(() => {
