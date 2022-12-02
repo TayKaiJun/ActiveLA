@@ -4,7 +4,7 @@ import Accordion from "react-bootstrap/Accordion";
 import AccordionBody from "react-bootstrap/esm/AccordionBody";
 import Modal from "react-bootstrap/Modal";
 
-function ParticipantModel(props) {
+function ParticipantModal(props) {
 
   const { attendees } = props;
   const [show, setShow] = useState(false);
@@ -14,7 +14,7 @@ function ParticipantModel(props) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow} style={{margin: "auto"}}>
+      <Button variant={attendees.length > 0 ? "primary" : "secondary"} onClick={handleShow} style={{margin: "auto"}} disabled={attendees.length <= 0}>
         Participants
       </Button>
       <Modal show={show} onHide={handleClose} size="lg">
@@ -47,4 +47,4 @@ function ParticipantModel(props) {
   )
 }
 
-export default ParticipantModel;
+export default ParticipantModal;

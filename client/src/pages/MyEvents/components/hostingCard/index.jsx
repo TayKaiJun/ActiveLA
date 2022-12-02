@@ -15,7 +15,7 @@ import basketballImage from "../../../../components/EventCard/images/basketball.
 import baseballImage from "../../../../components/EventCard/images/baseball.jpg";
 import DeleteEventModal from "../DeleteEventModal";
 import SeeRequestsModal from "../SeeRequestsModal";
-import ParticipantModel from "../../../../components/ParticipantModal";
+import ParticipantModal from "../../../../components/ParticipantModal";
 import { getUserByID } from "../../../../services"
 
 function ImageDisplay(props) {
@@ -98,7 +98,7 @@ function HostingCard(props) {
           <DeleteEventModal eventID={_id} />
           <SeeRequestsModal event={event} />
         </div>
-        <ParticipantModel attendees={attendees}/>
+        <ParticipantModal attendees={attendees}/>
       </Card.Footer>
     </Card>
   );

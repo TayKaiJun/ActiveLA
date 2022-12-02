@@ -13,7 +13,7 @@ function SeeRequestsModal(props) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow} style={{marginLeft: "0.5rem"}}>
+      <Button variant={event.pendingAccept.length > 0 ? "primary" : "secondary"} onClick={handleShow} style={{marginLeft: "0.5rem"}} disabled={event.pendingAccept.length <= 0}>
         See Requests
       </Button>{" "}
       <Modal show={show} onHide={handleClose}>
