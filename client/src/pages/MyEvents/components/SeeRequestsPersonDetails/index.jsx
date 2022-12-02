@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 import Accordion from "react-bootstrap/Accordion";
 import AccordionBody from "react-bootstrap/esm/AccordionBody";
 import { acceptJoinRequest, getUserByID, denyJoinRequest } from "../../../../services";
 import notify from "../../../../components/CustomToast";
 
 function PersonDetails(props) {
-  const navigate = useNavigate();
   const { event, handleClose } = props;
   const userIDs = event.pendingAccept;
   const eventID = event.id;
+  const navigate = useNavigate();
 
   const [userList, setUserList] = useState([]);
 
@@ -37,6 +37,7 @@ function PersonDetails(props) {
     if (resp.data.success) {
       notify("Declined join request", "success")
       handleClose()
+      navigate(0)
       return;
     }
     notify("Failed to decline join request. Try again", "error")
@@ -47,6 +48,7 @@ function PersonDetails(props) {
     if (resp.data.success){
       notify("Accepted join request", "success")
       handleClose();
+      navigate(0)
       return;
     }
     notify("Failed to accept join request. Try again", "error")
