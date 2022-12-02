@@ -13,8 +13,9 @@ import AuthContext from "../../services/authContext";
 
 function SignupForm() {
   const navigate = useNavigate();
-  let sportValue = "";
-  let levelValue = 0;
+  const [sportValue, setSportValue] = useState();
+  const [levelValue, setLevelValue] = useState();
+  const [sportsName, setSportsName] = useState(Object.keys(constants.SPORT_TO_LOCATIONS_MAPPING));
   const authContext = useContext(AuthContext);
 
   const [data, setData] = useState({
@@ -29,20 +30,11 @@ function SignupForm() {
   });
 
   const [formErrors, setError] = useState({
-    password: "",
     confirmPassword: "",
   });
 
   const onInput = (e) => {
     const { id, value } = e.target;
-
-    if (data.password && data.confirmPassword && (id === "password" || id === "confirmPassword")) {
-      if (data.password !== data.confirmPassword) {
-        setError(() => ({ [id]: "Passwords do not match!" }));
-      } else {
-        setError(() => ({ [id]: "" }));
-      }
-    }
 
     if (id === "password") {
       bcrypt
@@ -68,43 +60,63 @@ function SignupForm() {
   const onFormSubmit = (e) => {
     e.preventDefault();
 
-    createNewUser(data)
-      .then((res) => {
-        if (res.success) {
-          notify("Created a new account!", "success");
-          getUserByEmail(data.email)
-            .then((result) => {
-              authContext.setupSessionInfo(true, result.data.User._id);
+    bcrypt
+      .compare(data.confirmPassword, data.password)
+      .then((passwordCheck) => {
+        if (passwordCheck) {
+          createNewUser(data)
+            .then((res) => {
+              if (res.data.success) {
+                notify("Account created successfully", "success");
+                getUserByEmail(data.email)
+                  .then((result) => {
+                    authContext.setupSessionInfo(true, result.data.User._id);
+                  })
+                  .catch((getIDerror) => {
+                    notify(`Failed to fetch object ID (${getIDerror.message})`, "error");
+                  });
+                navigate("/");
+                setData({});
+                setError({});
+              }
             })
-            .catch((error) => {
-              notify(`Failed to fetch object ID (${error.message})`, "error")
+            .catch((err) => {
+              notify(`Failed to create a new user (${err.message})`, "error");
             });
-          setData({});
-          navigate("/login");
+        } else {
+          setError({
+            confirmPassword: "Password does not match",
+          });
+          authContext.setupSessionInfo(false, "");
         }
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch((bcrypytErr) => {
+        notify(`Password failed to unhash/does not match (${bcrypytErr.message})`, "error");
       });
   };
 
   const updateInterest = (e) => {
     const { id, value } = e.target;
     if (id === "sport") {
-      sportValue = value;
-      console.log("Updating %s: %s", id, value);
-    } else {
-      levelValue = value;
-      console.log("Updating %s: %d", id, value);
+      setSportValue(value);
+    } else if (id === "level"){
+      setLevelValue(value);
     }
   };
 
   const addInterest = () => {
-    // TODO: change value of a sport if it already exists
+    if(!sportValue || !levelValue)
+      return;
+
     setData({
       ...data,
       interests: [...data.interests, { sport: sportValue, level: levelValue }],
     });
+    const newSportsArray = sportsName.filter((remainingSport) => {
+      return remainingSport !== sportValue;
+    });
+    setSportsName(newSportsArray);
+    setSportValue();
   };
 
   const renderInterests = data.interests
@@ -147,7 +159,7 @@ function SignupForm() {
 
       <Form.Group className="mb-2" controlId="email">
         <Form.Label>Email</Form.Label>
-        <Form.Control type="email" onChange={onInput} placeholder="Enter a valid UCLA email" required />
+        <Form.Control type="email" onChange={onInput} placeholder="Enter a valid email" required />
       </Form.Group>
 
       <Form.Group className="mb-2" controlId="name">
@@ -178,12 +190,14 @@ function SignupForm() {
       <Form.Group className="mb-2">
         <Form.Label>Interests & Proficiency Level</Form.Label>
         <InputGroup>
-          <Form.Select id="sport" onChange={updateInterest} defaultValue="Select Sport">
+          <Form.Select id="sport" onChange={updateInterest}>
+            <option value="">Select Sport</option>
             {Object.keys(constants.SPORT_TO_LOCATIONS_MAPPING).map((sport) => (
               <option value={sport}>{sport}</option>
             ))}
           </Form.Select>
-          <Form.Select id="level" onChange={updateInterest} defaultValue="Select Skill Level">
+          <Form.Select id="level" onChange={updateInterest}>
+            <option value="" >Select Skill Level</option>
             {constants.SKILL_LEVEL.map((proficiency) => (
               <option value={proficiency}>{proficiency}</option>
             ))}
@@ -197,7 +211,6 @@ function SignupForm() {
       <Form.Group className="mb-2" controlId="password">
         <Form.Label>Create Password</Form.Label>
         <Form.Control type="password" onChange={onInput} placeholder="Create a password" required />
-        {formErrors.password && <p className="text-danger">{formErrors.password}</p>}
       </Form.Group>
 
       <Form.Group className="mb-2" controlId="confirmPassword">

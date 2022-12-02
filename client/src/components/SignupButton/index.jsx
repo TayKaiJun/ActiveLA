@@ -16,9 +16,10 @@ function SignupButton() {
   const [modalShow, setModalShow] = useState(false);
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
-  let sportValue = "";
-  let levelValue = "";
+  const [sportValue, setSportValue] = useState();
+  const [levelValue, setLevelValue] = useState();
   const authContext = useContext(AuthContext);
+  const [sportsName, setSportsName] = useState(Object.keys(constants.SPORT_TO_LOCATIONS_MAPPING));
 
   const [data, setData] = useState({
     username: "",
@@ -32,20 +33,11 @@ function SignupButton() {
   });
 
   const [formErrors, setError] = useState({
-    password: "",
-    confirmPassword: "",
+    matchPassword: "",
   });
 
   const onInput = (e) => {
     const { id, value } = e.target;
-
-    if (data.password && data.confirmPassword && (id === "password" || id === "confirmPassword")) {
-      if (data.password !== data.confirmPassword) {
-        setError(() => ({ [id]: "Passwords do not match!" }));
-      } else {
-        setError(() => ({ [id]: "" }));
-      }
-    }
 
     if (id === "password") {
       bcrypt
@@ -70,42 +62,63 @@ function SignupButton() {
   const onFormSubmit = (e) => {
     e.preventDefault();
 
-    createNewUser(data)
-      .then((res) => {
-        if (res.data.success) {
-          notify("Account created successfully", "success");
-          getUserByEmail(data.email)
-            .then((result) => {
-              authContext.setupSessionInfo(true, result.data.User._id);
+    bcrypt
+      .compare(data.confirmPassword, data.password)
+      .then((passwordCheck) => {
+        if (passwordCheck) {
+          createNewUser(data)
+            .then((res) => {
+              if (res.data.success) {
+                notify("Account created successfully", "success");
+                getUserByEmail(data.email)
+                  .then((result) => {
+                    authContext.setupSessionInfo(true, result.data.User._id);
+                  })
+                  .catch((getIDerror) => {
+                    notify(`Failed to fetch object ID (${getIDerror.message})`, "error");
+                  });
+                navigate("/");
+                setData({});
+                setError({});
+                handleClose();
+              }
             })
-            .catch((error) => {
-              notify(`Failed to fetch object ID (${error.message})`, "error");
+            .catch((err) => {
+              notify(`Failed to create a new user (${err.error})`, "error");
             });
-          navigate("/");
-          setData({});
-          handleClose();
+        } else {
+          setError({
+            matchPassword: "Password does not match",
+          });
+          authContext.setupSessionInfo(false, "");
         }
       })
-      .catch((err) => {
-        notify(`Failed to create a new user (${err.message})`, "error");
+      .catch((bcrypytErr) => {
+        notify(`Password failed to unhash/does not match (${bcrypytErr.message})`, "error");
       });
   };
 
   const updateInterest = (e) => {
     const { id, value } = e.target;
     if (id === "sport") {
-      sportValue = value;
-    } else {
-      levelValue = value;
+      setSportValue(value);
+    } else if (id === "level") {
+      setLevelValue(value);
     }
   };
 
   const addInterest = () => {
-    // TODO: change value of a sport if it already exists
+    if (!sportValue || !levelValue) return;
+
     setData({
       ...data,
       interests: [...data.interests, { sport: sportValue, level: levelValue }],
     });
+    const newSportsArray = sportsName.filter((remainingSport) => {
+      return remainingSport !== sportValue;
+    });
+    setSportsName(newSportsArray);
+    setSportValue();
   };
 
   const renderInterests = data.interests
@@ -154,7 +167,7 @@ function SignupButton() {
 
             <Form.Group className="mb-2" controlId="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" onChange={onInput} placeholder="Enter a valid UCLA email" required />
+              <Form.Control type="email" onChange={onInput} placeholder="Enter a valid email" required />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="name">
@@ -186,12 +199,14 @@ function SignupButton() {
             <Form.Group className="mb-2">
               <Form.Label>Interests & Proficiency Level</Form.Label>
               <InputGroup>
-                <Form.Select id="sport" onChange={updateInterest} defaultValue="Select Sport">
-                  {Object.keys(constants.SPORT_TO_LOCATIONS_MAPPING).map((sport) => (
+                <Form.Select id="sport" onChange={updateInterest}>
+                  <option value="">Select Sport</option>
+                  {sportsName.map((sport) => (
                     <option value={sport}>{sport}</option>
                   ))}
                 </Form.Select>
-                <Form.Select id="level" onChange={updateInterest} defaultValue="Select Skill Level">
+                <Form.Select id="level" onChange={updateInterest}>
+                  <option value="">Select Skill Level</option>
                   {constants.SKILL_LEVEL.map((proficiency) => (
                     <option value={proficiency}>{proficiency}</option>
                   ))}
@@ -206,13 +221,12 @@ function SignupButton() {
             <Form.Group className="mb-2" controlId="password">
               <Form.Label>Create Password</Form.Label>
               <Form.Control type="password" onChange={onInput} placeholder="Create a password" required />
-              {formErrors.password && <p className="text-danger">{formErrors.password}</p>}
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="confirmPassword">
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control type="password" onChange={onInput} placeholder="Please re-enter password" required />
-              {formErrors.confirmPassword && <p className="text-danger">{formErrors.confirmPassword}</p>}
+              {formErrors.matchPassword && <p className="text-danger">{formErrors.matchPassword}</p>}
             </Form.Group>
 
             <Button style={{ marginTop: 10 }} variant="primary" type="submit">
