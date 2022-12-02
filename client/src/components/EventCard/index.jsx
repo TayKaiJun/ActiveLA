@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import { Tooltip } from "primereact/tooltip";
 import ModalMoreDetails from "./ModalMoreDetails";
 import badmintonImage from "./images/badminton.jpg";
 import tableTennisImage from "./images/tabletennis.jpg";
@@ -51,6 +52,7 @@ function EventCard(props) {
   const { event, requestJoinHandler } = props;
   const sportsname = ImageDisplay(props);
   const host = event.host === undefined || event.host === null ? "" : event.host.name;
+  const isOverflow = event.location.length > 20;
 
   return (
     <Card>
@@ -61,8 +63,28 @@ function EventCard(props) {
           <ListGroup.Item>Host: {host}</ListGroup.Item>
           <ListGroup.Item>Date: {event.date}</ListGroup.Item>
           <ListGroup.Item>Time: {event.time}</ListGroup.Item>
-          <ListGroup.Item>Location: {event.location}</ListGroup.Item>
-          <ListGroup.Item>Attendees: {event.attending.length} / {event.playerNumber}</ListGroup.Item>
+          <ListGroup.Item
+            style={{
+              display: "flex",
+              maxWidth: "100%",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                marginRight: 5,
+              }}
+            >
+              Location:
+            </div>
+            <Tooltip target=".is_overflow" />
+            <div className={isOverflow ? "is_overflow text-truncate" : ""} data-pr-tooltip={event.location}>
+              {event.location}
+            </div>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            Attendees: {event.attending.length} / {event.playerNumber}
+          </ListGroup.Item>
         </ListGroup>
         <ModalMoreDetails event={event} requestJoinHandler={requestJoinHandler} modalImageDisplay={sportsname} />
       </Card.Body>
