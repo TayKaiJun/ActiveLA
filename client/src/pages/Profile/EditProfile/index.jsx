@@ -131,8 +131,8 @@ function EditProfile() {
                   Name
                 </Col>
                 <Col>
-                  <Form.Group controlId="Name">
-                    <Form.Control type="Name" onChange={onInput} defaultValue={data.name} required />
+                  <Form.Group controlId="name">
+                    <Form.Control type="name" onChange={onInput} defaultValue={data.name} required />
                   </Form.Group>
                 </Col>
               </Row>
